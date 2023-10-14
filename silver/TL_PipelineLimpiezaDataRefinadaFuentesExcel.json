@@ -1,0 +1,2290 @@
+{
+	"jobConfig": {
+		"name": "TL_PipelineLimpiezaDataRefinadaFuentesExcel",
+		"description": "",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.8X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 80,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "TL_PipelineLimpiezaDataRefinadaFuentesExcel.py",
+		"scriptLocation": "s3://aws-us-cleansed/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-06T21:30:50.097Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://aws-us-cleansed/temp-dir/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": false,
+		"metrics": true,
+		"spark": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1694118591948": {
+			"nodeId": "node-1694118591948",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "raw_chequeo_de_precios_uno",
+			"generatedNodeName": "raw_chequeo_de_precios_uno_node1694118591948",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "raw_chequeo_de_precios_uno_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1695135708818": {
+			"nodeId": "node-1695135708818",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694047511838"
+			],
+			"name": "Custom Transform add anio",
+			"generatedNodeName": "CustomTransformaddanio_node1695135708818",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "from pyspark.sql.functions import lit\nimport re\ndf = dfc.select(list(dfc.keys())[0]).toDF()\ncolumn_without_transform = str((df.columns)[3])\ncolumn_with_transform = ([int(s) for s in re.findall(r'-?\\d+\\.?\\d*', column_without_transform)][0])\ndf_add_column_anio = df.withColumn('anioinformacion',lit(column_with_transform))\ndyf = DynamicFrame.fromDF(df_add_column_anio, glueContext, \"new column\")\nreturn(DynamicFrameCollection({\"CustomTransform0\": dyf}, glueContext))\n",
+			"className": "MyTransform",
+			"outputSchemas": [
+				[
+					{
+						"key": "negocio_chr_",
+						"fullPath": [
+							"negocio_chr_"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "total_colombia_olimpica_venta_valor_ytd_2022_en_millones",
+						"fullPath": [
+							"total_colombia_olimpica_venta_valor_ytd_2022_en_millones"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "total_colombia_venta_valor_ytd_2022_en_millones",
+						"fullPath": [
+							"total_colombia_venta_valor_ytd_2022_en_millones"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "total_colombia_olimpica_venta_valor_ytd_2023_en_millones",
+						"fullPath": [
+							"total_colombia_olimpica_venta_valor_ytd_2023_en_millones"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "total_colombia_venta_valor_ytd_2023_en_millones",
+						"fullPath": [
+							"total_colombia_venta_valor_ytd_2023_en_millones"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "var_mercado",
+						"fullPath": [
+							"var_mercado"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "var_olimpica",
+						"fullPath": [
+							"var_olimpica"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "share_ytd_2022",
+						"fullPath": [
+							"share_ytd_2022"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "share_ytd_2023",
+						"fullPath": [
+							"share_ytd_2023"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "dif_share_ytd",
+						"fullPath": [
+							"dif_share_ytd"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "oportunidad_valorada_ytd_2023_nacional_en_millones",
+						"fullPath": [
+							"oportunidad_valorada_ytd_2023_nacional_en_millones"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "enero__en_millones_",
+						"fullPath": [
+							"enero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "febrero__en_millones_",
+						"fullPath": [
+							"febrero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "marzo__en_millones_",
+						"fullPath": [
+							"marzo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "abril__en_millones_",
+						"fullPath": [
+							"abril__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mayo__en_millones_",
+						"fullPath": [
+							"mayo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "junio__en_millones_",
+						"fullPath": [
+							"junio__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "julio__en_millones_",
+						"fullPath": [
+							"julio__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "agosto__en_millones_",
+						"fullPath": [
+							"agosto__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "septiembre__en_millones_",
+						"fullPath": [
+							"septiembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "octubre__en_millones_",
+						"fullPath": [
+							"octubre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "noviembre__en_millones_",
+						"fullPath": [
+							"noviembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "diciembre__en_millones_",
+						"fullPath": [
+							"diciembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_ytd_2023__en_millones_",
+						"fullPath": [
+							"costa_ytd_2023__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_enero__en_millones_",
+						"fullPath": [
+							"costa_enero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_febrero__en_millones_",
+						"fullPath": [
+							"costa_febrero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_marzo__en_millones_",
+						"fullPath": [
+							"costa_marzo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa__abril__en_millones_",
+						"fullPath": [
+							"costa__abril__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_mayo__en_millones_",
+						"fullPath": [
+							"costa_mayo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_junio__en_millones_",
+						"fullPath": [
+							"costa_junio__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_julio__en_millones_",
+						"fullPath": [
+							"costa_julio__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_agosto__en_millones_",
+						"fullPath": [
+							"costa_agosto__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_septiembre__en_millones_",
+						"fullPath": [
+							"costa_septiembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_octubre__en_millones_",
+						"fullPath": [
+							"costa_octubre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_noviembre__en_millones_",
+						"fullPath": [
+							"costa_noviembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costa_diciembre__en_millones_",
+						"fullPath": [
+							"costa_diciembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_ytd_2023",
+						"fullPath": [
+							"centro_ytd_2023"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_enero__en_millones_",
+						"fullPath": [
+							"centro_enero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_febrero__en_millones_",
+						"fullPath": [
+							"centro_febrero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_marzo__en_millones_",
+						"fullPath": [
+							"centro_marzo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_abril__en_millones_",
+						"fullPath": [
+							"centro_abril__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_mayo__en_millones_",
+						"fullPath": [
+							"centro_mayo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_junio__en_millones_",
+						"fullPath": [
+							"centro_junio__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_julio__en_millones_",
+						"fullPath": [
+							"centro_julio__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_agosto__en_millones_",
+						"fullPath": [
+							"centro_agosto__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_septiembre__en_millones_",
+						"fullPath": [
+							"centro_septiembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_octubre__en_millones_",
+						"fullPath": [
+							"centro_octubre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_noviembre__en_millones_",
+						"fullPath": [
+							"centro_noviembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro_diciembre__en_millones_",
+						"fullPath": [
+							"centro_diciembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_ytd_2023",
+						"fullPath": [
+							"occidente_ytd_2023"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_enero__en_millones_",
+						"fullPath": [
+							"occidente_enero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_febrero__en_millones_",
+						"fullPath": [
+							"occidente_febrero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_marzo__en_millones_",
+						"fullPath": [
+							"occidente_marzo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_abril__en_millones_",
+						"fullPath": [
+							"occidente_abril__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_mayo__en_millones_",
+						"fullPath": [
+							"occidente_mayo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_junio__en_millones_",
+						"fullPath": [
+							"occidente_junio__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_julio__en_millones_",
+						"fullPath": [
+							"occidente_julio__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_agosto__en_millones_",
+						"fullPath": [
+							"occidente_agosto__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_septiembre__en_millones_",
+						"fullPath": [
+							"occidente_septiembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_octubre__en_millones_",
+						"fullPath": [
+							"occidente_octubre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_noviembre__en_millones_",
+						"fullPath": [
+							"occidente_noviembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidente_diciembre__en_millones_",
+						"fullPath": [
+							"occidente_diciembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_ytd_2023",
+						"fullPath": [
+							"eje_cafetero_ytd_2023"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_enero__en_millones_",
+						"fullPath": [
+							"eje_cafetero_enero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_febrero__en_millones_",
+						"fullPath": [
+							"eje_cafetero_febrero__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_marzo__en_millones_",
+						"fullPath": [
+							"eje_cafetero_marzo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_abril__en_millones_",
+						"fullPath": [
+							"eje_cafetero_abril__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_mayo__en_millones_",
+						"fullPath": [
+							"eje_cafetero_mayo__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_junio__en_millones_",
+						"fullPath": [
+							"eje_cafetero_junio__en_millones_"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_julio__en_millones_",
+						"fullPath": [
+							"eje_cafetero_julio__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_agosto__en_millones_",
+						"fullPath": [
+							"eje_cafetero_agosto__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_septiembre__en_millones_",
+						"fullPath": [
+							"eje_cafetero_septiembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_octubre__en_millones_",
+						"fullPath": [
+							"eje_cafetero_octubre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_noviembre__en_millones_",
+						"fullPath": [
+							"eje_cafetero_noviembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "eje_cafetero_diciembre__en_millones_",
+						"fullPath": [
+							"eje_cafetero_diciembre__en_millones_"
+						],
+						"type": "null",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "partition_0",
+						"fullPath": [
+							"partition_0"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "anioinformacion",
+						"fullPath": [
+							"anioinformacion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1": {
+			"nodeId": "node-1",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "raw_arbol_de_competencia",
+			"generatedNodeName": "raw_arbol_de_competencia_node1",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "raw_arbol_de_competencia_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-2": {
+			"nodeId": "node-2",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node2",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "cadena",
+					"fromPath": [
+						"cadena"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "anio",
+					"fromPath": [
+						"año"
+					],
+					"toType": "int",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "periodicidad",
+					"fromPath": [
+						"periodicidad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "periodo",
+					"fromPath": [
+						"periodo"
+					],
+					"toType": "float",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "indicador",
+					"fromPath": [
+						"indicador"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "valor",
+					"fromPath": [
+						"valor"
+					],
+					"toType": "float",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "_1",
+					"fromPath": [
+						"_1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "_2",
+					"fromPath": [
+						"_2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "_3",
+					"fromPath": [
+						"_3"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "partition_0",
+					"fromPath": [
+						"partition_0"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694047991291": {
+			"nodeId": "node-1694047991291",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694047978402"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694047991291",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "competidor",
+					"fromPath": [
+						"cadena"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "canal",
+					"fromPath": [
+						"canal"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "anio",
+					"fromPath": [
+						"año"
+					],
+					"toType": "int",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "periodo",
+					"fromPath": [
+						"periodo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalventacompetidortrimestre",
+					"fromPath": [
+						"totalcadenaventatrimestreen_millones"
+					],
+					"toType": "long",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partition_0",
+					"fromPath": [
+						"partition_0"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694036848612": {
+			"nodeId": "node-1694036848612",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-2"
+			],
+			"name": "cleansed_arbol_de_competencia",
+			"generatedNodeName": "cleansed_arbol_de_competencia_node1694036848612",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-cleansed/data/arbol_de_competencia_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "cleansed_arbol_de_competencia_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694052956876": {
+			"nodeId": "node-1694052956876",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694047991291"
+			],
+			"name": "cleansed_colombia_acv",
+			"generatedNodeName": "cleansed_colombia_acv_node1694052956876",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-cleansed/data/colombia_acv_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "cleansed_colombia_acv_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694037970074": {
+			"nodeId": "node-1694037970074",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "raw_chequeo_de_precios_dos",
+			"generatedNodeName": "raw_chequeo_de_precios_dos_node1694037970074",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "raw_chequeo_de_precios_dos_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1695127813056": {
+			"nodeId": "node-1695127813056",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695136026588"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1695127813056",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "negocio",
+					"fromPath": [
+						"negocio_chr_"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "TotalOlimpicaVentaAnioAnteriorMillones",
+					"fromPath": [
+						"total_colombia_olimpica_venta_valor_ytd_2022_en_millones"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "TotalColombiaVentaAnioAnteriorMillones",
+					"fromPath": [
+						"total_colombia_venta_valor_ytd_2022_en_millones"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "TotalOlimpicaVentaAnioActualMillones",
+					"fromPath": [
+						"total_colombia_olimpica_venta_valor_ytd_2023_en_millones"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "TotalColombiaVentaAnioActualMillones",
+					"fromPath": [
+						"total_colombia_venta_valor_ytd_2023_en_millones"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "VariacionMercado",
+					"fromPath": [
+						"var_mercado"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "VariacionOlimpica",
+					"fromPath": [
+						"var_olimpica"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ShareAnoAnterior",
+					"fromPath": [
+						"share_ytd_2022"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ShareAnoActual",
+					"fromPath": [
+						"share_ytd_2023"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "DiferenciaShare",
+					"fromPath": [
+						"dif_share_ytd"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "OportunidadValoradaAnioActualMillones",
+					"fromPath": [
+						"oportunidad_valorada_ytd_2023_nacional_en_millones"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "enero",
+					"fromPath": [
+						"enero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "febrero",
+					"fromPath": [
+						"febrero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "marzo",
+					"fromPath": [
+						"marzo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "abril",
+					"fromPath": [
+						"abril__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "mayo",
+					"fromPath": [
+						"mayo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "junio",
+					"fromPath": [
+						"junio__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "julio",
+					"fromPath": [
+						"julio__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "agosto",
+					"fromPath": [
+						"agosto__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "septiembre",
+					"fromPath": [
+						"septiembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "octubre",
+					"fromPath": [
+						"octubre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "noviembre",
+					"fromPath": [
+						"noviembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "diciembre",
+					"fromPath": [
+						"diciembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "TotalCostaAnioActual",
+					"fromPath": [
+						"costa_ytd_2023__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaenero",
+					"fromPath": [
+						"costa_enero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costafebrero",
+					"fromPath": [
+						"costa_febrero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costamarzo",
+					"fromPath": [
+						"costa_marzo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaabril",
+					"fromPath": [
+						"costa__abril__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costamayo",
+					"fromPath": [
+						"costa_mayo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costajunio",
+					"fromPath": [
+						"costa_junio__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costajulio",
+					"fromPath": [
+						"costa_julio__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaagosto",
+					"fromPath": [
+						"costa_agosto__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaseptiembre",
+					"fromPath": [
+						"costa_septiembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaoctubre",
+					"fromPath": [
+						"costa_octubre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costanoviembre",
+					"fromPath": [
+						"costa_noviembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costadiciembre",
+					"fromPath": [
+						"costa_diciembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "TotalCentroAnioActual",
+					"fromPath": [
+						"centro_ytd_2023"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centroenero",
+					"fromPath": [
+						"centro_enero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrofebrero",
+					"fromPath": [
+						"centro_febrero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centromarzo",
+					"fromPath": [
+						"centro_marzo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centroabril",
+					"fromPath": [
+						"centro_abril__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centromayo",
+					"fromPath": [
+						"centro_mayo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrojunio",
+					"fromPath": [
+						"centro_junio__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrojulio",
+					"fromPath": [
+						"centro_julio__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centroagosto",
+					"fromPath": [
+						"centro_agosto__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centroseptiembre",
+					"fromPath": [
+						"centro_septiembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrooctubre",
+					"fromPath": [
+						"centro_octubre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centronoviembre",
+					"fromPath": [
+						"centro_noviembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrodiciembre",
+					"fromPath": [
+						"centro_diciembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "TotalOccidenteAnioActual",
+					"fromPath": [
+						"occidente_ytd_2023"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteenero",
+					"fromPath": [
+						"occidente_enero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentefebrero",
+					"fromPath": [
+						"occidente_febrero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentemarzo",
+					"fromPath": [
+						"occidente_marzo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteabril",
+					"fromPath": [
+						"occidente_abril__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentemayo",
+					"fromPath": [
+						"occidente_mayo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentejunio",
+					"fromPath": [
+						"occidente_junio__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentejulio",
+					"fromPath": [
+						"occidente_julio__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteagosto",
+					"fromPath": [
+						"occidente_agosto__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteseptiembre",
+					"fromPath": [
+						"occidente_septiembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteoctubre",
+					"fromPath": [
+						"occidente_octubre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentenoviembre",
+					"fromPath": [
+						"occidente_noviembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentediciembre",
+					"fromPath": [
+						"occidente_diciembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "TotalEjeCafeteroAnioActual",
+					"fromPath": [
+						"eje_cafetero_ytd_2023"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteroenero",
+					"fromPath": [
+						"eje_cafetero_enero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterofebrero",
+					"fromPath": [
+						"eje_cafetero_febrero__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteromarzo",
+					"fromPath": [
+						"eje_cafetero_marzo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteroabril",
+					"fromPath": [
+						"eje_cafetero_abril__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteromayo",
+					"fromPath": [
+						"eje_cafetero_mayo__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterojunio",
+					"fromPath": [
+						"eje_cafetero_junio__en_millones_"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterojulio",
+					"fromPath": [
+						"eje_cafetero_julio__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteroagosto",
+					"fromPath": [
+						"eje_cafetero_agosto__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteroseptiembre",
+					"fromPath": [
+						"eje_cafetero_septiembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterooctubre",
+					"fromPath": [
+						"eje_cafetero_octubre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteronoviembre",
+					"fromPath": [
+						"eje_cafetero_noviembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterodiciembre",
+					"fromPath": [
+						"eje_cafetero_diciembre__en_millones_"
+					],
+					"toType": "string",
+					"fromType": "null",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partition_0",
+					"fromPath": [
+						"partition_0"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "anioinformacion",
+					"fromPath": [
+						"anioinformacion"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694047978402": {
+			"nodeId": "node-1694047978402",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "raw_colombia_acv",
+			"generatedNodeName": "raw_colombia_acv_node1694047978402",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "raw_colombia_acv_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694041362358": {
+			"nodeId": "node-1694041362358",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694038160172"
+			],
+			"name": "cleansed_chequeo_de_precios_dos",
+			"generatedNodeName": "cleansed_chequeo_de_precios_dos_node1694041362358",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-cleansed/data/chequeo_de_precios_dos_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "cleansed_chequeo_de_precios_dos_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694147274846": {
+			"nodeId": "node-1694147274846",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695127813056"
+			],
+			"name": "cleansed_informe_de_olimpica_vs_global",
+			"generatedNodeName": "cleansed_informe_de_olimpica_vs_global_node1694147274846",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-cleansed/data/informe_de_olimpica_vs_global_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "cleansed_informe_de_olimpica_vs_global_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694047511838": {
+			"nodeId": "node-1694047511838",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "raw_informe_de_olimpica_vs_global",
+			"generatedNodeName": "raw_informe_de_olimpica_vs_global_node1694047511838",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "raw_informe_de_olimpica_vs_global_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694119595347": {
+			"nodeId": "node-1694119595347",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694118751799"
+			],
+			"name": "cleansed_chequeo_de_precios_uno",
+			"generatedNodeName": "cleansed_chequeo_de_precios_uno_node1694119595347",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-cleansed/data/chequeo_de_precios_uno_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "cleansed_chequeo_de_precios_uno_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694038160172": {
+			"nodeId": "node-1694038160172",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694037970074"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694038160172",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "regional",
+					"fromPath": [
+						"regional"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "grupocompras",
+					"fromPath": [
+						"grupo_de_compras"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ean",
+					"fromPath": [
+						"ean"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "plu",
+					"fromPath": [
+						"plu"
+					],
+					"toType": "bigint",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripcion",
+					"fromPath": [
+						"descripcion"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rol_de_la_categoria",
+					"fromPath": [
+						"rol_de_la_categoria"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "concepto",
+					"fromPath": [
+						"concepto"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clase",
+					"fromPath": [
+						"clasemarca"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "competencia_min",
+					"fromPath": [
+						"competencia_min"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "precio_olimpica",
+					"fromPath": [
+						"precio_olimpica"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "precio_comp",
+					"fromPath": [
+						"precio_comp"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "precio_nuevo",
+					"fromPath": [
+						"precio_nuevo"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "margen_olimpica",
+					"fromPath": [
+						"margen_olimpica"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "margen_precio_nuevo",
+					"fromPath": [
+						"margen_precio_nuevo"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "estado",
+					"fromPath": [
+						"status"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fecha",
+					"fromPath": [
+						"fecha"
+					],
+					"toType": "date",
+					"fromType": "date",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partition_0",
+					"fromPath": [
+						"partition_0"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695136026588": {
+			"nodeId": "node-1695136026588",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695135708818"
+			],
+			"name": "Select From Collection anio",
+			"generatedNodeName": "SelectFromCollectionanio_node1695136026588",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694118751799": {
+			"nodeId": "node-1694118751799",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694118591948"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694118751799",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "competidor",
+					"fromPath": [
+						"competidor"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "categoria",
+					"fromPath": [
+						"categoria"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "productocompetencia",
+					"fromPath": [
+						"producto_comptencia"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "productoolimpica",
+					"fromPath": [
+						"producto_olimpica"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "volumencompetencia",
+					"fromPath": [
+						"volumen_comptencia"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "volumenolimpica",
+					"fromPath": [
+						"volumen_olimpica"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "preciocompetencia",
+					"fromPath": [
+						"precio_competencia"
+					],
+					"toType": "long",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "precioolimpica",
+					"fromPath": [
+						"precio_olimpica"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fecha",
+					"fromPath": [
+						"fecha"
+					],
+					"toType": "date",
+					"fromType": "date",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "partition_0",
+					"fromPath": [
+						"partition_0"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nfrom awsglue.dynamicframe import DynamicFrameCollection\nfrom awsglue.dynamicframe import DynamicFrame\n\n\n# Script generated for node Custom Transform add anio\ndef MyTransform(glueContext, dfc) -> DynamicFrameCollection:\n    from pyspark.sql.functions import lit\n    import re\n\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    column_without_transform = str((df.columns)[3])\n    column_with_transform = [\n        int(s) for s in re.findall(r\"-?\\d+\\.?\\d*\", column_without_transform)\n    ][0]\n    df_add_column_anio = df.withColumn(\"anioinformacion\", lit(column_with_transform))\n    dyf = DynamicFrame.fromDF(df_add_column_anio, glueContext, \"new column\")\n    return DynamicFrameCollection({\"CustomTransform0\": dyf}, glueContext)\n\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node raw_chequeo_de_precios_uno\nraw_chequeo_de_precios_uno_node1694118591948 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"raw_chequeo_de_precios_uno_parquet\",\n        transformation_ctx=\"raw_chequeo_de_precios_uno_node1694118591948\",\n    )\n)\n\n# Script generated for node raw_arbol_de_competencia\nraw_arbol_de_competencia_node1 = glueContext.create_dynamic_frame.from_catalog(\n    database=\"olimpica_tao_db\",\n    table_name=\"raw_arbol_de_competencia_parquet\",\n    transformation_ctx=\"raw_arbol_de_competencia_node1\",\n)\n\n# Script generated for node raw_chequeo_de_precios_dos\nraw_chequeo_de_precios_dos_node1694037970074 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"raw_chequeo_de_precios_dos_parquet\",\n        transformation_ctx=\"raw_chequeo_de_precios_dos_node1694037970074\",\n    )\n)\n\n# Script generated for node raw_colombia_acv\nraw_colombia_acv_node1694047978402 = glueContext.create_dynamic_frame.from_catalog(\n    database=\"olimpica_tao_db\",\n    table_name=\"raw_colombia_acv_parquet\",\n    transformation_ctx=\"raw_colombia_acv_node1694047978402\",\n)\n\n# Script generated for node raw_informe_de_olimpica_vs_global\nraw_informe_de_olimpica_vs_global_node1694047511838 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"raw_informe_de_olimpica_vs_global_parquet\",\n        transformation_ctx=\"raw_informe_de_olimpica_vs_global_node1694047511838\",\n    )\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694118751799 = ApplyMapping.apply(\n    frame=raw_chequeo_de_precios_uno_node1694118591948,\n    mappings=[\n        (\"competidor\", \"string\", \"competidor\", \"varchar\"),\n        (\"categoria\", \"string\", \"categoria\", \"varchar\"),\n        (\"producto_comptencia\", \"string\", \"productocompetencia\", \"varchar\"),\n        (\"producto_olimpica\", \"string\", \"productoolimpica\", \"varchar\"),\n        (\"volumen_comptencia\", \"string\", \"volumencompetencia\", \"varchar\"),\n        (\"volumen_olimpica\", \"string\", \"volumenolimpica\", \"varchar\"),\n        (\"precio_competencia\", \"double\", \"preciocompetencia\", \"long\"),\n        (\"precio_olimpica\", \"long\", \"precioolimpica\", \"long\"),\n        (\"fecha\", \"date\", \"fecha\", \"date\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694118751799\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node2 = ApplyMapping.apply(\n    frame=raw_arbol_de_competencia_node1,\n    mappings=[\n        (\"cadena\", \"string\", \"cadena\", \"varchar\"),\n        (\"año\", \"long\", \"anio\", \"int\"),\n        (\"periodicidad\", \"string\", \"periodicidad\", \"varchar\"),\n        (\"periodo\", \"long\", \"periodo\", \"float\"),\n        (\"indicador\", \"string\", \"indicador\", \"varchar\"),\n        (\"valor\", \"double\", \"valor\", \"float\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node2\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694038160172 = ApplyMapping.apply(\n    frame=raw_chequeo_de_precios_dos_node1694037970074,\n    mappings=[\n        (\"regional\", \"string\", \"regional\", \"varchar\"),\n        (\"grupo_de_compras\", \"string\", \"grupocompras\", \"varchar\"),\n        (\"ean\", \"string\", \"ean\", \"varchar\"),\n        (\"plu\", \"long\", \"plu\", \"bigint\"),\n        (\"descripcion\", \"string\", \"descripcion\", \"varchar\"),\n        (\"rol_de_la_categoria\", \"string\", \"rol_de_la_categoria\", \"string\"),\n        (\"concepto\", \"string\", \"concepto\", \"varchar\"),\n        (\"clasemarca\", \"string\", \"clase\", \"varchar\"),\n        (\"competencia_min\", \"string\", \"competencia_min\", \"string\"),\n        (\"precio_olimpica\", \"long\", \"precio_olimpica\", \"long\"),\n        (\"precio_comp\", \"long\", \"precio_comp\", \"long\"),\n        (\"precio_nuevo\", \"string\", \"precio_nuevo\", \"string\"),\n        (\"margen_olimpica\", \"string\", \"margen_olimpica\", \"string\"),\n        (\"margen_precio_nuevo\", \"string\", \"margen_precio_nuevo\", \"string\"),\n        (\"status\", \"string\", \"estado\", \"varchar\"),\n        (\"fecha\", \"date\", \"fecha\", \"date\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694038160172\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694047991291 = ApplyMapping.apply(\n    frame=raw_colombia_acv_node1694047978402,\n    mappings=[\n        (\"cadena\", \"string\", \"competidor\", \"varchar\"),\n        (\"canal\", \"string\", \"canal\", \"varchar\"),\n        (\"año\", \"long\", \"anio\", \"int\"),\n        (\"periodo\", \"string\", \"periodo\", \"varchar\"),\n        (\n            \"totalcadenaventatrimestreen_millones\",\n            \"double\",\n            \"totalventacompetidortrimestre\",\n            \"long\",\n        ),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694047991291\",\n)\n\n# Script generated for node Custom Transform add anio\nCustomTransformaddanio_node1695135708818 = MyTransform(\n    glueContext,\n    DynamicFrameCollection(\n        {\n            \"raw_informe_de_olimpica_vs_global_node1694047511838\": raw_informe_de_olimpica_vs_global_node1694047511838\n        },\n        glueContext,\n    ),\n)\n\n# Script generated for node Select From Collection anio\nSelectFromCollectionanio_node1695136026588 = SelectFromCollection.apply(\n    dfc=CustomTransformaddanio_node1695135708818,\n    key=list(CustomTransformaddanio_node1695135708818.keys())[0],\n    transformation_ctx=\"SelectFromCollectionanio_node1695136026588\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1695127813056 = ApplyMapping.apply(\n    frame=SelectFromCollectionanio_node1695136026588,\n    mappings=[\n        (\"negocio_chr_\", \"string\", \"negocio\", \"string\"),\n        (\n            \"total_colombia_olimpica_venta_valor_ytd_2022_en_millones\",\n            \"double\",\n            \"TotalOlimpicaVentaAnioAnteriorMillones\",\n            \"double\",\n        ),\n        (\n            \"total_colombia_venta_valor_ytd_2022_en_millones\",\n            \"double\",\n            \"TotalColombiaVentaAnioAnteriorMillones\",\n            \"double\",\n        ),\n        (\n            \"total_colombia_olimpica_venta_valor_ytd_2023_en_millones\",\n            \"double\",\n            \"TotalOlimpicaVentaAnioActualMillones\",\n            \"double\",\n        ),\n        (\n            \"total_colombia_venta_valor_ytd_2023_en_millones\",\n            \"double\",\n            \"TotalColombiaVentaAnioActualMillones\",\n            \"double\",\n        ),\n        (\"var_mercado\", \"double\", \"VariacionMercado\", \"double\"),\n        (\"var_olimpica\", \"double\", \"VariacionOlimpica\", \"double\"),\n        (\"share_ytd_2022\", \"double\", \"ShareAnoAnterior\", \"double\"),\n        (\"share_ytd_2023\", \"double\", \"ShareAnoActual\", \"double\"),\n        (\"dif_share_ytd\", \"double\", \"DiferenciaShare\", \"double\"),\n        (\n            \"oportunidad_valorada_ytd_2023_nacional_en_millones\",\n            \"double\",\n            \"OportunidadValoradaAnioActualMillones\",\n            \"double\",\n        ),\n        (\"enero__en_millones_\", \"double\", \"enero\", \"double\"),\n        (\"febrero__en_millones_\", \"double\", \"febrero\", \"double\"),\n        (\"marzo__en_millones_\", \"double\", \"marzo\", \"double\"),\n        (\"abril__en_millones_\", \"double\", \"abril\", \"double\"),\n        (\"mayo__en_millones_\", \"double\", \"mayo\", \"double\"),\n        (\"junio__en_millones_\", \"double\", \"junio\", \"double\"),\n        (\"julio__en_millones_\", \"null\", \"julio\", \"string\"),\n        (\"agosto__en_millones_\", \"null\", \"agosto\", \"string\"),\n        (\"septiembre__en_millones_\", \"null\", \"septiembre\", \"string\"),\n        (\"octubre__en_millones_\", \"null\", \"octubre\", \"string\"),\n        (\"noviembre__en_millones_\", \"null\", \"noviembre\", \"string\"),\n        (\"diciembre__en_millones_\", \"null\", \"diciembre\", \"string\"),\n        (\"costa_ytd_2023__en_millones_\", \"double\", \"TotalCostaAnioActual\", \"double\"),\n        (\"costa_enero__en_millones_\", \"double\", \"costaenero\", \"double\"),\n        (\"costa_febrero__en_millones_\", \"double\", \"costafebrero\", \"double\"),\n        (\"costa_marzo__en_millones_\", \"double\", \"costamarzo\", \"double\"),\n        (\"costa__abril__en_millones_\", \"double\", \"costaabril\", \"double\"),\n        (\"costa_mayo__en_millones_\", \"double\", \"costamayo\", \"double\"),\n        (\"costa_junio__en_millones_\", \"double\", \"costajunio\", \"double\"),\n        (\"costa_julio__en_millones_\", \"null\", \"costajulio\", \"string\"),\n        (\"costa_agosto__en_millones_\", \"null\", \"costaagosto\", \"string\"),\n        (\"costa_septiembre__en_millones_\", \"null\", \"costaseptiembre\", \"string\"),\n        (\"costa_octubre__en_millones_\", \"null\", \"costaoctubre\", \"string\"),\n        (\"costa_noviembre__en_millones_\", \"null\", \"costanoviembre\", \"string\"),\n        (\"costa_diciembre__en_millones_\", \"null\", \"costadiciembre\", \"string\"),\n        (\"centro_ytd_2023\", \"double\", \"TotalCentroAnioActual\", \"double\"),\n        (\"centro_enero__en_millones_\", \"double\", \"centroenero\", \"double\"),\n        (\"centro_febrero__en_millones_\", \"double\", \"centrofebrero\", \"double\"),\n        (\"centro_marzo__en_millones_\", \"double\", \"centromarzo\", \"double\"),\n        (\"centro_abril__en_millones_\", \"double\", \"centroabril\", \"double\"),\n        (\"centro_mayo__en_millones_\", \"double\", \"centromayo\", \"double\"),\n        (\"centro_junio__en_millones_\", \"double\", \"centrojunio\", \"double\"),\n        (\"centro_julio__en_millones_\", \"null\", \"centrojulio\", \"string\"),\n        (\"centro_agosto__en_millones_\", \"null\", \"centroagosto\", \"string\"),\n        (\"centro_septiembre__en_millones_\", \"null\", \"centroseptiembre\", \"string\"),\n        (\"centro_octubre__en_millones_\", \"null\", \"centrooctubre\", \"string\"),\n        (\"centro_noviembre__en_millones_\", \"null\", \"centronoviembre\", \"string\"),\n        (\"centro_diciembre__en_millones_\", \"null\", \"centrodiciembre\", \"string\"),\n        (\"occidente_ytd_2023\", \"double\", \"TotalOccidenteAnioActual\", \"double\"),\n        (\"occidente_enero__en_millones_\", \"double\", \"occidenteenero\", \"double\"),\n        (\"occidente_febrero__en_millones_\", \"double\", \"occidentefebrero\", \"double\"),\n        (\"occidente_marzo__en_millones_\", \"double\", \"occidentemarzo\", \"double\"),\n        (\"occidente_abril__en_millones_\", \"double\", \"occidenteabril\", \"double\"),\n        (\"occidente_mayo__en_millones_\", \"double\", \"occidentemayo\", \"double\"),\n        (\"occidente_junio__en_millones_\", \"double\", \"occidentejunio\", \"double\"),\n        (\"occidente_julio__en_millones_\", \"null\", \"occidentejulio\", \"string\"),\n        (\"occidente_agosto__en_millones_\", \"null\", \"occidenteagosto\", \"string\"),\n        (\"occidente_septiembre__en_millones_\", \"null\", \"occidenteseptiembre\", \"string\"),\n        (\"occidente_octubre__en_millones_\", \"null\", \"occidenteoctubre\", \"string\"),\n        (\"occidente_noviembre__en_millones_\", \"null\", \"occidentenoviembre\", \"string\"),\n        (\"occidente_diciembre__en_millones_\", \"null\", \"occidentediciembre\", \"string\"),\n        (\"eje_cafetero_ytd_2023\", \"double\", \"TotalEjeCafeteroAnioActual\", \"double\"),\n        (\"eje_cafetero_enero__en_millones_\", \"double\", \"ejecafeteroenero\", \"double\"),\n        (\n            \"eje_cafetero_febrero__en_millones_\",\n            \"double\",\n            \"ejecafeterofebrero\",\n            \"double\",\n        ),\n        (\"eje_cafetero_marzo__en_millones_\", \"double\", \"ejecafeteromarzo\", \"double\"),\n        (\"eje_cafetero_abril__en_millones_\", \"double\", \"ejecafeteroabril\", \"double\"),\n        (\"eje_cafetero_mayo__en_millones_\", \"double\", \"ejecafeteromayo\", \"double\"),\n        (\"eje_cafetero_junio__en_millones_\", \"double\", \"ejecafeterojunio\", \"double\"),\n        (\"eje_cafetero_julio__en_millones_\", \"null\", \"ejecafeterojulio\", \"string\"),\n        (\"eje_cafetero_agosto__en_millones_\", \"null\", \"ejecafeteroagosto\", \"string\"),\n        (\n            \"eje_cafetero_septiembre__en_millones_\",\n            \"null\",\n            \"ejecafeteroseptiembre\",\n            \"string\",\n        ),\n        (\"eje_cafetero_octubre__en_millones_\", \"null\", \"ejecafeterooctubre\", \"string\"),\n        (\n            \"eje_cafetero_noviembre__en_millones_\",\n            \"null\",\n            \"ejecafeteronoviembre\",\n            \"string\",\n        ),\n        (\n            \"eje_cafetero_diciembre__en_millones_\",\n            \"null\",\n            \"ejecafeterodiciembre\",\n            \"string\",\n        ),\n        (\"anioinformacion\", \"int\", \"anioinformacion\", \"int\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1695127813056\",\n)\n\n# Script generated for node cleansed_chequeo_de_precios_uno\ncleansed_chequeo_de_precios_uno_node1694119595347 = glueContext.getSink(\n    path=\"s3://aws-us-cleansed/data/chequeo_de_precios_uno_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"cleansed_chequeo_de_precios_uno_node1694119595347\",\n)\ncleansed_chequeo_de_precios_uno_node1694119595347.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\",\n    catalogTableName=\"cleansed_chequeo_de_precios_uno_parquet\",\n)\ncleansed_chequeo_de_precios_uno_node1694119595347.setFormat(\"glueparquet\")\ncleansed_chequeo_de_precios_uno_node1694119595347.writeFrame(\n    ChangeSchema_node1694118751799\n)\n# Script generated for node cleansed_arbol_de_competencia\ncleansed_arbol_de_competencia_node1694036848612 = glueContext.getSink(\n    path=\"s3://aws-us-cleansed/data/arbol_de_competencia_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"cleansed_arbol_de_competencia_node1694036848612\",\n)\ncleansed_arbol_de_competencia_node1694036848612.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\",\n    catalogTableName=\"cleansed_arbol_de_competencia_parquet\",\n)\ncleansed_arbol_de_competencia_node1694036848612.setFormat(\"glueparquet\")\ncleansed_arbol_de_competencia_node1694036848612.writeFrame(ChangeSchema_node2)\n# Script generated for node cleansed_chequeo_de_precios_dos\ncleansed_chequeo_de_precios_dos_node1694041362358 = glueContext.getSink(\n    path=\"s3://aws-us-cleansed/data/chequeo_de_precios_dos_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"cleansed_chequeo_de_precios_dos_node1694041362358\",\n)\ncleansed_chequeo_de_precios_dos_node1694041362358.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\",\n    catalogTableName=\"cleansed_chequeo_de_precios_dos_parquet\",\n)\ncleansed_chequeo_de_precios_dos_node1694041362358.setFormat(\"glueparquet\")\ncleansed_chequeo_de_precios_dos_node1694041362358.writeFrame(\n    ChangeSchema_node1694038160172\n)\n# Script generated for node cleansed_colombia_acv\ncleansed_colombia_acv_node1694052956876 = glueContext.getSink(\n    path=\"s3://aws-us-cleansed/data/colombia_acv_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"cleansed_colombia_acv_node1694052956876\",\n)\ncleansed_colombia_acv_node1694052956876.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"cleansed_colombia_acv_parquet\"\n)\ncleansed_colombia_acv_node1694052956876.setFormat(\"glueparquet\")\ncleansed_colombia_acv_node1694052956876.writeFrame(ChangeSchema_node1694047991291)\n# Script generated for node cleansed_informe_de_olimpica_vs_global\ncleansed_informe_de_olimpica_vs_global_node1694147274846 = glueContext.getSink(\n    path=\"s3://aws-us-cleansed/data/informe_de_olimpica_vs_global_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"cleansed_informe_de_olimpica_vs_global_node1694147274846\",\n)\ncleansed_informe_de_olimpica_vs_global_node1694147274846.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\",\n    catalogTableName=\"cleansed_informe_de_olimpica_vs_global_parquet\",\n)\ncleansed_informe_de_olimpica_vs_global_node1694147274846.setFormat(\"glueparquet\")\ncleansed_informe_de_olimpica_vs_global_node1694147274846.writeFrame(\n    ChangeSchema_node1695127813056\n)\njob.commit()\n"
+}

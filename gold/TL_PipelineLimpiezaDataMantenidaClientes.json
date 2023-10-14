@@ -1,0 +1,3546 @@
+{
+	"jobConfig": {
+		"name": "TL_PipelineLimpiezaDataMantenidaClientes",
+		"description": "\n",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.8X",
+		"numberOfWorkers": 12,
+		"maxCapacity": 96,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "TL_PipelineLimpiezaDataMantenidaClientes.py",
+		"scriptLocation": "s3://aws-us-gold/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-16T21:26:48.063Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://aws-us-gold/temp-dir/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": false,
+		"metrics": true,
+		"spark": true,
+		"pythonPath": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_common.py,s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py,s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_uuid.py",
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1693808717026": {
+			"nodeId": "node-1693808717026",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694972852483",
+				"node-1694973509941"
+			],
+			"name": "Join",
+			"generatedNodeName": "Join_node1693808717026",
+			"classification": "Transform",
+			"type": "Join",
+			"joinType": "left",
+			"columns": [
+				{
+					"from": "node-1694972852483",
+					"keys": [
+						"cedula_cli"
+					]
+				},
+				{
+					"from": "node-1694973509941",
+					"keys": [
+						"cedula_cli_cleansed_detalle_cliente_riesgos"
+					]
+				}
+			],
+			"columnConditions": [
+				"="
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693956987508": {
+			"nodeId": "node-1693956987508",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693808717026",
+				"node-1694979624192"
+			],
+			"name": "Join",
+			"generatedNodeName": "Join_node1693956987508",
+			"classification": "Transform",
+			"type": "Join",
+			"joinType": "left",
+			"columns": [
+				{
+					"from": "node-1693808717026",
+					"keys": [
+						"punto_de_venta_favorito"
+					]
+				},
+				{
+					"from": "node-1694979624192",
+					"keys": [
+						"codigocentro"
+					]
+				}
+			],
+			"columnConditions": [
+				"="
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694979624192": {
+			"nodeId": "node-1694979624192",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694970255926"
+			],
+			"name": "Drop Duplicates gold_TblDNegocios_parquet_delta_lake",
+			"generatedNodeName": "DropDuplicatesgold_TblDNegocios_parquet_delta_lake_node1694979624192",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694009235010": {
+			"nodeId": "node-1694009235010",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693971553558"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1694009235010",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"telefonocelularalternativo"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"CASE WHEN LENGTH(telefono2) = 10 THEN telefono2 END"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "cedula_cli",
+						"fullPath": [
+							"cedula_cli"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido1",
+						"fullPath": [
+							"apellido1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido2",
+						"fullPath": [
+							"apellido2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sexo",
+						"fullPath": [
+							"sexo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_documento",
+						"fullPath": [
+							"tipo_documento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono1",
+						"fullPath": [
+							"telefono1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono2",
+						"fullPath": [
+							"telefono2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correo",
+						"fullPath": [
+							"correo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "punto_de_venta_favorito",
+						"fullPath": [
+							"punto_de_venta_favorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_creacion",
+						"fullPath": [
+							"fecha_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuario_creacion",
+						"fullPath": [
+							"usuario_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "riesgo",
+						"fullPath": [
+							"riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mayorista",
+						"fullPath": [
+							"mayorista"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lista_riesgo",
+						"fullPath": [
+							"lista_riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonofijo",
+						"fullPath": [
+							"telefonofijo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelular",
+						"fullPath": [
+							"telefonocelular"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelularalternativo",
+						"fullPath": [
+							"telefonocelularalternativo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695059282291": {
+			"nodeId": "node-1695059282291",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693859859927"
+			],
+			"name": "Custom Transform",
+			"generatedNodeName": "CustomTransform_node1695059282291",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "from pyspark.sql.functions import when\ndf = dfc.select(list(dfc.keys())[0]).toDF()\ndf_transform = df.withColumn(\"punto_de_venta_favorito\", when(df['punto_de_venta_favorito']=='53', 1001).otherwise(df['punto_de_venta_favorito'].cast('integer')+1000))\ndyf_transform = DynamicFrame.fromDF(df_transform, glueContext, \"punto_de_venta_favorito_new\")\nreturn(DynamicFrameCollection({\"CustomTransform0\": dyf_transform}, glueContext))\n\n",
+			"className": "FilterHighVoteCounts",
+			"outputSchemas": [
+				[
+					{
+						"key": "cedula_cli",
+						"fullPath": [
+							"cedula_cli"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido1",
+						"fullPath": [
+							"apellido1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido2",
+						"fullPath": [
+							"apellido2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sexo",
+						"fullPath": [
+							"sexo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_documento",
+						"fullPath": [
+							"tipo_documento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono1",
+						"fullPath": [
+							"telefono1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono2",
+						"fullPath": [
+							"telefono2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correo",
+						"fullPath": [
+							"correo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "punto_de_venta_favorito",
+						"fullPath": [
+							"punto_de_venta_favorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_creacion",
+						"fullPath": [
+							"fecha_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuario_creacion",
+						"fullPath": [
+							"usuario_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694972852483": {
+			"nodeId": "node-1694972852483",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695060455599"
+			],
+			"name": "Drop Duplicates cleansed_detalle_cliente",
+			"generatedNodeName": "DropDuplicatescleansed_detalle_cliente_node1694972852483",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694025840819": {
+			"nodeId": "node-1694025840819",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693956987508"
+			],
+			"name": "UUID",
+			"generatedNodeName": "UUID_node1694025840819",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [],
+			"functionName": "gs_uuid",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_uuid.py",
+			"version": "1.0.0",
+			"transformName": "gs_uuid",
+			"outputSchemas": [
+				[
+					{
+						"key": "cedula_cli",
+						"fullPath": [
+							"cedula_cli"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido1",
+						"fullPath": [
+							"apellido1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido2",
+						"fullPath": [
+							"apellido2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sexo",
+						"fullPath": [
+							"sexo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_documento",
+						"fullPath": [
+							"tipo_documento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono1",
+						"fullPath": [
+							"telefono1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono2",
+						"fullPath": [
+							"telefono2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correo",
+						"fullPath": [
+							"correo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "punto_de_venta_favorito",
+						"fullPath": [
+							"punto_de_venta_favorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_creacion",
+						"fullPath": [
+							"fecha_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuario_creacion",
+						"fullPath": [
+							"usuario_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "riesgo",
+						"fullPath": [
+							"riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mayorista",
+						"fullPath": [
+							"mayorista"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lista_riesgo",
+						"fullPath": [
+							"lista_riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cedula_cli_cleansed_detalle_cliente_riesgos",
+						"fullPath": [
+							"cedula_cli_cleansed_detalle_cliente_riesgos"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694973509941": {
+			"nodeId": "node-1694973509941",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695062206593"
+			],
+			"name": "Drop Duplicates cleansed_detalle_cliente_riesgos",
+			"generatedNodeName": "DropDuplicatescleansed_detalle_cliente_riesgos_node1694973509941",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1695062206593": {
+			"nodeId": "node-1695062206593",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693808418006"
+			],
+			"name": "Rename Field cedula_cli cleansed_detalle_cliente_riesgos",
+			"generatedNodeName": "RenameFieldcedula_clicleansed_detalle_cliente_riesgos_node1695062206593",
+			"classification": "Transform",
+			"type": "RenameField",
+			"sourcePath": "cedula_cli",
+			"targetPath": "cedula_cli_cleansed_detalle_cliente_riesgos",
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694013681757": {
+			"nodeId": "node-1694013681757",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694009235010"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1694013681757",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"nombrecompleto"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"LTRIM(RTRIM(CONCAT(nombre,' ',apellido1,' ',apellido2)))"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "cedula_cli",
+						"fullPath": [
+							"cedula_cli"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido1",
+						"fullPath": [
+							"apellido1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido2",
+						"fullPath": [
+							"apellido2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sexo",
+						"fullPath": [
+							"sexo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_documento",
+						"fullPath": [
+							"tipo_documento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono1",
+						"fullPath": [
+							"telefono1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono2",
+						"fullPath": [
+							"telefono2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correo",
+						"fullPath": [
+							"correo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "punto_de_venta_favorito",
+						"fullPath": [
+							"punto_de_venta_favorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_creacion",
+						"fullPath": [
+							"fecha_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuario_creacion",
+						"fullPath": [
+							"usuario_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "riesgo",
+						"fullPath": [
+							"riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mayorista",
+						"fullPath": [
+							"mayorista"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lista_riesgo",
+						"fullPath": [
+							"lista_riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cedula_cli_cleansed_detalle_cliente_riesgos",
+						"fullPath": [
+							"cedula_cli_cleansed_detalle_cliente_riesgos"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonofijo",
+						"fullPath": [
+							"telefonofijo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelular",
+						"fullPath": [
+							"telefonocelular"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelularalternativo",
+						"fullPath": [
+							"telefonocelularalternativo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombrecompleto",
+						"fullPath": [
+							"nombrecompleto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693864332625": {
+			"nodeId": "node-1693864332625",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694025840819"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1693864332625",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"iddcliente"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddcliente"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "cedula_cli",
+						"fullPath": [
+							"cedula_cli"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido1",
+						"fullPath": [
+							"apellido1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido2",
+						"fullPath": [
+							"apellido2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sexo",
+						"fullPath": [
+							"sexo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_documento",
+						"fullPath": [
+							"tipo_documento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono1",
+						"fullPath": [
+							"telefono1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono2",
+						"fullPath": [
+							"telefono2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correo",
+						"fullPath": [
+							"correo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "punto_de_venta_favorito",
+						"fullPath": [
+							"punto_de_venta_favorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_creacion",
+						"fullPath": [
+							"fecha_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuario_creacion",
+						"fullPath": [
+							"usuario_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "riesgo",
+						"fullPath": [
+							"riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mayorista",
+						"fullPath": [
+							"mayorista"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lista_riesgo",
+						"fullPath": [
+							"lista_riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cedula_cli_cleansed_detalle_cliente_riesgos",
+						"fullPath": [
+							"cedula_cli_cleansed_detalle_cliente_riesgos"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694970255926": {
+			"nodeId": "node-1694970255926",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDNegocios_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDNegocios_parquet_delta_lake_node1694970255926",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblDNegocios_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblDNegocios_parquet_delta_lake/part-00000-adb575a0-334b-47d4-be16-322225b3877f-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693963650141": {
+			"nodeId": "node-1693963650141",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693864332625"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1693963650141",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"telefonofijo"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"CASE WHEN LENGTH(telefono1) = 7 THEN telefono1 WHEN telefono1 IS NULL AND LENGTH(telefono2) = 7 THEN telefono2 END"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "cedula_cli",
+						"fullPath": [
+							"cedula_cli"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido1",
+						"fullPath": [
+							"apellido1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido2",
+						"fullPath": [
+							"apellido2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sexo",
+						"fullPath": [
+							"sexo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_documento",
+						"fullPath": [
+							"tipo_documento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono1",
+						"fullPath": [
+							"telefono1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono2",
+						"fullPath": [
+							"telefono2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correo",
+						"fullPath": [
+							"correo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "punto_de_venta_favorito",
+						"fullPath": [
+							"punto_de_venta_favorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_creacion",
+						"fullPath": [
+							"fecha_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuario_creacion",
+						"fullPath": [
+							"usuario_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "riesgo",
+						"fullPath": [
+							"riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mayorista",
+						"fullPath": [
+							"mayorista"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lista_riesgo",
+						"fullPath": [
+							"lista_riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cedula_cli_cleansed_detalle_cliente_riesgos",
+						"fullPath": [
+							"cedula_cli_cleansed_detalle_cliente_riesgos"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonofijo",
+						"fullPath": [
+							"telefonofijo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693859859927": {
+			"nodeId": "node-1693859859927",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_detalle_cliente",
+			"generatedNodeName": "cleansed_detalle_cliente_node1693859859927",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_detalle_cliente_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1695060455599": {
+			"nodeId": "node-1695060455599",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695059282291"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1695060455599",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693971553558": {
+			"nodeId": "node-1693971553558",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693963650141"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1693971553558",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"telefonocelular"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"CASE WHEN LENGTH(telefono1) = 10 THEN telefono1 WHEN telefono1 IS NULL AND LENGTH(telefono2) = 10 THEN telefono2 END"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "cedula_cli",
+						"fullPath": [
+							"cedula_cli"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "riesgo",
+						"fullPath": [
+							"riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mayorista",
+						"fullPath": [
+							"mayorista"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "lista_riesgo",
+						"fullPath": [
+							"lista_riesgo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido1",
+						"fullPath": [
+							"apellido1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "apellido2",
+						"fullPath": [
+							"apellido2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "sexo",
+						"fullPath": [
+							"sexo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_documento",
+						"fullPath": [
+							"tipo_documento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono1",
+						"fullPath": [
+							"telefono1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefono2",
+						"fullPath": [
+							"telefono2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correo",
+						"fullPath": [
+							"correo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "punto_de_venta_favorito",
+						"fullPath": [
+							"punto_de_venta_favorito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_creacion",
+						"fullPath": [
+							"fecha_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuario_creacion",
+						"fullPath": [
+							"usuario_creacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonofijo",
+						"fullPath": [
+							"telefonofijo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelular",
+						"fullPath": [
+							"telefonocelular"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693864413943": {
+			"nodeId": "node-1693864413943",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694013681757"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1693864413943",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "numeroidentificacion",
+					"fromPath": [
+						"cedula_cli"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nombre",
+					"fromPath": [
+						"nombre"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "primerapellido",
+					"fromPath": [
+						"apellido1"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "segundoapellido",
+					"fromPath": [
+						"apellido2"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "genero",
+					"fromPath": [
+						"sexo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipoidentificacion",
+					"fromPath": [
+						"tipo_documento"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "direccion",
+					"fromPath": [
+						"direccion"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "telefono1",
+					"fromPath": [
+						"telefono1"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "telefono2",
+					"fromPath": [
+						"telefono2"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "ciudad",
+					"fromPath": [
+						"ciudad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "correoelectronico",
+					"fromPath": [
+						"correo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "punto_de_venta_favorito",
+					"fromPath": [
+						"punto_de_venta_favorito"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fechacreacion",
+					"fromPath": [
+						"fecha_creacion"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "usuariocreacion",
+					"fromPath": [
+						"usuario_creacion"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "flagriesgo",
+					"fromPath": [
+						"riesgo"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "flagmayorista",
+					"fromPath": [
+						"mayorista"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "contactar",
+					"fromPath": [
+						"lista_riesgo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "cedula_cli_cleansed_detalle_cliente_riesgos",
+					"fromPath": [
+						"cedula_cli_cleansed_detalle_cliente_riesgos"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "iddnegociofavorito",
+					"fromPath": [
+						"iddnegocio"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "codigocentro",
+					"fromPath": [
+						"codigocentro"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripcioncentro",
+					"fromPath": [
+						"descripcioncentro"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipocentro",
+					"fromPath": [
+						"tipocentro"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "estrato",
+					"fromPath": [
+						"estrato"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "antiguedad",
+					"fromPath": [
+						"antiguedad"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "superficie",
+					"fromPath": [
+						"superficie"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "codigozona",
+					"fromPath": [
+						"codigozona"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "distrito",
+					"fromPath": [
+						"distrito"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "region",
+					"fromPath": [
+						"region"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "formato",
+					"fromPath": [
+						"formato"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "codigodane",
+					"fromPath": [
+						"codigodane"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "departamento",
+					"fromPath": [
+						"departamento"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "ciudadabrevidada",
+					"fromPath": [
+						"ciudadabrevidada"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rangoventas",
+					"fromPath": [
+						"rangoventas"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rangometros",
+					"fromPath": [
+						"rangometros"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipociudad",
+					"fromPath": [
+						"tipociudad"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uuid",
+					"fromPath": [
+						"uuid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "iddcliente",
+					"fromPath": [
+						"iddcliente"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "telefonofijo",
+					"fromPath": [
+						"telefonofijo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "telefonocelular",
+					"fromPath": [
+						"telefonocelular"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "telefonocelularalternativo",
+					"fromPath": [
+						"telefonocelularalternativo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nombrecompleto",
+					"fromPath": [
+						"nombrecompleto"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693866298290": {
+			"nodeId": "node-1693866298290",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694015218188"
+			],
+			"name": "gold_TblDClientes",
+			"generatedNodeName": "gold_TblDClientes_node1693866298290",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblDClientes_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694015218188": {
+			"nodeId": "node-1694015218188",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693864413943"
+			],
+			"name": "SQL Query TblDClientes",
+			"generatedNodeName": "SQLQueryTblDClientes_node1694015218188",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1693864413943",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": [
+				[
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegociofavorito",
+						"fullPath": [
+							"iddnegociofavorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "numeroidentificacion",
+						"fullPath": [
+							"numeroidentificacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipoidentificacion",
+						"fullPath": [
+							"tipoidentificacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "primerapellido",
+						"fullPath": [
+							"primerapellido"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segundoapellido",
+						"fullPath": [
+							"segundoapellido"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombrecompleto",
+						"fullPath": [
+							"nombrecompleto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "genero",
+						"fullPath": [
+							"genero"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonofijo",
+						"fullPath": [
+							"telefonofijo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelular",
+						"fullPath": [
+							"telefonocelular"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelularalternativo",
+						"fullPath": [
+							"telefonocelularalternativo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correoelectronico",
+						"fullPath": [
+							"correoelectronico"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fechacreacion",
+						"fullPath": [
+							"fechacreacion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuariocreacion",
+						"fullPath": [
+							"usuariocreacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "flagriesgo",
+						"fullPath": [
+							"flagriesgo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "flagmayorista",
+						"fullPath": [
+							"flagmayorista"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "contactar",
+						"fullPath": [
+							"contactar"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select \ndistinct\niddcliente,\niddnegociofavorito,\nnumeroidentificacion,\ntipoidentificacion,\nnombre,\nprimerapellido,\nsegundoapellido,\nnombrecompleto,\ngenero,\ndireccion,\nciudad,\ntelefonofijo,\ntelefonocelular,\ntelefonocelularalternativo,\ncorreoelectronico,\nfechacreacion,\nusuariocreacion,\nflagriesgo,\nflagmayorista,\ncontactar\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1693808418006": {
+			"nodeId": "node-1693808418006",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_detalle_cliente_riesgos",
+			"generatedNodeName": "cleansed_detalle_cliente_riesgos_node1693808418006",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_detalle_cliente_riesgos_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nfrom awsglue.dynamicframe import DynamicFrameCollection\nimport gs_uuid\nfrom awsglue.dynamicframe import DynamicFrame\nfrom awsglue import DynamicFrame\nimport gs_derived\nfrom pyspark.sql import functions as SqlFuncs\n\n\n# Script generated for node Custom Transform\ndef FilterHighVoteCounts(glueContext, dfc) -> DynamicFrameCollection:\n    from pyspark.sql.functions import when\n\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    df_transform = df.withColumn(\n        \"punto_de_venta_favorito\",\n        when(df[\"punto_de_venta_favorito\"] == \"53\", 1001).otherwise(\n            df[\"punto_de_venta_favorito\"].cast(\"integer\") + 1000\n        ),\n    )\n    dyf_transform = DynamicFrame.fromDF(\n        df_transform, glueContext, \"punto_de_venta_favorito_new\"\n    )\n    return DynamicFrameCollection({\"CustomTransform0\": dyf_transform}, glueContext)\n\n\ndef sparkSqlQuery(glueContext, query, mapping, transformation_ctx) -> DynamicFrame:\n    for alias, frame in mapping.items():\n        frame.toDF().createOrReplaceTempView(alias)\n    result = spark.sql(query)\n    return DynamicFrame.fromDF(result, glueContext, transformation_ctx)\n\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node Origen gold_TblDNegocios_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblDNegocios_parquet_delta_lake_node1694970255926_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblDNegocios_parquet_delta_lake/\")\n)\nOrigengold_TblDNegocios_parquet_delta_lake_node1694970255926 = DynamicFrame.fromDF(\n    Origengold_TblDNegocios_parquet_delta_lake_node1694970255926_df,\n    glueContext,\n    \"Origengold_TblDNegocios_parquet_delta_lake_node1694970255926\",\n)\n\n# Script generated for node cleansed_detalle_cliente\ncleansed_detalle_cliente_node1693859859927 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_detalle_cliente_parquet\",\n        transformation_ctx=\"cleansed_detalle_cliente_node1693859859927\",\n    )\n)\n\n# Script generated for node cleansed_detalle_cliente_riesgos\ncleansed_detalle_cliente_riesgos_node1693808418006 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_detalle_cliente_riesgos_parquet\",\n        transformation_ctx=\"cleansed_detalle_cliente_riesgos_node1693808418006\",\n    )\n)\n\n# Script generated for node Drop Duplicates gold_TblDNegocios_parquet_delta_lake\nDropDuplicatesgold_TblDNegocios_parquet_delta_lake_node1694979624192 = DynamicFrame.fromDF(\n    Origengold_TblDNegocios_parquet_delta_lake_node1694970255926.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatesgold_TblDNegocios_parquet_delta_lake_node1694979624192\",\n)\n\n# Script generated for node Custom Transform\nCustomTransform_node1695059282291 = FilterHighVoteCounts(\n    glueContext,\n    DynamicFrameCollection(\n        {\n            \"cleansed_detalle_cliente_node1693859859927\": cleansed_detalle_cliente_node1693859859927\n        },\n        glueContext,\n    ),\n)\n\n# Script generated for node Rename Field cedula_cli cleansed_detalle_cliente_riesgos\nRenameFieldcedula_clicleansed_detalle_cliente_riesgos_node1695062206593 = RenameField.apply(\n    frame=cleansed_detalle_cliente_riesgos_node1693808418006,\n    old_name=\"cedula_cli\",\n    new_name=\"cedula_cli_cleansed_detalle_cliente_riesgos\",\n    transformation_ctx=\"RenameFieldcedula_clicleansed_detalle_cliente_riesgos_node1695062206593\",\n)\n\n# Script generated for node Select From Collection\nSelectFromCollection_node1695060455599 = SelectFromCollection.apply(\n    dfc=CustomTransform_node1695059282291,\n    key=list(CustomTransform_node1695059282291.keys())[0],\n    transformation_ctx=\"SelectFromCollection_node1695060455599\",\n)\n\n# Script generated for node Drop Duplicates cleansed_detalle_cliente_riesgos\nDropDuplicatescleansed_detalle_cliente_riesgos_node1694973509941 = DynamicFrame.fromDF(\n    RenameFieldcedula_clicleansed_detalle_cliente_riesgos_node1695062206593.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_detalle_cliente_riesgos_node1694973509941\",\n)\n\n# Script generated for node Drop Duplicates cleansed_detalle_cliente\nDropDuplicatescleansed_detalle_cliente_node1694972852483 = DynamicFrame.fromDF(\n    SelectFromCollection_node1695060455599.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_detalle_cliente_node1694972852483\",\n)\n\n# Script generated for node Join\nDropDuplicatescleansed_detalle_cliente_node1694972852483DF = (\n    DropDuplicatescleansed_detalle_cliente_node1694972852483.toDF()\n)\nDropDuplicatescleansed_detalle_cliente_riesgos_node1694973509941DF = (\n    DropDuplicatescleansed_detalle_cliente_riesgos_node1694973509941.toDF()\n)\nJoin_node1693808717026 = DynamicFrame.fromDF(\n    DropDuplicatescleansed_detalle_cliente_node1694972852483DF.join(\n        DropDuplicatescleansed_detalle_cliente_riesgos_node1694973509941DF,\n        (\n            DropDuplicatescleansed_detalle_cliente_node1694972852483DF[\"cedula_cli\"]\n            == DropDuplicatescleansed_detalle_cliente_riesgos_node1694973509941DF[\n                \"cedula_cli_cleansed_detalle_cliente_riesgos\"\n            ]\n        ),\n        \"left\",\n    ),\n    glueContext,\n    \"Join_node1693808717026\",\n)\n\n# Script generated for node Join\nJoin_node1693808717026DF = Join_node1693808717026.toDF()\nDropDuplicatesgold_TblDNegocios_parquet_delta_lake_node1694979624192DF = (\n    DropDuplicatesgold_TblDNegocios_parquet_delta_lake_node1694979624192.toDF()\n)\nJoin_node1693956987508 = DynamicFrame.fromDF(\n    Join_node1693808717026DF.join(\n        DropDuplicatesgold_TblDNegocios_parquet_delta_lake_node1694979624192DF,\n        (\n            Join_node1693808717026DF[\"punto_de_venta_favorito\"]\n            == DropDuplicatesgold_TblDNegocios_parquet_delta_lake_node1694979624192DF[\n                \"codigocentro\"\n            ]\n        ),\n        \"left\",\n    ),\n    glueContext,\n    \"Join_node1693956987508\",\n)\n\n# Script generated for node UUID\nUUID_node1694025840819 = Join_node1693956987508.gs_uuid()\n\n# Script generated for node Derived Column\nDerivedColumn_node1693864332625 = UUID_node1694025840819.gs_derived(\n    colName=\"iddcliente\", expr=\"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddcliente\"\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1693963650141 = DerivedColumn_node1693864332625.gs_derived(\n    colName=\"telefonofijo\",\n    expr=\"CASE WHEN LENGTH(telefono1) = 7 THEN telefono1 WHEN telefono1 IS NULL AND LENGTH(telefono2) = 7 THEN telefono2 END\",\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1693971553558 = DerivedColumn_node1693963650141.gs_derived(\n    colName=\"telefonocelular\",\n    expr=\"CASE WHEN LENGTH(telefono1) = 10 THEN telefono1 WHEN telefono1 IS NULL AND LENGTH(telefono2) = 10 THEN telefono2 END\",\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1694009235010 = DerivedColumn_node1693971553558.gs_derived(\n    colName=\"telefonocelularalternativo\",\n    expr=\"CASE WHEN LENGTH(telefono2) = 10 THEN telefono2 END\",\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1694013681757 = DerivedColumn_node1694009235010.gs_derived(\n    colName=\"nombrecompleto\",\n    expr=\"LTRIM(RTRIM(CONCAT(nombre,' ',apellido1,' ',apellido2)))\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1693864413943 = ApplyMapping.apply(\n    frame=DerivedColumn_node1694013681757,\n    mappings=[\n        (\"cedula_cli\", \"string\", \"numeroidentificacion\", \"varchar\"),\n        (\"nombre\", \"string\", \"nombre\", \"varchar\"),\n        (\"apellido1\", \"string\", \"primerapellido\", \"varchar\"),\n        (\"apellido2\", \"string\", \"segundoapellido\", \"varchar\"),\n        (\"sexo\", \"string\", \"genero\", \"varchar\"),\n        (\"tipo_documento\", \"string\", \"tipoidentificacion\", \"varchar\"),\n        (\"direccion\", \"string\", \"direccion\", \"varchar\"),\n        (\"ciudad\", \"string\", \"ciudad\", \"varchar\"),\n        (\"correo\", \"string\", \"correoelectronico\", \"varchar\"),\n        (\"punto_de_venta_favorito\", \"int\", \"punto_de_venta_favorito\", \"int\"),\n        (\"fecha_creacion\", \"string\", \"fechacreacion\", \"int\"),\n        (\"usuario_creacion\", \"string\", \"usuariocreacion\", \"varchar\"),\n        (\"riesgo\", \"string\", \"flagriesgo\", \"int\"),\n        (\"mayorista\", \"string\", \"flagmayorista\", \"int\"),\n        (\"lista_riesgo\", \"string\", \"contactar\", \"varchar\"),\n        (\n            \"cedula_cli_cleansed_detalle_cliente_riesgos\",\n            \"string\",\n            \"cedula_cli_cleansed_detalle_cliente_riesgos\",\n            \"string\",\n        ),\n        (\"iddnegocio\", \"int\", \"iddnegociofavorito\", \"int\"),\n        (\"codigocentro\", \"int\", \"codigocentro\", \"int\"),\n        (\"descripcioncentro\", \"string\", \"descripcioncentro\", \"string\"),\n        (\"tipocentro\", \"string\", \"tipocentro\", \"string\"),\n        (\"estrato\", \"int\", \"estrato\", \"int\"),\n        (\"codigozona\", \"string\", \"codigozona\", \"string\"),\n        (\"codigodane\", \"string\", \"codigodane\", \"string\"),\n        (\"ciudadabrevidada\", \"string\", \"ciudadabrevidada\", \"string\"),\n        (\"rangoventas\", \"string\", \"rangoventas\", \"string\"),\n        (\"rangometros\", \"string\", \"rangometros\", \"string\"),\n        (\"tipociudad\", \"string\", \"tipociudad\", \"string\"),\n        (\"iddcliente\", \"int\", \"iddcliente\", \"int\"),\n        (\"telefonofijo\", \"string\", \"telefonofijo\", \"varchar\"),\n        (\"telefonocelular\", \"string\", \"telefonocelular\", \"varchar\"),\n        (\n            \"telefonocelularalternativo\",\n            \"string\",\n            \"telefonocelularalternativo\",\n            \"varchar\",\n        ),\n        (\"nombrecompleto\", \"string\", \"nombrecompleto\", \"varchar\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1693864413943\",\n)\n\n# Script generated for node SQL Query TblDClientes\nSqlQuery97 = \"\"\"\nselect \ndistinct\niddcliente,\niddnegociofavorito,\nnumeroidentificacion,\ntipoidentificacion,\nnombre,\nprimerapellido,\nsegundoapellido,\nnombrecompleto,\ngenero,\ndireccion,\nciudad,\ntelefonofijo,\ntelefonocelular,\ntelefonocelularalternativo,\ncorreoelectronico,\nfechacreacion,\nusuariocreacion,\nflagriesgo,\nflagmayorista,\ncontactar\nfrom myDataSource\n\"\"\"\nSQLQueryTblDClientes_node1694015218188 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery97,\n    mapping={\"myDataSource\": ChangeSchema_node1693864413943},\n    transformation_ctx=\"SQLQueryTblDClientes_node1694015218188\",\n)\n\n# Script generated for node gold_TblDClientes\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblDClientes_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblDClientes_node1693866298290_df = SQLQueryTblDClientes_node1694015218188.toDF()\ngold_TblDClientes_node1693866298290_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\njob.commit()\n"
+}

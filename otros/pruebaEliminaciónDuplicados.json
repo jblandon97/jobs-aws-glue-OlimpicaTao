@@ -1,0 +1,170 @@
+{
+	"jobConfig": {
+		"name": "pruebaEliminaciónDuplicados",
+		"description": "",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "pruebaEliminaciónDuplicados.py",
+		"scriptLocation": "s3://aws-glue-assets-535608989088-us-east-2/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-10-11T20:01:32.871Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": false,
+		"metrics": true,
+		"spark": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1697054776469": {
+			"nodeId": "node-1697054776469",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1"
+			],
+			"name": "Custom Transform",
+			"generatedNodeName": "CustomTransform_node1697054776469",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "glueContext.purge_s3_path('s3://aws-glue-assets-535608989088-us-east-2/data/prueba/', options={\"retentionPeriod\":0})\ndf = dfc.select(list(dfc.keys())[0]).toDF()\ndyf_transform = DynamicFrame.fromDF(df, glueContext, \"eliminación de duplicado\")\nreturn(DynamicFrameCollection({\"CustomTransform0\": dyf_transform}, glueContext))\n",
+			"className": "MyTransform",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1": {
+			"nodeId": "node-1",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "S3 bucket",
+			"generatedNodeName": "S3bucket_node1",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "csv",
+			"paths": [
+				"s3://aws-us-sftp/prueba DSCTO_MP/DESCUENTOS_MEDIOS_DE_PAGO/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": true,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-sftp/prueba DSCTO_MP/DESCUENTOS_MEDIOS_DE_PAGO/DSCTOMPAGO_20220801.csv",
+				"boundedOption": null
+			},
+			"separator": ",",
+			"escaper": "",
+			"quoteChar": "\"",
+			"multiline": null,
+			"withHeader": true,
+			"writeHeader": null,
+			"skipFirst": null,
+			"optimizePerformance": false,
+			"outputSchemas": [
+				[
+					{
+						"key": "PROMOCION_MP",
+						"fullPath": [
+							"PROMOCION_MP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "DESCUENTO_MP",
+						"fullPath": [
+							"DESCUENTO_MP"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "TRANSAC",
+						"fullPath": [
+							"TRANSAC"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-2": {
+			"nodeId": "node-2",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1697055152000"
+			],
+			"name": "S3 bucket",
+			"generatedNodeName": "S3bucket_node2",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-glue-assets-535608989088-us-east-2/data/prueba/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "dscto_mp_parquet_prueba"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1697055152000": {
+			"nodeId": "node-1697055152000",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1697054776469"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1697055152000",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nfrom awsglue.dynamicframe import DynamicFrameCollection\nfrom awsglue.dynamicframe import DynamicFrame\n\n\n# Script generated for node Custom Transform\ndef MyTransform(glueContext, dfc) -> DynamicFrameCollection:\n    glueContext.purge_s3_path(\n        \"s3://aws-glue-assets-535608989088-us-east-2/data/prueba/\",\n        options={\"retentionPeriod\": 0},\n    )\n    df = dfc.select(list(dfc.keys())[0]).toDF()\n    dyf_transform = DynamicFrame.fromDF(df, glueContext, \"eliminación de duplicado\")\n    return DynamicFrameCollection({\"CustomTransform0\": dyf_transform}, glueContext)\n\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node S3 bucket\nS3bucket_node1 = glueContext.create_dynamic_frame.from_options(\n    format_options={\n        \"quoteChar\": '\"',\n        \"withHeader\": True,\n        \"separator\": \",\",\n        \"optimizePerformance\": False,\n    },\n    connection_type=\"s3\",\n    format=\"csv\",\n    connection_options={\n        \"paths\": [\"s3://aws-us-sftp/prueba DSCTO_MP/DESCUENTOS_MEDIOS_DE_PAGO/\"],\n        \"recurse\": True,\n    },\n    transformation_ctx=\"S3bucket_node1\",\n)\n\n# Script generated for node Custom Transform\nCustomTransform_node1697054776469 = MyTransform(\n    glueContext, DynamicFrameCollection({\"S3bucket_node1\": S3bucket_node1}, glueContext)\n)\n\n# Script generated for node Select From Collection\nSelectFromCollection_node1697055152000 = SelectFromCollection.apply(\n    dfc=CustomTransform_node1697054776469,\n    key=list(CustomTransform_node1697054776469.keys())[0],\n    transformation_ctx=\"SelectFromCollection_node1697055152000\",\n)\n\n# Script generated for node S3 bucket\nS3bucket_node2 = glueContext.getSink(\n    path=\"s3://aws-glue-assets-535608989088-us-east-2/data/prueba/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"S3bucket_node2\",\n)\nS3bucket_node2.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"dscto_mp_parquet_prueba\"\n)\nS3bucket_node2.setFormat(\"glueparquet\")\nS3bucket_node2.writeFrame(SelectFromCollection_node1697055152000)\njob.commit()\n"
+}

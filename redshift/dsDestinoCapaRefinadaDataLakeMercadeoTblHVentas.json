@@ -1,0 +1,545 @@
+{
+	"jobConfig": {
+		"name": "dsDestinoCapaRefinadaDataLakeMercadeoTblHVentas",
+		"description": "",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.8X",
+		"numberOfWorkers": 12,
+		"maxCapacity": 96,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "dsDestinoCapaRefinadaDataLakeMercadeoTblHVentas.py",
+		"scriptLocation": "s3://aws-glue-assets-535608989088-us-east-2/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-19T23:25:48.783Z",
+		"developerMode": false,
+		"connectionsList": [
+			"conexion_olimpicatao_dwh_redshift",
+			"olimpicatao_dwh"
+		],
+		"temporaryDirectory": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": false,
+		"metrics": true,
+		"spark": true,
+		"bookmark": "job-bookmark-disable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1695165801224": {
+			"nodeId": "node-1695165801224",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1"
+			],
+			"name": "Destino gold_TblHVentas_redshift",
+			"generatedNodeName": "Destinogold_TblHVentas_redshift_node1695165801224",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tblhventas",
+					"label": "tblhventas",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "iddnegocio",
+						"label": "iddnegocio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddcliente",
+						"label": "iddcliente",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddplusap",
+						"label": "iddplusap",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddproveedor",
+						"label": "iddproveedor",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddpromociones",
+						"label": "iddpromociones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddfecha",
+						"label": "iddfecha",
+						"description": "INTEGER"
+					},
+					{
+						"value": "hora",
+						"label": "hora",
+						"description": "INTEGER"
+					},
+					{
+						"value": "transaccion",
+						"label": "transaccion",
+						"description": "INTEGER"
+					},
+					{
+						"value": "idtransaccion",
+						"label": "idtransaccion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "factura",
+						"label": "factura",
+						"description": "INTEGER"
+					},
+					{
+						"value": "numerotarjetaplata",
+						"label": "numerotarjetaplata",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "flagclientetarjetaplata",
+						"label": "flagclientetarjetaplata",
+						"description": "INTEGER"
+					},
+					{
+						"value": "plusicol",
+						"label": "plusicol",
+						"description": "INTEGER"
+					},
+					{
+						"value": "codigocajero",
+						"label": "codigocajero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "canal",
+						"label": "canal",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "kilos",
+						"label": "kilos",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "operacionmediopago",
+						"label": "operacionmediopago",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "codigomediopago",
+						"label": "codigomediopago",
+						"description": "INTEGER"
+					},
+					{
+						"value": "cantidad",
+						"label": "cantidad",
+						"description": "REAL"
+					},
+					{
+						"value": "descuentounitario",
+						"label": "descuentounitario",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ventabruta",
+						"label": "ventabruta",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "ventaneta",
+						"label": "ventaneta",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "ventasiniva",
+						"label": "ventasiniva",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "descuento",
+						"label": "descuento",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "precioregular",
+						"label": "precioregular",
+						"description": "INTEGER"
+					},
+					{
+						"value": "preciounitario",
+						"label": "preciounitario",
+						"description": "INTEGER"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "iddnegocio",
+						"label": "iddnegocio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddcliente",
+						"label": "iddcliente",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddplusap",
+						"label": "iddplusap",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddpromociones",
+						"label": "iddpromociones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddfecha",
+						"label": "iddfecha",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddproveedor",
+						"label": "iddproveedor",
+						"description": "INTEGER"
+					},
+					{
+						"value": "idtransaccion",
+						"label": "idtransaccion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "cantidad",
+						"label": "cantidad",
+						"description": "REAL"
+					},
+					{
+						"value": "ventasiniva",
+						"label": "ventasiniva",
+						"description": "DECIMAL"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tblhventas_temp_6e0c4b",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1": {
+			"nodeId": "node-1",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblHVentas_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblHVentas_parquet_delta_lake_node1",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblHVentas_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblHVentas_parquet_delta_lake/part-00000-6c497124-dcbf-4efb-b5db-cd95453baf76-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddplusap",
+						"fullPath": [
+							"iddplusap"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddproveedor",
+						"fullPath": [
+							"iddproveedor"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddpromociones",
+						"fullPath": [
+							"iddpromociones"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddfecha",
+						"fullPath": [
+							"iddfecha"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "hora",
+						"fullPath": [
+							"hora"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transaccion",
+						"fullPath": [
+							"transaccion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "idtransaccion",
+						"fullPath": [
+							"idtransaccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "factura",
+						"fullPath": [
+							"factura"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "numerotarjetaplata",
+						"fullPath": [
+							"numerotarjetaplata"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "flagclientetarjetaplata",
+						"fullPath": [
+							"flagclientetarjetaplata"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plusicol",
+						"fullPath": [
+							"plusicol"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocajero",
+						"fullPath": [
+							"codigocajero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "canal",
+						"fullPath": [
+							"canal"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "kilos",
+						"fullPath": [
+							"kilos"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "operacionmediopago",
+						"fullPath": [
+							"operacionmediopago"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigomediopago",
+						"fullPath": [
+							"codigomediopago"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cantidad",
+						"fullPath": [
+							"cantidad"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuentounitario",
+						"fullPath": [
+							"descuentounitario"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ventabruta",
+						"fullPath": [
+							"ventabruta"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ventaneta",
+						"fullPath": [
+							"ventaneta"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ventasiniva",
+						"fullPath": [
+							"ventasiniva"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuento",
+						"fullPath": [
+							"descuento"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precioregular",
+						"fullPath": [
+							"precioregular"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "preciounitario",
+						"fullPath": [
+							"preciounitario"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nfrom awsglue import DynamicFrame\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node Origen gold_TblHVentas_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblHVentas_parquet_delta_lake_node1_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblHVentas_parquet_delta_lake/\")\n)\nOrigengold_TblHVentas_parquet_delta_lake_node1 = DynamicFrame.fromDF(\n    Origengold_TblHVentas_parquet_delta_lake_node1_df,\n    glueContext,\n    \"Origengold_TblHVentas_parquet_delta_lake_node1\",\n)\n\n# Script generated for node Destino gold_TblHVentas_redshift\nDestinogold_TblHVentas_redshift_node1695165801224 = glueContext.write_dynamic_frame.from_options(\n    frame=Origengold_TblHVentas_parquet_delta_lake_node1,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tblhventas USING public.tblhventas_temp_6e0c4b ON tblhventas.iddnegocio = tblhventas_temp_6e0c4b.iddnegocio AND tblhventas.iddcliente = tblhventas_temp_6e0c4b.iddcliente AND tblhventas.iddplusap = tblhventas_temp_6e0c4b.iddplusap AND tblhventas.iddpromociones = tblhventas_temp_6e0c4b.iddpromociones AND tblhventas.iddfecha = tblhventas_temp_6e0c4b.iddfecha AND tblhventas.iddproveedor = tblhventas_temp_6e0c4b.iddproveedor AND tblhventas.idtransaccion = tblhventas_temp_6e0c4b.idtransaccion AND tblhventas.cantidad = tblhventas_temp_6e0c4b.cantidad AND tblhventas.ventasiniva = tblhventas_temp_6e0c4b.ventasiniva WHEN MATCHED THEN UPDATE SET iddnegocio = tblhventas_temp_6e0c4b.iddnegocio, iddcliente = tblhventas_temp_6e0c4b.iddcliente, iddplusap = tblhventas_temp_6e0c4b.iddplusap, iddproveedor = tblhventas_temp_6e0c4b.iddproveedor, iddpromociones = tblhventas_temp_6e0c4b.iddpromociones, iddfecha = tblhventas_temp_6e0c4b.iddfecha, hora = tblhventas_temp_6e0c4b.hora, transaccion = tblhventas_temp_6e0c4b.transaccion, idtransaccion = tblhventas_temp_6e0c4b.idtransaccion, factura = tblhventas_temp_6e0c4b.factura, numerotarjetaplata = tblhventas_temp_6e0c4b.numerotarjetaplata, flagclientetarjetaplata = tblhventas_temp_6e0c4b.flagclientetarjetaplata, plusicol = tblhventas_temp_6e0c4b.plusicol, codigocajero = tblhventas_temp_6e0c4b.codigocajero, canal = tblhventas_temp_6e0c4b.canal, kilos = tblhventas_temp_6e0c4b.kilos, operacionmediopago = tblhventas_temp_6e0c4b.operacionmediopago, codigomediopago = tblhventas_temp_6e0c4b.codigomediopago, cantidad = tblhventas_temp_6e0c4b.cantidad, descuentounitario = tblhventas_temp_6e0c4b.descuentounitario, ventabruta = tblhventas_temp_6e0c4b.ventabruta, ventaneta = tblhventas_temp_6e0c4b.ventaneta, ventasiniva = tblhventas_temp_6e0c4b.ventasiniva, descuento = tblhventas_temp_6e0c4b.descuento, precioregular = tblhventas_temp_6e0c4b.precioregular, preciounitario = tblhventas_temp_6e0c4b.preciounitario WHEN NOT MATCHED THEN INSERT VALUES (tblhventas_temp_6e0c4b.iddnegocio, tblhventas_temp_6e0c4b.iddcliente, tblhventas_temp_6e0c4b.iddplusap, tblhventas_temp_6e0c4b.iddproveedor, tblhventas_temp_6e0c4b.iddpromociones, tblhventas_temp_6e0c4b.iddfecha, tblhventas_temp_6e0c4b.hora, tblhventas_temp_6e0c4b.transaccion, tblhventas_temp_6e0c4b.idtransaccion, tblhventas_temp_6e0c4b.factura, tblhventas_temp_6e0c4b.numerotarjetaplata, tblhventas_temp_6e0c4b.flagclientetarjetaplata, tblhventas_temp_6e0c4b.plusicol, tblhventas_temp_6e0c4b.codigocajero, tblhventas_temp_6e0c4b.canal, tblhventas_temp_6e0c4b.kilos, tblhventas_temp_6e0c4b.operacionmediopago, tblhventas_temp_6e0c4b.codigomediopago, tblhventas_temp_6e0c4b.cantidad, tblhventas_temp_6e0c4b.descuentounitario, tblhventas_temp_6e0c4b.ventabruta, tblhventas_temp_6e0c4b.ventaneta, tblhventas_temp_6e0c4b.ventasiniva, tblhventas_temp_6e0c4b.descuento, tblhventas_temp_6e0c4b.precioregular, tblhventas_temp_6e0c4b.preciounitario); DROP TABLE public.tblhventas_temp_6e0c4b; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tblhventas_temp_6e0c4b\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tblhventas (iddnegocio INTEGER, iddcliente INTEGER, iddplusap INTEGER, iddproveedor INTEGER, iddpromociones INTEGER, iddfecha INTEGER, hora INTEGER, transaccion INTEGER, idtransaccion VARCHAR, factura INTEGER, numerotarjetaplata VARCHAR, flagclientetarjetaplata INTEGER, plusicol INTEGER, codigocajero INTEGER, canal VARCHAR, kilos DECIMAL, operacionmediopago VARCHAR, codigomediopago INTEGER, cantidad REAL, descuentounitario INTEGER, ventabruta DECIMAL, ventaneta DECIMAL, ventasiniva DECIMAL, descuento DECIMAL, precioregular INTEGER, preciounitario INTEGER); DROP TABLE IF EXISTS public.tblhventas_temp_6e0c4b; CREATE TABLE public.tblhventas_temp_6e0c4b (iddnegocio INTEGER, iddcliente INTEGER, iddplusap INTEGER, iddproveedor INTEGER, iddpromociones INTEGER, iddfecha INTEGER, hora INTEGER, transaccion INTEGER, idtransaccion VARCHAR, factura INTEGER, numerotarjetaplata VARCHAR, flagclientetarjetaplata INTEGER, plusicol INTEGER, codigocajero INTEGER, canal VARCHAR, kilos DECIMAL, operacionmediopago VARCHAR, codigomediopago INTEGER, cantidad REAL, descuentounitario INTEGER, ventabruta DECIMAL, ventaneta DECIMAL, ventasiniva DECIMAL, descuento DECIMAL, precioregular INTEGER, preciounitario INTEGER);\",\n    },\n    transformation_ctx=\"Destinogold_TblHVentas_redshift_node1695165801224\",\n)\n\njob.commit()\n"
+}

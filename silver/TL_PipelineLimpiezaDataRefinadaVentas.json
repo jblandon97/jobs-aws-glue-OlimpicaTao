@@ -1,0 +1,825 @@
+{
+	"jobConfig": {
+		"name": "TL_PipelineLimpiezaDataRefinadaVentas",
+		"description": "",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.1X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 10,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "TL_PipelineLimpiezaDataRefinadaVentas.py",
+		"scriptLocation": "s3://aws-us-cleansed/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-29T16:17:55.625Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://aws-us-cleansed/temp-dir/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": false,
+		"metrics": true,
+		"spark": true,
+		"pythonPath": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_common.py,s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1695067065835": {
+			"nodeId": "node-1695067065835",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695066732520"
+			],
+			"name": "Derived Column plu_sap",
+			"generatedNodeName": "DerivedColumnplu_sap_node1695067065835",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"plu_sap"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"trim(plu_sap)"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695070059885": {
+			"nodeId": "node-1695070059885",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695069947789"
+			],
+			"name": "Derived Column descuento_uni",
+			"generatedNodeName": "DerivedColumndescuento_uni_node1695070059885",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"descuento_uni"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"replace(descuento_uni,',','.')"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695069584076": {
+			"nodeId": "node-1695069584076",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695069530324"
+			],
+			"name": "Derived Column llave_cp",
+			"generatedNodeName": "DerivedColumnllave_cp_node1695069584076",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"llave_cp"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"trim(llave_cp)"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695069903945": {
+			"nodeId": "node-1695069903945",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695069854003"
+			],
+			"name": "Derived Column venta_sin_iva",
+			"generatedNodeName": "DerivedColumnventa_sin_iva_node1695069903945",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"venta_sin_iva"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"replace(venta_sin_iva,',','.')"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695069806595": {
+			"nodeId": "node-1695069806595",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695069745839"
+			],
+			"name": "Derived Column venta_bruta",
+			"generatedNodeName": "DerivedColumnventa_bruta_node1695069806595",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"venta_bruta"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"replace(venta_bruta,',','.')"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695066732520": {
+			"nodeId": "node-1695066732520",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1692216573148"
+			],
+			"name": "derived column centro",
+			"generatedNodeName": "derivedcolumncentro_node1695066732520",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"centro"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"trim(centro) "
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "hora",
+						"fullPath": [
+							"hora"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centro",
+						"fullPath": [
+							"centro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transaccion",
+						"fullPath": [
+							"transaccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transac",
+						"fullPath": [
+							"transac"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "factura",
+						"fullPath": [
+							"factura"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tp",
+						"fullPath": [
+							"tp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cedula_cli",
+						"fullPath": [
+							"cedula_cli"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cliente_id",
+						"fullPath": [
+							"cliente_id"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cliente_tp",
+						"fullPath": [
+							"cliente_tp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plu_sap",
+						"fullPath": [
+							"plu_sap"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "llave_cp",
+						"fullPath": [
+							"llave_cp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "operacion_mp",
+						"fullPath": [
+							"operacion_mp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "medio_pago",
+						"fullPath": [
+							"medio_pago"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "promo_id",
+						"fullPath": [
+							"promo_id"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plu_sicol",
+						"fullPath": [
+							"plu_sicol"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cod_cajero",
+						"fullPath": [
+							"cod_cajero"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuento_uni",
+						"fullPath": [
+							"descuento_uni"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "venta_bruta",
+						"fullPath": [
+							"venta_bruta"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "venta_neta",
+						"fullPath": [
+							"venta_neta"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "venta_sin_iva",
+						"fullPath": [
+							"venta_sin_iva"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuento",
+						"fullPath": [
+							"descuento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precio_regular",
+						"fullPath": [
+							"precio_regular"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precio_uni",
+						"fullPath": [
+							"precio_uni"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "kilos",
+						"fullPath": [
+							"kilos"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "canal",
+						"fullPath": [
+							"canal"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cantidad",
+						"fullPath": [
+							"cantidad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha",
+						"fullPath": [
+							"fecha"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695069530324": {
+			"nodeId": "node-1695069530324",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695067246059"
+			],
+			"name": "Derived Column cedula_cli",
+			"generatedNodeName": "DerivedColumncedula_cli_node1695069530324",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"cedula_cli"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"trim(cedula_cli)"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1692216524209": {
+			"nodeId": "node-1692216524209",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1692216489803"
+			],
+			"name": "Rename Field",
+			"generatedNodeName": "RenameField_node1692216524209",
+			"classification": "Transform",
+			"type": "RenameField",
+			"sourcePath": "clientetp",
+			"targetPath": "cliente_tp",
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1692216546795": {
+			"nodeId": "node-1692216546795",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1692216524209"
+			],
+			"name": "Rename Field",
+			"generatedNodeName": "RenameField_node1692216546795",
+			"classification": "Transform",
+			"type": "RenameField",
+			"sourcePath": "llavecp",
+			"targetPath": "llave_cp",
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1692216573148": {
+			"nodeId": "node-1692216573148",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1692216546795"
+			],
+			"name": "Rename Field",
+			"generatedNodeName": "RenameField_node1692216573148",
+			"classification": "Transform",
+			"type": "RenameField",
+			"sourcePath": "codcajero",
+			"targetPath": "cod_cajero",
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695069854003": {
+			"nodeId": "node-1695069854003",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695069806595"
+			],
+			"name": "Derived Column venta_neta",
+			"generatedNodeName": "DerivedColumnventa_neta_node1695069854003",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"venta_neta"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"replace(venta_neta,',','.')"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1692216489803": {
+			"nodeId": "node-1692216489803",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen raw_venta_parquet",
+			"generatedNodeName": "Origenraw_venta_parquet_node1692216489803",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "raw_venta_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1695067246059": {
+			"nodeId": "node-1695067246059",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695067065835"
+			],
+			"name": "Derived Column promo_id",
+			"generatedNodeName": "DerivedColumnpromo_id_node1695067246059",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"promo_id"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"trim(promo_id)"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695069947789": {
+			"nodeId": "node-1695069947789",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695069903945"
+			],
+			"name": "Derived Column descuento",
+			"generatedNodeName": "DerivedColumndescuento_node1695069947789",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"descuento"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"replace(descuento,',','.')"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695069745839": {
+			"nodeId": "node-1695069745839",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695069584076"
+			],
+			"name": "Derived Column  cantidad",
+			"generatedNodeName": "DerivedColumncantidad_node1695069745839",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"cantidad"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"replace(cantidad,',','.')"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1692216646128": {
+			"nodeId": "node-1692216646128",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695070059885"
+			],
+			"name": "Destino cleansed_venta_parquet",
+			"generatedNodeName": "Destinocleansed_venta_parquet_node1692216646128",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-cleansed/data/venta_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "cleansed_venta_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nimport gs_derived\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node Origen raw_venta_parquet\nOrigenraw_venta_parquet_node1692216489803 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"raw_venta_parquet\",\n        transformation_ctx=\"Origenraw_venta_parquet_node1692216489803\",\n    )\n)\n\n# Script generated for node Rename Field\nRenameField_node1692216524209 = RenameField.apply(\n    frame=Origenraw_venta_parquet_node1692216489803,\n    old_name=\"clientetp\",\n    new_name=\"cliente_tp\",\n    transformation_ctx=\"RenameField_node1692216524209\",\n)\n\n# Script generated for node Rename Field\nRenameField_node1692216546795 = RenameField.apply(\n    frame=RenameField_node1692216524209,\n    old_name=\"llavecp\",\n    new_name=\"llave_cp\",\n    transformation_ctx=\"RenameField_node1692216546795\",\n)\n\n# Script generated for node Rename Field\nRenameField_node1692216573148 = RenameField.apply(\n    frame=RenameField_node1692216546795,\n    old_name=\"codcajero\",\n    new_name=\"cod_cajero\",\n    transformation_ctx=\"RenameField_node1692216573148\",\n)\n\n# Script generated for node derived column centro\nderivedcolumncentro_node1695066732520 = RenameField_node1692216573148.gs_derived(\n    colName=\"centro\", expr=\"trim(centro) \"\n)\n\n# Script generated for node Derived Column plu_sap\nDerivedColumnplu_sap_node1695067065835 = (\n    derivedcolumncentro_node1695066732520.gs_derived(\n        colName=\"plu_sap\", expr=\"trim(plu_sap)\"\n    )\n)\n\n# Script generated for node Derived Column promo_id\nDerivedColumnpromo_id_node1695067246059 = (\n    DerivedColumnplu_sap_node1695067065835.gs_derived(\n        colName=\"promo_id\", expr=\"trim(promo_id)\"\n    )\n)\n\n# Script generated for node Derived Column cedula_cli\nDerivedColumncedula_cli_node1695069530324 = (\n    DerivedColumnpromo_id_node1695067246059.gs_derived(\n        colName=\"cedula_cli\", expr=\"trim(cedula_cli)\"\n    )\n)\n\n# Script generated for node Derived Column llave_cp\nDerivedColumnllave_cp_node1695069584076 = (\n    DerivedColumncedula_cli_node1695069530324.gs_derived(\n        colName=\"llave_cp\", expr=\"trim(llave_cp)\"\n    )\n)\n\n# Script generated for node Derived Column  cantidad\nDerivedColumncantidad_node1695069745839 = (\n    DerivedColumnllave_cp_node1695069584076.gs_derived(\n        colName=\"cantidad\", expr=\"replace(cantidad,',','.')\"\n    )\n)\n\n# Script generated for node Derived Column venta_bruta\nDerivedColumnventa_bruta_node1695069806595 = (\n    DerivedColumncantidad_node1695069745839.gs_derived(\n        colName=\"venta_bruta\", expr=\"replace(venta_bruta,',','.')\"\n    )\n)\n\n# Script generated for node Derived Column venta_neta\nDerivedColumnventa_neta_node1695069854003 = (\n    DerivedColumnventa_bruta_node1695069806595.gs_derived(\n        colName=\"venta_neta\", expr=\"replace(venta_neta,',','.')\"\n    )\n)\n\n# Script generated for node Derived Column venta_sin_iva\nDerivedColumnventa_sin_iva_node1695069903945 = (\n    DerivedColumnventa_neta_node1695069854003.gs_derived(\n        colName=\"venta_sin_iva\", expr=\"replace(venta_sin_iva,',','.')\"\n    )\n)\n\n# Script generated for node Derived Column descuento\nDerivedColumndescuento_node1695069947789 = (\n    DerivedColumnventa_sin_iva_node1695069903945.gs_derived(\n        colName=\"descuento\", expr=\"replace(descuento,',','.')\"\n    )\n)\n\n# Script generated for node Derived Column descuento_uni\nDerivedColumndescuento_uni_node1695070059885 = (\n    DerivedColumndescuento_node1695069947789.gs_derived(\n        colName=\"descuento_uni\", expr=\"replace(descuento_uni,',','.')\"\n    )\n)\n\n# Script generated for node Destino cleansed_venta_parquet\nDestinocleansed_venta_parquet_node1692216646128 = glueContext.getSink(\n    path=\"s3://aws-us-cleansed/data/venta_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinocleansed_venta_parquet_node1692216646128\",\n)\nDestinocleansed_venta_parquet_node1692216646128.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"cleansed_venta_parquet\"\n)\nDestinocleansed_venta_parquet_node1692216646128.setFormat(\"glueparquet\")\nDestinocleansed_venta_parquet_node1692216646128.writeFrame(\n    DerivedColumndescuento_uni_node1695070059885\n)\njob.commit()\n"
+}

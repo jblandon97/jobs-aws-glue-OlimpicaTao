@@ -1,0 +1,1519 @@
+{
+	"jobConfig": {
+		"name": "EX_PipelineFuentesQlikSinVentas",
+		"description": "",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.8X",
+		"numberOfWorkers": 5,
+		"maxCapacity": 40,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "EX_PipelineFuentesQlikSinVentas.py",
+		"scriptLocation": "s3://aws-us-raw/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-29T15:58:44.940Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://aws-us-raw/temp-dir/",
+		"etlAutoScaling": true,
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"spark": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1691595188058": {
+			"nodeId": "node-1691595188058",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691595165124"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1691595188058",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "promo_id",
+					"fromPath": [
+						"promo_id"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "oferta",
+					"fromPath": [
+						"oferta"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "disgroup_name",
+					"fromPath": [
+						"disgroup_name"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "promotion_is_current",
+					"fromPath": [
+						"promotion_is_current"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "promotion_start_date",
+					"fromPath": [
+						"promotion_start_date"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "promotion_end_date",
+					"fromPath": [
+						"promotion_end_date"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694459968583": {
+			"nodeId": "node-1694459968583",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694459886432"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694459968583",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "tipo",
+					"fromPath": [
+						"tipo"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "mediopago",
+					"fromPath": [
+						"mediopago"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691597708921": {
+			"nodeId": "node-1691597708921",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen descuentos_medios_de_pago_csv",
+			"generatedNodeName": "Origendescuentos_medios_de_pago_csv_node1691597708921",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "descuentos_medios_de_pago",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1691594724717": {
+			"nodeId": "node-1691594724717",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691594641610"
+			],
+			"name": "Destino detalle_cliente_parquet",
+			"generatedNodeName": "Destinodetalle_cliente_parquet_node1691594724717",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-raw/data/detalle_cliente_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_detalle_cliente_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691598162777": {
+			"nodeId": "node-1691598162777",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen provee_detalle_csv",
+			"generatedNodeName": "Origenprovee_detalle_csv_node1691598162777",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "maestro_proveedor_csv",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1691598200239": {
+			"nodeId": "node-1691598200239",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694547215454"
+			],
+			"name": "Destino provee_detalle_parquet",
+			"generatedNodeName": "Destinoprovee_detalle_parquet_node1691598200239",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-raw/data/provee_detalle_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_provee_detalle_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694547215454": {
+			"nodeId": "node-1694547215454",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691598194388"
+			],
+			"name": "SQLNitSapEliminarNull",
+			"generatedNodeName": "SQLNitSapEliminarNull_node1694547215454",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1691598194388",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select * from myDataSource \nwhere isnull(nitsap) <> true",
+			"codeGenVersion": 2
+		},
+		"node-1691594887452": {
+			"nodeId": "node-1691594887452",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691594820784"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1691594887452",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "cedula_cli",
+					"fromPath": [
+						"cedula_cli"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "riesgo",
+					"fromPath": [
+						"riesgo"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "mayorista",
+					"fromPath": [
+						"mayorista"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "listariesgo",
+					"fromPath": [
+						"listariesgo"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694460018487": {
+			"nodeId": "node-1694460018487",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694459968583"
+			],
+			"name": "Destino maestro_mpago_parquet",
+			"generatedNodeName": "Destinomaestro_mpago_parquet_node1694460018487",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-raw/data/maestro_medios_de_pago/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_maestro_mpago_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691594892619": {
+			"nodeId": "node-1691594892619",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691594887452"
+			],
+			"name": "Destino detalle_cliente_riesgos_parquet",
+			"generatedNodeName": "Destinodetalle_cliente_riesgos_parquet_node1691594892619",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "none",
+			"path": "s3://aws-us-raw/data/detalle_cliente_riesgos_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_detalle_cliente_riesgos_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691595192296": {
+			"nodeId": "node-1691595192296",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691595188058"
+			],
+			"name": "Destino maestro_promociones_parquet",
+			"generatedNodeName": "Destinomaestro_promociones_parquet_node1691595192296",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-raw/data/maestro_promociones_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_maestro_promociones_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691594605549": {
+			"nodeId": "node-1691594605549",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen detalle_cliente_csv",
+			"generatedNodeName": "Origendetalle_cliente_csv_node1691594605549",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "info_personal_clientes_csv",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1691595165124": {
+			"nodeId": "node-1691595165124",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen maestro_promociones_csv",
+			"generatedNodeName": "Origenmaestro_promociones_csv_node1691595165124",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "maestro_promociones_csv",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694459886432": {
+			"nodeId": "node-1694459886432",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen maestro_mpago_csv",
+			"generatedNodeName": "Origenmaestro_mpago_csv_node1694459886432",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "maestro_mpago_csv",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1": {
+			"nodeId": "node-1",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen plusaps_csv",
+			"generatedNodeName": "Origenplusaps_csv_node1",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "maestro_plusap_csv",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-2": {
+			"nodeId": "node-2",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1"
+			],
+			"name": "ApplyMapping",
+			"generatedNodeName": "ApplyMapping_node2",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "plu_sap",
+					"fromPath": [
+						"plu_sap"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "plu_nombre",
+					"fromPath": [
+						"plu_nombre"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "abc_nal",
+					"fromPath": [
+						"abc_nal"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "abc_cat",
+					"fromPath": [
+						"abc_cat"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pais",
+					"fromPath": [
+						"pais"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "origen",
+					"fromPath": [
+						"origen"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unimedida",
+					"fromPath": [
+						"unimedida"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ean",
+					"fromPath": [
+						"ean"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "articulo",
+					"fromPath": [
+						"articulo"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipomarca",
+					"fromPath": [
+						"tipomarca"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "marca",
+					"fromPath": [
+						"marca"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clasemarca",
+					"fromPath": [
+						"clasemarca"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fuentaprov",
+					"fromPath": [
+						"fuentaprov"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "consignado",
+					"fromPath": [
+						"consignado"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "contenido",
+					"fromPath": [
+						"contenido"
+					],
+					"toType": "double",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "explosion",
+					"fromPath": [
+						"explosion"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "excagotados",
+					"fromPath": [
+						"excagotados"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pesobruto",
+					"fromPath": [
+						"pesobruto"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadpesobruto",
+					"fromPath": [
+						"unidadpesobruto"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "longitud",
+					"fromPath": [
+						"longitud"
+					],
+					"toType": "double",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ancho",
+					"fromPath": [
+						"ancho"
+					],
+					"toType": "double",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "altura",
+					"fromPath": [
+						"altura"
+					],
+					"toType": "double",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadmedida",
+					"fromPath": [
+						"unidadmedida"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadcontenidoneto",
+					"fromPath": [
+						"unidadcontenidoneto"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "departamento",
+					"fromPath": [
+						"departamento"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "categoria",
+					"fromPath": [
+						"categoria"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subcategoria",
+					"fromPath": [
+						"subcategoria"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "segmento",
+					"fromPath": [
+						"segmento"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subsegmento1",
+					"fromPath": [
+						"subsegmento1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subsegmento2",
+					"fromPath": [
+						"subsegmento2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "dirección nal.",
+					"fromPath": [
+						"dirección nal."
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipocat",
+					"fromPath": [
+						"tipocat"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "agrupación",
+					"fromPath": [
+						"agrupación"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "dias obj neg",
+					"fromPath": [
+						"dias obj neg"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "dias obj",
+					"fromPath": [
+						"dias obj"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "seccion",
+					"fromPath": [
+						"seccion"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tiposec",
+					"fromPath": [
+						"tiposec"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "gruposec",
+					"fromPath": [
+						"gruposec"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-3": {
+			"nodeId": "node-3",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694545329277"
+			],
+			"name": "Destino plusaps_parquet",
+			"generatedNodeName": "Destinoplusaps_parquet_node3",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-raw/data/plusaps_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_plusaps_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691595056081": {
+			"nodeId": "node-1691595056081",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691594952342"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1691595056081",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "centro",
+					"fromPath": [
+						"centro"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "dirección",
+					"fromPath": [
+						"dirección"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "zona",
+					"fromPath": [
+						"zona"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ciu",
+					"fromPath": [
+						"ciu"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nombre_centro",
+					"fromPath": [
+						"nombre_centro"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipocentro",
+					"fromPath": [
+						"tipocentro"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "distrito",
+					"fromPath": [
+						"distrito"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "región",
+					"fromPath": [
+						"región"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "formato",
+					"fromPath": [
+						"formato"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ciudad",
+					"fromPath": [
+						"ciudad"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "antiguedad",
+					"fromPath": [
+						"antiguedad"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "superficie",
+					"fromPath": [
+						"superficie"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "estrato",
+					"fromPath": [
+						"estrato"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "departamento",
+					"fromPath": [
+						"departamento"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ciudad_dane",
+					"fromPath": [
+						"ciudad_dane"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rango_ventas",
+					"fromPath": [
+						"rango_ventas"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rango_metros",
+					"fromPath": [
+						"rango_metros"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipo_ciudad",
+					"fromPath": [
+						"tipo_ciudad"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691595068509": {
+			"nodeId": "node-1691595068509",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691595056081"
+			],
+			"name": "Origen maestro_negocios_parquet",
+			"generatedNodeName": "Origenmaestro_negocios_parquet_node1691595068509",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-raw/data/maestro_negocios_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_maestro_negocios_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694545329277": {
+			"nodeId": "node-1694545329277",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-2"
+			],
+			"name": "SQLPlusapsEliminarNull",
+			"generatedNodeName": "SQLPlusapsEliminarNull_node1694545329277",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-2",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select * from myDataSource \nwhere isnull(plu_sap) <> true",
+			"codeGenVersion": 2
+		},
+		"node-1691597746166": {
+			"nodeId": "node-1691597746166",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691597726733"
+			],
+			"name": "Destino descuentos_medios_de_pago_parquet",
+			"generatedNodeName": "Destinodescuentos_medios_de_pago_parquet_node1691597746166",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-raw/data/descuentos_medios_de_pago_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_descuentos_medios_de_pago_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691597726733": {
+			"nodeId": "node-1691597726733",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691597708921"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1691597726733",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "promocion_mp",
+					"fromPath": [
+						"promocion_mp"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descuento_mp",
+					"fromPath": [
+						"descuento_mp"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "transac",
+					"fromPath": [
+						"transac"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691598194388": {
+			"nodeId": "node-1691598194388",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691598162777"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1691598194388",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "razon",
+					"fromPath": [
+						"razon"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "proveedor",
+					"fromPath": [
+						"proveedor"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "proveetrade",
+					"fromPath": [
+						"proveetrade"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nitsap",
+					"fromPath": [
+						"nitsap"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nit",
+					"fromPath": [
+						"nit"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "razonsap",
+					"fromPath": [
+						"razonsap"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipoprovee",
+					"fromPath": [
+						"tipoprovee"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691594820784": {
+			"nodeId": "node-1691594820784",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen detalle_cliente_riesgos_csv",
+			"generatedNodeName": "Origendetalle_cliente_riesgos_csv_node1691594820784",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "detalle_cliente_riesgos_csv",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1691594641610": {
+			"nodeId": "node-1691594641610",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691594605549"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1691594641610",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "cedula_cli",
+					"fromPath": [
+						"cedula_cli"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nombre",
+					"fromPath": [
+						"nombre"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "apellido1",
+					"fromPath": [
+						"apellido1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "apellido2",
+					"fromPath": [
+						"apellido2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "sexo",
+					"fromPath": [
+						"sexo"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipo_documento",
+					"fromPath": [
+						"tipo_documento"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "direccion",
+					"fromPath": [
+						"direccion"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "telefono1",
+					"fromPath": [
+						"telefono1"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "telefono2",
+					"fromPath": [
+						"telefono2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ciudad",
+					"fromPath": [
+						"ciudad"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "correo",
+					"fromPath": [
+						"correo"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "punto_de_venta_favorito",
+					"fromPath": [
+						"punto_de_venta_favorito"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fecha_creacion",
+					"fromPath": [
+						"fecha_creacion"
+					],
+					"toType": "string",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "usuario_creacion",
+					"fromPath": [
+						"usuario_creacion"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691594952342": {
+			"nodeId": "node-1691594952342",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "raw_maestro_negocios_csv",
+			"generatedNodeName": "raw_maestro_negocios_csv_node1691594952342",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "maestro_negocios_csv",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nfrom awsglue import DynamicFrame\n\n\ndef sparkSqlQuery(glueContext, query, mapping, transformation_ctx) -> DynamicFrame:\n    for alias, frame in mapping.items():\n        frame.toDF().createOrReplaceTempView(alias)\n    result = spark.sql(query)\n    return DynamicFrame.fromDF(result, glueContext, transformation_ctx)\n\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node Origen descuentos_medios_de_pago_csv\nOrigendescuentos_medios_de_pago_csv_node1691597708921 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"csvqlikdb\",\n        table_name=\"descuentos_medios_de_pago\",\n        transformation_ctx=\"Origendescuentos_medios_de_pago_csv_node1691597708921\",\n    )\n)\n\n# Script generated for node Origen provee_detalle_csv\nOrigenprovee_detalle_csv_node1691598162777 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"csvqlikdb\",\n        table_name=\"maestro_proveedor_csv\",\n        transformation_ctx=\"Origenprovee_detalle_csv_node1691598162777\",\n    )\n)\n\n# Script generated for node Origen detalle_cliente_csv\nOrigendetalle_cliente_csv_node1691594605549 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"csvqlikdb\",\n        table_name=\"info_personal_clientes_csv\",\n        transformation_ctx=\"Origendetalle_cliente_csv_node1691594605549\",\n    )\n)\n\n# Script generated for node Origen maestro_promociones_csv\nOrigenmaestro_promociones_csv_node1691595165124 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"csvqlikdb\",\n        table_name=\"maestro_promociones_csv\",\n        transformation_ctx=\"Origenmaestro_promociones_csv_node1691595165124\",\n    )\n)\n\n# Script generated for node Origen maestro_mpago_csv\nOrigenmaestro_mpago_csv_node1694459886432 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"csvqlikdb\",\n        table_name=\"maestro_mpago_csv\",\n        transformation_ctx=\"Origenmaestro_mpago_csv_node1694459886432\",\n    )\n)\n\n# Script generated for node Origen plusaps_csv\nOrigenplusaps_csv_node1 = glueContext.create_dynamic_frame.from_catalog(\n    database=\"csvqlikdb\",\n    table_name=\"maestro_plusap_csv\",\n    transformation_ctx=\"Origenplusaps_csv_node1\",\n)\n\n# Script generated for node Origen detalle_cliente_riesgos_csv\nOrigendetalle_cliente_riesgos_csv_node1691594820784 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"csvqlikdb\",\n        table_name=\"detalle_cliente_riesgos_csv\",\n        transformation_ctx=\"Origendetalle_cliente_riesgos_csv_node1691594820784\",\n    )\n)\n\n# Script generated for node raw_maestro_negocios_csv\nraw_maestro_negocios_csv_node1691594952342 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"csvqlikdb\",\n        table_name=\"maestro_negocios_csv\",\n        transformation_ctx=\"raw_maestro_negocios_csv_node1691594952342\",\n    )\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1691597726733 = ApplyMapping.apply(\n    frame=Origendescuentos_medios_de_pago_csv_node1691597708921,\n    mappings=[\n        (\"promocion_mp\", \"string\", \"promocion_mp\", \"string\"),\n        (\"descuento_mp\", \"string\", \"descuento_mp\", \"string\"),\n        (\"transac\", \"long\", \"transac\", \"long\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1691597726733\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1691598194388 = ApplyMapping.apply(\n    frame=Origenprovee_detalle_csv_node1691598162777,\n    mappings=[\n        (\"razon\", \"string\", \"razon\", \"string\"),\n        (\"proveedor\", \"string\", \"proveedor\", \"string\"),\n        (\"proveetrade\", \"string\", \"proveetrade\", \"string\"),\n        (\"nitsap\", \"long\", \"nitsap\", \"string\"),\n        (\"nit\", \"string\", \"nit\", \"string\"),\n        (\"razonsap\", \"string\", \"razonsap\", \"string\"),\n        (\"tipoprovee\", \"string\", \"tipoprovee\", \"string\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1691598194388\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1691594641610 = ApplyMapping.apply(\n    frame=Origendetalle_cliente_csv_node1691594605549,\n    mappings=[\n        (\"cedula_cli\", \"string\", \"cedula_cli\", \"string\"),\n        (\"nombre\", \"string\", \"nombre\", \"string\"),\n        (\"apellido1\", \"string\", \"apellido1\", \"string\"),\n        (\"apellido2\", \"string\", \"apellido2\", \"string\"),\n        (\"sexo\", \"string\", \"sexo\", \"string\"),\n        (\"tipo_documento\", \"string\", \"tipo_documento\", \"string\"),\n        (\"direccion\", \"string\", \"direccion\", \"string\"),\n        (\"telefono1\", \"long\", \"telefono1\", \"string\"),\n        (\"telefono2\", \"string\", \"telefono2\", \"string\"),\n        (\"ciudad\", \"string\", \"ciudad\", \"string\"),\n        (\"correo\", \"string\", \"correo\", \"string\"),\n        (\"punto_de_venta_favorito\", \"long\", \"punto_de_venta_favorito\", \"string\"),\n        (\"fecha_creacion\", \"long\", \"fecha_creacion\", \"string\"),\n        (\"usuario_creacion\", \"string\", \"usuario_creacion\", \"string\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1691594641610\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1691595188058 = ApplyMapping.apply(\n    frame=Origenmaestro_promociones_csv_node1691595165124,\n    mappings=[\n        (\"promo_id\", \"long\", \"promo_id\", \"long\"),\n        (\"oferta\", \"string\", \"oferta\", \"string\"),\n        (\"disgroup_name\", \"string\", \"disgroup_name\", \"string\"),\n        (\"promotion_is_current\", \"string\", \"promotion_is_current\", \"string\"),\n        (\"promotion_start_date\", \"string\", \"promotion_start_date\", \"string\"),\n        (\"promotion_end_date\", \"string\", \"promotion_end_date\", \"string\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1691595188058\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694459968583 = ApplyMapping.apply(\n    frame=Origenmaestro_mpago_csv_node1694459886432,\n    mappings=[\n        (\"tipo\", \"long\", \"tipo\", \"long\"),\n        (\"mediopago\", \"string\", \"mediopago\", \"string\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694459968583\",\n)\n\n# Script generated for node ApplyMapping\nApplyMapping_node2 = ApplyMapping.apply(\n    frame=Origenplusaps_csv_node1,\n    mappings=[\n        (\"plu_sap\", \"long\", \"plu_sap\", \"string\"),\n        (\"plu_nombre\", \"string\", \"plu_nombre\", \"string\"),\n        (\"abc_nal\", \"string\", \"abc_nal\", \"string\"),\n        (\"abc_cat\", \"string\", \"abc_cat\", \"string\"),\n        (\"pais\", \"string\", \"pais\", \"string\"),\n        (\"origen\", \"string\", \"origen\", \"string\"),\n        (\"unimedida\", \"string\", \"unimedida\", \"string\"),\n        (\"ean\", \"long\", \"ean\", \"string\"),\n        (\"articulo\", \"string\", \"articulo\", \"string\"),\n        (\"tipomarca\", \"string\", \"tipomarca\", \"string\"),\n        (\"marca\", \"string\", \"marca\", \"string\"),\n        (\"clasemarca\", \"string\", \"clasemarca\", \"string\"),\n        (\"fuentaprov\", \"long\", \"fuentaprov\", \"string\"),\n        (\"consignado\", \"string\", \"consignado\", \"string\"),\n        (\"contenido\", \"long\", \"contenido\", \"double\"),\n        (\"explosion\", \"long\", \"explosion\", \"string\"),\n        (\"excagotados\", \"long\", \"excagotados\", \"string\"),\n        (\"pesobruto\", \"long\", \"pesobruto\", \"string\"),\n        (\"unidadpesobruto\", \"string\", \"unidadpesobruto\", \"string\"),\n        (\"longitud\", \"long\", \"longitud\", \"double\"),\n        (\"ancho\", \"long\", \"ancho\", \"double\"),\n        (\"altura\", \"long\", \"altura\", \"double\"),\n        (\"unidadmedida\", \"string\", \"unidadmedida\", \"string\"),\n        (\"unidadcontenidoneto\", \"string\", \"unidadcontenidoneto\", \"string\"),\n        (\"departamento\", \"string\", \"departamento\", \"string\"),\n        (\"categoria\", \"string\", \"categoria\", \"string\"),\n        (\"subcategoria\", \"string\", \"subcategoria\", \"string\"),\n        (\"segmento\", \"string\", \"segmento\", \"string\"),\n        (\"subsegmento1\", \"string\", \"subsegmento1\", \"string\"),\n        (\"subsegmento2\", \"string\", \"subsegmento2\", \"string\"),\n        (\"`dirección nal.`\", \"string\", \"`dirección nal.`\", \"string\"),\n        (\"tipocat\", \"string\", \"tipocat\", \"string\"),\n        (\"agrupación\", \"string\", \"agrupación\", \"string\"),\n        (\"dias obj neg\", \"long\", \"dias obj neg\", \"string\"),\n        (\"dias obj\", \"long\", \"dias obj\", \"string\"),\n        (\"seccion\", \"string\", \"seccion\", \"string\"),\n        (\"tiposec\", \"string\", \"tiposec\", \"string\"),\n        (\"gruposec\", \"string\", \"gruposec\", \"string\"),\n    ],\n    transformation_ctx=\"ApplyMapping_node2\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1691594887452 = ApplyMapping.apply(\n    frame=Origendetalle_cliente_riesgos_csv_node1691594820784,\n    mappings=[\n        (\"cedula_cli\", \"string\", \"cedula_cli\", \"string\"),\n        (\"riesgo\", \"long\", \"riesgo\", \"string\"),\n        (\"mayorista\", \"long\", \"mayorista\", \"string\"),\n        (\"listariesgo\", \"string\", \"listariesgo\", \"string\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1691594887452\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1691595056081 = ApplyMapping.apply(\n    frame=raw_maestro_negocios_csv_node1691594952342,\n    mappings=[\n        (\"centro\", \"long\", \"centro\", \"string\"),\n        (\"dirección\", \"string\", \"dirección\", \"string\"),\n        (\"zona\", \"long\", \"zona\", \"string\"),\n        (\"ciu\", \"string\", \"ciu\", \"string\"),\n        (\"nombre_centro\", \"string\", \"nombre_centro\", \"string\"),\n        (\"tipocentro\", \"string\", \"tipocentro\", \"string\"),\n        (\"distrito\", \"string\", \"distrito\", \"string\"),\n        (\"región\", \"string\", \"región\", \"string\"),\n        (\"formato\", \"string\", \"formato\", \"string\"),\n        (\"ciudad\", \"string\", \"ciudad\", \"string\"),\n        (\"antiguedad\", \"string\", \"antiguedad\", \"string\"),\n        (\"superficie\", \"double\", \"superficie\", \"double\"),\n        (\"estrato\", \"long\", \"estrato\", \"long\"),\n        (\"departamento\", \"string\", \"departamento\", \"string\"),\n        (\"ciudad_dane\", \"string\", \"ciudad_dane\", \"string\"),\n        (\"rango_ventas\", \"string\", \"rango_ventas\", \"string\"),\n        (\"rango_metros\", \"string\", \"rango_metros\", \"string\"),\n        (\"tipo_ciudad\", \"string\", \"tipo_ciudad\", \"string\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1691595056081\",\n)\n\n# Script generated for node SQLNitSapEliminarNull\nSqlQuery64 = \"\"\"\nselect * from myDataSource \nwhere isnull(nitsap) <> true\n\"\"\"\nSQLNitSapEliminarNull_node1694547215454 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery64,\n    mapping={\"myDataSource\": ChangeSchema_node1691598194388},\n    transformation_ctx=\"SQLNitSapEliminarNull_node1694547215454\",\n)\n\n# Script generated for node SQLPlusapsEliminarNull\nSqlQuery65 = \"\"\"\nselect * from myDataSource \nwhere isnull(plu_sap) <> true\n\"\"\"\nSQLPlusapsEliminarNull_node1694545329277 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery65,\n    mapping={\"myDataSource\": ApplyMapping_node2},\n    transformation_ctx=\"SQLPlusapsEliminarNull_node1694545329277\",\n)\n\n# Script generated for node Destino descuentos_medios_de_pago_parquet\nDestinodescuentos_medios_de_pago_parquet_node1691597746166 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/descuentos_medios_de_pago_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinodescuentos_medios_de_pago_parquet_node1691597746166\",\n)\nDestinodescuentos_medios_de_pago_parquet_node1691597746166.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\",\n    catalogTableName=\"raw_descuentos_medios_de_pago_parquet\",\n)\nDestinodescuentos_medios_de_pago_parquet_node1691597746166.setFormat(\"glueparquet\")\nDestinodescuentos_medios_de_pago_parquet_node1691597746166.writeFrame(\n    ChangeSchema_node1691597726733\n)\n# Script generated for node Destino detalle_cliente_parquet\nDestinodetalle_cliente_parquet_node1691594724717 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/detalle_cliente_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinodetalle_cliente_parquet_node1691594724717\",\n)\nDestinodetalle_cliente_parquet_node1691594724717.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"raw_detalle_cliente_parquet\"\n)\nDestinodetalle_cliente_parquet_node1691594724717.setFormat(\"glueparquet\")\nDestinodetalle_cliente_parquet_node1691594724717.writeFrame(\n    ChangeSchema_node1691594641610\n)\n# Script generated for node Destino maestro_promociones_parquet\nDestinomaestro_promociones_parquet_node1691595192296 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/maestro_promociones_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinomaestro_promociones_parquet_node1691595192296\",\n)\nDestinomaestro_promociones_parquet_node1691595192296.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\",\n    catalogTableName=\"raw_maestro_promociones_parquet\",\n)\nDestinomaestro_promociones_parquet_node1691595192296.setFormat(\"glueparquet\")\nDestinomaestro_promociones_parquet_node1691595192296.writeFrame(\n    ChangeSchema_node1691595188058\n)\n# Script generated for node Destino maestro_mpago_parquet\nDestinomaestro_mpago_parquet_node1694460018487 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/maestro_medios_de_pago/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinomaestro_mpago_parquet_node1694460018487\",\n)\nDestinomaestro_mpago_parquet_node1694460018487.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"raw_maestro_mpago_parquet\"\n)\nDestinomaestro_mpago_parquet_node1694460018487.setFormat(\"glueparquet\")\nDestinomaestro_mpago_parquet_node1694460018487.writeFrame(\n    ChangeSchema_node1694459968583\n)\n# Script generated for node Destino detalle_cliente_riesgos_parquet\nDestinodetalle_cliente_riesgos_parquet_node1691594892619 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/detalle_cliente_riesgos_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinodetalle_cliente_riesgos_parquet_node1691594892619\",\n)\nDestinodetalle_cliente_riesgos_parquet_node1691594892619.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\",\n    catalogTableName=\"raw_detalle_cliente_riesgos_parquet\",\n)\nDestinodetalle_cliente_riesgos_parquet_node1691594892619.setFormat(\"glueparquet\")\nDestinodetalle_cliente_riesgos_parquet_node1691594892619.writeFrame(\n    ChangeSchema_node1691594887452\n)\n# Script generated for node Origen maestro_negocios_parquet\nOrigenmaestro_negocios_parquet_node1691595068509 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/maestro_negocios_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Origenmaestro_negocios_parquet_node1691595068509\",\n)\nOrigenmaestro_negocios_parquet_node1691595068509.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"raw_maestro_negocios_parquet\"\n)\nOrigenmaestro_negocios_parquet_node1691595068509.setFormat(\"glueparquet\")\nOrigenmaestro_negocios_parquet_node1691595068509.writeFrame(\n    ChangeSchema_node1691595056081\n)\n# Script generated for node Destino provee_detalle_parquet\nDestinoprovee_detalle_parquet_node1691598200239 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/provee_detalle_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinoprovee_detalle_parquet_node1691598200239\",\n)\nDestinoprovee_detalle_parquet_node1691598200239.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"raw_provee_detalle_parquet\"\n)\nDestinoprovee_detalle_parquet_node1691598200239.setFormat(\"glueparquet\")\nDestinoprovee_detalle_parquet_node1691598200239.writeFrame(\n    SQLNitSapEliminarNull_node1694547215454\n)\n# Script generated for node Destino plusaps_parquet\nDestinoplusaps_parquet_node3 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/plusaps_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinoplusaps_parquet_node3\",\n)\nDestinoplusaps_parquet_node3.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"raw_plusaps_parquet\"\n)\nDestinoplusaps_parquet_node3.setFormat(\"glueparquet\")\nDestinoplusaps_parquet_node3.writeFrame(SQLPlusapsEliminarNull_node1694545329277)\njob.commit()\n"
+}

@@ -1,0 +1,4746 @@
+{
+	"jobConfig": {
+		"name": "dsDestinoCapaRefinadaDataLakeMercadeo",
+		"description": "",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.8X",
+		"numberOfWorkers": 12,
+		"maxCapacity": 96,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "dsDestinoCapaRefinadaDataLakeMercadeo.py",
+		"scriptLocation": "s3://aws-us-gold/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-25T17:13:00.833Z",
+		"developerMode": false,
+		"connectionsList": [
+			"conexion_olimpicatao_dwh_redshift"
+		],
+		"temporaryDirectory": "s3://aws-us-gold/temp-dir/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": false,
+		"metrics": true,
+		"spark": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1695147299564": {
+			"nodeId": "node-1695147299564",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694988403674"
+			],
+			"name": "Drop Duplicates gold_TblDClientes",
+			"generatedNodeName": "DropDuplicatesgold_TblDClientes_node1695147299564",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"numeroidentificacion"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1695146847372": {
+			"nodeId": "node-1695146847372",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998390485"
+			],
+			"name": "Drop Duplicates gold_TblIChequeoPreciosBI",
+			"generatedNodeName": "DropDuplicatesgold_TblIChequeoPreciosBI_node1695146847372",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"regional",
+				"grupocompras",
+				"ean",
+				"plu",
+				"descripcion",
+				"rolcategoria",
+				"concepto",
+				"clase",
+				"competidor",
+				"precioolimpica",
+				"preciocompetencia",
+				"precionuevo",
+				"margenolimpica",
+				"margenprecionuevo",
+				"estado",
+				"fecha"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1694998613964": {
+			"nodeId": "node-1694998613964",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDPromociones_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDPromociones_parquet_delta_lake_node1694998613964",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblDPromociones_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblDPromociones_parquet_delta_lake/part-00000-8280a077-1112-43b3-9198-5706fcb5c0e5-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddpromocion",
+						"fullPath": [
+							"iddpromocion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigopromocion",
+						"fullPath": [
+							"codigopromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcionpromocion",
+						"fullPath": [
+							"descripcionpromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombregrupo",
+						"fullPath": [
+							"nombregrupo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "promocionvigente",
+						"fullPath": [
+							"promocionvigente"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fechainiciopromocion",
+						"fullPath": [
+							"fechainiciopromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fechafinpromocion",
+						"fullPath": [
+							"fechafinpromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694998328981": {
+			"nodeId": "node-1694998328981",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblIArbolCompetencia_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblIArbolCompetencia_parquet_delta_lake_node1694998328981",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblIArbolCompetencia_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblIArbolCompetencia_parquet_delta_lake/part-00000-9ce654b9-68a2-48ea-b800-c725f49a8857-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "cadena",
+						"fullPath": [
+							"cadena"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "anio",
+						"fullPath": [
+							"anio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "periodicidad",
+						"fullPath": [
+							"periodicidad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "periodo",
+						"fullPath": [
+							"periodo"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "indicador",
+						"fullPath": [
+							"indicador"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "valor",
+						"fullPath": [
+							"valor"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694909104329": {
+			"nodeId": "node-1694909104329",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695142964730"
+			],
+			"name": "Destino gold_TblDPromociones_redshift",
+			"generatedNodeName": "Destinogold_TblDPromociones_redshift_node1694909104329",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tbldpromociones",
+					"label": "tbldpromociones",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "iddpromocion",
+						"label": "iddpromocion",
+						"description": "INTEGER"
+					},
+					{
+						"value": "codigopromocion",
+						"label": "codigopromocion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "descripcionpromocion",
+						"label": "descripcionpromocion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "nombregrupo",
+						"label": "nombregrupo",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "promocionvigente",
+						"label": "promocionvigente",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "fechainiciopromocion",
+						"label": "fechainiciopromocion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "fechafinpromocion",
+						"label": "fechafinpromocion",
+						"description": "VARCHAR"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "codigopromocion",
+						"label": "codigopromocion",
+						"description": "VARCHAR"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tbldpromociones_temp_72ed1e",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694998699221": {
+			"nodeId": "node-1694998699221",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDProveedores_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDProveedores_parquet_delta_lake_node1694998699221",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblDProveedores_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblDProveedores_parquet_delta_lake/part-00000-a2876b8b-e662-4e85-8d04-22db52f15ee7-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddproveedor",
+						"fullPath": [
+							"iddproveedor"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nit",
+						"fullPath": [
+							"nit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "razonsocial",
+						"fullPath": [
+							"razonsocial"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombreproveedor",
+						"fullPath": [
+							"nombreproveedor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nitsap",
+						"fullPath": [
+							"nitsap"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "razonsocialsap",
+						"fullPath": [
+							"razonsocialsap"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "proveedortrade",
+						"fullPath": [
+							"proveedortrade"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipoproveedor",
+						"fullPath": [
+							"tipoproveedor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694743706810": {
+			"nodeId": "node-1694743706810",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695146847372"
+			],
+			"name": "Destino gold_TblIChequeoPreciosBI_redshift",
+			"generatedNodeName": "Destinogold_TblIChequeoPreciosBI_redshift_node1694743706810",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tblichequeopreciosbi",
+					"label": "tblichequeopreciosbi",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "regional",
+						"label": "regional",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "grupocompras",
+						"label": "grupocompras",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "ean",
+						"label": "ean",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "plu",
+						"label": "plu",
+						"description": "INTEGER"
+					},
+					{
+						"value": "descripcion",
+						"label": "descripcion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "rolcategoria",
+						"label": "rolcategoria",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "concepto",
+						"label": "concepto",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "clase",
+						"label": "clase",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "competidor",
+						"label": "competidor",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "precioolimpica",
+						"label": "precioolimpica",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "preciocompetencia",
+						"label": "preciocompetencia",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "precionuevo",
+						"label": "precionuevo",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "margenolimpica",
+						"label": "margenolimpica",
+						"description": "REAL"
+					},
+					{
+						"value": "margenprecionuevo",
+						"label": "margenprecionuevo",
+						"description": "REAL"
+					},
+					{
+						"value": "estado",
+						"label": "estado",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "fecha",
+						"label": "fecha",
+						"description": "DATE"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "regional",
+						"label": "regional",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "grupocompras",
+						"label": "grupocompras",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "ean",
+						"label": "ean",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "plu",
+						"label": "plu",
+						"description": "INTEGER"
+					},
+					{
+						"value": "descripcion",
+						"label": "descripcion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "rolcategoria",
+						"label": "rolcategoria",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "concepto",
+						"label": "concepto",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "clase",
+						"label": "clase",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "competidor",
+						"label": "competidor",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "precioolimpica",
+						"label": "precioolimpica",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "preciocompetencia",
+						"label": "preciocompetencia",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "precionuevo",
+						"label": "precionuevo",
+						"description": "DECIMAL"
+					},
+					{
+						"value": "margenolimpica",
+						"label": "margenolimpica",
+						"description": "REAL"
+					},
+					{
+						"value": "margenprecionuevo",
+						"label": "margenprecionuevo",
+						"description": "REAL"
+					},
+					{
+						"value": "estado",
+						"label": "estado",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "fecha",
+						"label": "fecha",
+						"description": "DATE"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tblichequeopreciosbi_temp_90646c",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694711601712": {
+			"nodeId": "node-1694711601712",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695146925805"
+			],
+			"name": "Destino gold_TblIOlimpicaGlobal_redshift",
+			"generatedNodeName": "Destinogold_TblIOlimpicaGlobal_redshift_node1694711601712",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tbliolimpicaglobal",
+					"label": "tbliolimpicaglobal",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "negocio",
+						"label": "negocio",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "anioinformacion",
+						"label": "anioinformacion",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalolimpicaventaanioanteriormillones",
+						"label": "totalolimpicaventaanioanteriormillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalolimpicaventaanioactualmillones",
+						"label": "totalolimpicaventaanioactualmillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalcolombiaventaanioanteriormillones",
+						"label": "totalcolombiaventaanioanteriormillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalcolombiaventaanioactualmillones",
+						"label": "totalcolombiaventaanioactualmillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "variacionmercado",
+						"label": "variacionmercado",
+						"description": "REAL"
+					},
+					{
+						"value": "variacionolimpica",
+						"label": "variacionolimpica",
+						"description": "REAL"
+					},
+					{
+						"value": "shareanoanterior",
+						"label": "shareanoanterior",
+						"description": "INTEGER"
+					},
+					{
+						"value": "shareanoactual",
+						"label": "shareanoactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "diferenciashare",
+						"label": "diferenciashare",
+						"description": "INTEGER"
+					},
+					{
+						"value": "oportunidadvaloradaanioactualmillones",
+						"label": "oportunidadvaloradaanioactualmillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "enero",
+						"label": "enero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "febrero",
+						"label": "febrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "marzo",
+						"label": "marzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "abril",
+						"label": "abril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "mayo",
+						"label": "mayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "junio",
+						"label": "junio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "julio",
+						"label": "julio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "agosto",
+						"label": "agosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "septiembre",
+						"label": "septiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "octubre",
+						"label": "octubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "noviembre",
+						"label": "noviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "diciembre",
+						"label": "diciembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalcostaanioactual",
+						"label": "totalcostaanioactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaenero",
+						"label": "costaenero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costafebrero",
+						"label": "costafebrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costamarzo",
+						"label": "costamarzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaabril",
+						"label": "costaabril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costamayo",
+						"label": "costamayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costajunio",
+						"label": "costajunio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costajulio",
+						"label": "costajulio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaagosto",
+						"label": "costaagosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaseptiembre",
+						"label": "costaseptiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaoctubre",
+						"label": "costaoctubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costanoviembre",
+						"label": "costanoviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costadiciembre",
+						"label": "costadiciembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalcentroanioactual",
+						"label": "totalcentroanioactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centroenero",
+						"label": "centroenero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrofebrero",
+						"label": "centrofebrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centromarzo",
+						"label": "centromarzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centroabril",
+						"label": "centroabril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centromayo",
+						"label": "centromayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrojunio",
+						"label": "centrojunio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrojulio",
+						"label": "centrojulio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centroagosto",
+						"label": "centroagosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centroseptiembre",
+						"label": "centroseptiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrooctubre",
+						"label": "centrooctubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centronoviembre",
+						"label": "centronoviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrodiciembre",
+						"label": "centrodiciembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totaloccidenteanioactual",
+						"label": "totaloccidenteanioactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteenero",
+						"label": "occidenteenero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentefebrero",
+						"label": "occidentefebrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentemarzo",
+						"label": "occidentemarzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteabril",
+						"label": "occidenteabril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentemayo",
+						"label": "occidentemayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentejunio",
+						"label": "occidentejunio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentejulio",
+						"label": "occidentejulio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteagosto",
+						"label": "occidenteagosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteseptiembre",
+						"label": "occidenteseptiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteoctubre",
+						"label": "occidenteoctubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentenoviembre",
+						"label": "occidentenoviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentediciembre",
+						"label": "occidentediciembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalejecafeteroanioactual",
+						"label": "totalejecafeteroanioactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteroenero",
+						"label": "ejecafeteroenero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterofebrero",
+						"label": "ejecafeterofebrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteromarzo",
+						"label": "ejecafeteromarzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteroabril",
+						"label": "ejecafeteroabril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteromayo",
+						"label": "ejecafeteromayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterojunio",
+						"label": "ejecafeterojunio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterojulio",
+						"label": "ejecafeterojulio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteroagosto",
+						"label": "ejecafeteroagosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteroseptiembre",
+						"label": "ejecafeteroseptiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterooctubre",
+						"label": "ejecafeterooctubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteronoviembre",
+						"label": "ejecafeteronoviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterodiciembre",
+						"label": "ejecafeterodiciembre",
+						"description": "INTEGER"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "negocio",
+						"label": "negocio",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "anioinformacion",
+						"label": "anioinformacion",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalolimpicaventaanioanteriormillones",
+						"label": "totalolimpicaventaanioanteriormillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalolimpicaventaanioactualmillones",
+						"label": "totalolimpicaventaanioactualmillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalcolombiaventaanioanteriormillones",
+						"label": "totalcolombiaventaanioanteriormillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalcolombiaventaanioactualmillones",
+						"label": "totalcolombiaventaanioactualmillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "variacionmercado",
+						"label": "variacionmercado",
+						"description": "REAL"
+					},
+					{
+						"value": "variacionolimpica",
+						"label": "variacionolimpica",
+						"description": "REAL"
+					},
+					{
+						"value": "shareanoanterior",
+						"label": "shareanoanterior",
+						"description": "INTEGER"
+					},
+					{
+						"value": "shareanoactual",
+						"label": "shareanoactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "diferenciashare",
+						"label": "diferenciashare",
+						"description": "INTEGER"
+					},
+					{
+						"value": "oportunidadvaloradaanioactualmillones",
+						"label": "oportunidadvaloradaanioactualmillones",
+						"description": "INTEGER"
+					},
+					{
+						"value": "enero",
+						"label": "enero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "febrero",
+						"label": "febrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "marzo",
+						"label": "marzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "abril",
+						"label": "abril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "mayo",
+						"label": "mayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "junio",
+						"label": "junio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "julio",
+						"label": "julio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "agosto",
+						"label": "agosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "septiembre",
+						"label": "septiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "octubre",
+						"label": "octubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "noviembre",
+						"label": "noviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "diciembre",
+						"label": "diciembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalcostaanioactual",
+						"label": "totalcostaanioactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaenero",
+						"label": "costaenero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costafebrero",
+						"label": "costafebrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costamarzo",
+						"label": "costamarzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaabril",
+						"label": "costaabril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costamayo",
+						"label": "costamayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costajunio",
+						"label": "costajunio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costajulio",
+						"label": "costajulio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaagosto",
+						"label": "costaagosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaseptiembre",
+						"label": "costaseptiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costaoctubre",
+						"label": "costaoctubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costanoviembre",
+						"label": "costanoviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "costadiciembre",
+						"label": "costadiciembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalcentroanioactual",
+						"label": "totalcentroanioactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centroenero",
+						"label": "centroenero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrofebrero",
+						"label": "centrofebrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centromarzo",
+						"label": "centromarzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centroabril",
+						"label": "centroabril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centromayo",
+						"label": "centromayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrojunio",
+						"label": "centrojunio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrojulio",
+						"label": "centrojulio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centroagosto",
+						"label": "centroagosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centroseptiembre",
+						"label": "centroseptiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrooctubre",
+						"label": "centrooctubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centronoviembre",
+						"label": "centronoviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "centrodiciembre",
+						"label": "centrodiciembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totaloccidenteanioactual",
+						"label": "totaloccidenteanioactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteenero",
+						"label": "occidenteenero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentefebrero",
+						"label": "occidentefebrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentemarzo",
+						"label": "occidentemarzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteabril",
+						"label": "occidenteabril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentemayo",
+						"label": "occidentemayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentejunio",
+						"label": "occidentejunio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentejulio",
+						"label": "occidentejulio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteagosto",
+						"label": "occidenteagosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteseptiembre",
+						"label": "occidenteseptiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidenteoctubre",
+						"label": "occidenteoctubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentenoviembre",
+						"label": "occidentenoviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "occidentediciembre",
+						"label": "occidentediciembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "totalejecafeteroanioactual",
+						"label": "totalejecafeteroanioactual",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteroenero",
+						"label": "ejecafeteroenero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterofebrero",
+						"label": "ejecafeterofebrero",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteromarzo",
+						"label": "ejecafeteromarzo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteroabril",
+						"label": "ejecafeteroabril",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteromayo",
+						"label": "ejecafeteromayo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterojunio",
+						"label": "ejecafeterojunio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterojulio",
+						"label": "ejecafeterojulio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteroagosto",
+						"label": "ejecafeteroagosto",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteroseptiembre",
+						"label": "ejecafeteroseptiembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterooctubre",
+						"label": "ejecafeterooctubre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeteronoviembre",
+						"label": "ejecafeteronoviembre",
+						"description": "INTEGER"
+					},
+					{
+						"value": "ejecafeterodiciembre",
+						"label": "ejecafeterodiciembre",
+						"description": "INTEGER"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": true,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tbliolimpicaglobal_temp_1b560a",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694988568419": {
+			"nodeId": "node-1694988568419",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695147299564"
+			],
+			"name": "Destino gold_TblDClientes_redshift",
+			"generatedNodeName": "Destinogold_TblDClientes_redshift_node1694988568419",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tbldclientes",
+					"label": "tbldclientes",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "iddcliente",
+						"label": "iddcliente",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddnegociofavorito",
+						"label": "iddnegociofavorito",
+						"description": "INTEGER"
+					},
+					{
+						"value": "numeroidentificacion",
+						"label": "numeroidentificacion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "tipoidentificacion",
+						"label": "tipoidentificacion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "nombre",
+						"label": "nombre",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "primerapellido",
+						"label": "primerapellido",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "segundoapellido",
+						"label": "segundoapellido",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "nombrecompleto",
+						"label": "nombrecompleto",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "genero",
+						"label": "genero",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "direccion",
+						"label": "direccion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "ciudad",
+						"label": "ciudad",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "telefonofijo",
+						"label": "telefonofijo",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "telefonocelular",
+						"label": "telefonocelular",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "telefonocelularalternativo",
+						"label": "telefonocelularalternativo",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "correoelectronico",
+						"label": "correoelectronico",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "fechacreacion",
+						"label": "fechacreacion",
+						"description": "INTEGER"
+					},
+					{
+						"value": "usuariocreacion",
+						"label": "usuariocreacion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "flagriesgo",
+						"label": "flagriesgo",
+						"description": "INTEGER"
+					},
+					{
+						"value": "flagmayorista",
+						"label": "flagmayorista",
+						"description": "INTEGER"
+					},
+					{
+						"value": "contactar",
+						"label": "contactar",
+						"description": "VARCHAR"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "numeroidentificacion",
+						"label": "numeroidentificacion",
+						"description": "VARCHAR"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tbldclientes_temp_6b2de4",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694724878902": {
+			"nodeId": "node-1694724878902",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695142861666"
+			],
+			"name": "Destino gold_TblIArbolCompetencia_redshift",
+			"generatedNodeName": "Destinogold_TblIArbolCompetencia_redshift_node1694724878902",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tbliarbolcompetencia",
+					"label": "tbliarbolcompetencia",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "cadena",
+						"label": "cadena",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "anio",
+						"label": "anio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "periodicidad",
+						"label": "periodicidad",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "periodo",
+						"label": "periodo",
+						"description": "REAL"
+					},
+					{
+						"value": "indicador",
+						"label": "indicador",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "valor",
+						"label": "valor",
+						"description": "REAL"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "cadena",
+						"label": "cadena",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "anio",
+						"label": "anio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "periodicidad",
+						"label": "periodicidad",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "periodo",
+						"label": "periodo",
+						"description": "REAL"
+					},
+					{
+						"value": "indicador",
+						"label": "indicador",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "valor",
+						"label": "valor",
+						"description": "REAL"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tbliarbolcompetencia_temp_e6cf19",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695146925805": {
+			"nodeId": "node-1695146925805",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998748301"
+			],
+			"name": "Drop Duplicates gold_TblIOlimpicaGlobal",
+			"generatedNodeName": "DropDuplicatesgold_TblIOlimpicaGlobal_node1695146925805",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"negocio",
+				"anioinformacion",
+				"totalolimpicaventaanioanteriormillones",
+				"totalolimpicaventaanioactualmillones",
+				"totalcolombiaventaanioanteriormillones",
+				"totalcolombiaventaanioactualmillones",
+				"variacionmercado",
+				"variacionolimpica",
+				"shareanoanterior",
+				"shareanoactual",
+				"diferenciashare",
+				"oportunidadvaloradaanioactualmillones",
+				"enero",
+				"febrero",
+				"marzo",
+				"abril",
+				"mayo",
+				"junio",
+				"julio",
+				"agosto",
+				"septiembre",
+				"octubre",
+				"noviembre",
+				"diciembre",
+				"totalcostaanioactual",
+				"costaenero",
+				"costafebrero",
+				"costamarzo",
+				"costaabril",
+				"costamayo",
+				"costajunio",
+				"costajulio",
+				"costaagosto",
+				"costaseptiembre",
+				"costaoctubre",
+				"costanoviembre",
+				"costadiciembre",
+				"totalcentroanioactual",
+				"centroenero",
+				"centrofebrero",
+				"centromarzo",
+				"centroabril",
+				"centromayo",
+				"centrojunio",
+				"centrojulio",
+				"centroagosto",
+				"centroseptiembre",
+				"centrooctubre",
+				"centronoviembre",
+				"centrodiciembre",
+				"totaloccidenteanioactual",
+				"occidenteenero",
+				"occidentefebrero",
+				"occidentemarzo",
+				"occidenteabril",
+				"occidentemayo",
+				"occidentejunio",
+				"occidentejulio",
+				"occidenteagosto",
+				"occidenteseptiembre",
+				"occidenteoctubre",
+				"occidentenoviembre",
+				"occidentediciembre",
+				"totalejecafeteroanioactual",
+				"ejecafeteroenero",
+				"ejecafeterofebrero",
+				"ejecafeteromarzo",
+				"ejecafeteroabril",
+				"ejecafeteromayo",
+				"ejecafeterojunio",
+				"ejecafeterojulio",
+				"ejecafeteroagosto",
+				"ejecafeteroseptiembre",
+				"ejecafeterooctubre",
+				"ejecafeteronoviembre",
+				"ejecafeterodiciembre"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1694616149252": {
+			"nodeId": "node-1694616149252",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695146606684"
+			],
+			"name": "Destino gold_TblDNegocios_Redshift",
+			"generatedNodeName": "Destinogold_TblDNegocios_Redshift_node1694616149252",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tbldnegocio",
+					"label": "tbldnegocio",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": {
+					"value": null,
+					"label": "AWSServiceRoleForRedshift",
+					"description": "Allows Redshift clusters to call AWS services on your behalf."
+				},
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "iddnegocio",
+						"label": "iddnegocio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "codigocentro",
+						"label": "codigocentro",
+						"description": "INTEGER"
+					},
+					{
+						"value": "descripcioncentro",
+						"label": "descripcioncentro",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "tipocentro",
+						"label": "tipocentro",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "direccion",
+						"label": "direccion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "estrato",
+						"label": "estrato",
+						"description": "INTEGER"
+					},
+					{
+						"value": "antiguedad",
+						"label": "antiguedad",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "superficie",
+						"label": "superficie",
+						"description": "DOUBLE PRECISION"
+					},
+					{
+						"value": "codigozona",
+						"label": "codigozona",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "distrito",
+						"label": "distrito",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "region",
+						"label": "region",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "formato",
+						"label": "formato",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "codigodane",
+						"label": "codigodane",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "departamento",
+						"label": "departamento",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "ciudad",
+						"label": "ciudad",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "ciudadabrevidada",
+						"label": "ciudadabrevidada",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "rangoventas",
+						"label": "rangoventas",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "rangometros",
+						"label": "rangometros",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "tipociudad",
+						"label": "tipociudad",
+						"description": "VARCHAR"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "codigocentro",
+						"label": "codigocentro",
+						"description": "INTEGER"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tbldnegocio_temp_ea33d1",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694624365716": {
+			"nodeId": "node-1694624365716",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695146425949"
+			],
+			"name": "Destino gold_TblDProveedores_Redshift",
+			"generatedNodeName": "Destinogold_TblDProveedores_Redshift_node1694624365716",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "TblDProveedores",
+					"label": "TblDProveedores",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "iddproveedor",
+						"label": "iddproveedor",
+						"description": "INTEGER"
+					},
+					{
+						"value": "nit",
+						"label": "nit",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "razonsocial",
+						"label": "razonsocial",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "nombreproveedor",
+						"label": "nombreproveedor",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "nitsap",
+						"label": "nitsap",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "razonsocialsap",
+						"label": "razonsocialsap",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "proveedortrade",
+						"label": "proveedortrade",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "tipoproveedor",
+						"label": "tipoproveedor",
+						"description": "VARCHAR"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "nitsap",
+						"label": "nitsap",
+						"description": "VARCHAR"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.TblDProveedores_temp_8af595",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695142861666": {
+			"nodeId": "node-1695142861666",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998328981"
+			],
+			"name": "Drop Duplicates gold_TblIArbolCompetencia",
+			"generatedNodeName": "DropDuplicatesgold_TblIArbolCompetencia_node1695142861666",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"cadena",
+				"anio",
+				"periodicidad",
+				"periodo",
+				"indicador",
+				"valor"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1695146800590": {
+			"nodeId": "node-1695146800590",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998248053"
+			],
+			"name": "Drop Duplicates gold_TblHDescuentosMediosPago",
+			"generatedNodeName": "DropDuplicatesgold_TblHDescuentosMediosPago_node1695146800590",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"idtransaccion",
+				"idddescuentosmediospago",
+				"iddfecha",
+				"descripciondescuento",
+				"descuento"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1695146425949": {
+			"nodeId": "node-1695146425949",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998699221"
+			],
+			"name": "Drop Duplicates gold_TblDProveedores",
+			"generatedNodeName": "DropDuplicatesgold_TblDProveedores_node1695146425949",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"nitsap"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1694998469262": {
+			"nodeId": "node-1694998469262",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDPlusap_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDPlusap_parquet_delta_lake_node1694998469262",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblDPlusap_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblDPlusap_parquet_delta_lake/part-00000-75d2f73a-bce4-4d71-88f5-bfff36d10f51-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddplu",
+						"fullPath": [
+							"iddplu"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plusap",
+						"fullPath": [
+							"plusap"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcionproducto",
+						"fullPath": [
+							"descripcionproducto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ean",
+						"fullPath": [
+							"ean"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pais",
+						"fullPath": [
+							"pais"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "origen",
+						"fullPath": [
+							"origen"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unimedida",
+						"fullPath": [
+							"unimedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipomarca",
+						"fullPath": [
+							"tipomarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "marca",
+						"fullPath": [
+							"marca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clasemarca",
+						"fullPath": [
+							"clasemarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pesobruto",
+						"fullPath": [
+							"pesobruto"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadpesobruto",
+						"fullPath": [
+							"unidadpesobruto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "longitud",
+						"fullPath": [
+							"longitud"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ancho",
+						"fullPath": [
+							"ancho"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "altura",
+						"fullPath": [
+							"altura"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadmedida",
+						"fullPath": [
+							"unidadmedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadcontenidoneto",
+						"fullPath": [
+							"unidadcontenidoneto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "gruposeccion",
+						"fullPath": [
+							"gruposeccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "categoria",
+						"fullPath": [
+							"categoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subcategoria",
+						"fullPath": [
+							"subcategoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segmento",
+						"fullPath": [
+							"segmento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegmento1",
+						"fullPath": [
+							"subsegmento1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegmento2",
+						"fullPath": [
+							"subsegmento2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "seccion",
+						"fullPath": [
+							"seccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tiposeccion",
+						"fullPath": [
+							"tiposeccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695146606684": {
+			"nodeId": "node-1695146606684",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998563253"
+			],
+			"name": "Drop Duplicates gold_TblDNegocios",
+			"generatedNodeName": "DropDuplicatesgold_TblDNegocios_node1695146606684",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"codigocentro"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1694998563253": {
+			"nodeId": "node-1694998563253",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDNegocios_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDNegocios_parquet_delta_lake_node1694998563253",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblDNegocios_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblDNegocios_parquet_delta_lake/part-00000-adb575a0-334b-47d4-be16-322225b3877f-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694998248053": {
+			"nodeId": "node-1694998248053",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblHDescuentosMediosPago_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblHDescuentosMediosPago_parquet_delta_lake_node1694998248053",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblHDescuentosMediosPago_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblHDescuentosMediosPago_parquet_delta_lake/part-00000-3f13f5d9-6f43-4f8c-91a0-4b0b1c878504-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "idddescuentosmediospago",
+						"fullPath": [
+							"idddescuentosmediospago"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddfecha",
+						"fullPath": [
+							"iddfecha"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripciondescuento",
+						"fullPath": [
+							"descripciondescuento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuento",
+						"fullPath": [
+							"descuento"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "idtransaccion",
+						"fullPath": [
+							"idtransaccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694792287094": {
+			"nodeId": "node-1694792287094",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695146800590"
+			],
+			"name": "Destino gold_TblHDescuentosMediosPago_redshift",
+			"generatedNodeName": "Destinogold_TblHDescuentosMediosPago_redshift_node1694792287094",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tblhdescuentosmediospago",
+					"label": "tblhdescuentosmediospago",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "idddescuentosmediospago",
+						"label": "idddescuentosmediospago",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddfecha",
+						"label": "iddfecha",
+						"description": "INTEGER"
+					},
+					{
+						"value": "descripciondescuento",
+						"label": "descripciondescuento",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "descuento",
+						"label": "descuento",
+						"description": "INTEGER"
+					},
+					{
+						"value": "idtransaccion",
+						"label": "idtransaccion",
+						"description": "VARCHAR"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "idtransaccion",
+						"label": "idtransaccion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "idddescuentosmediospago",
+						"label": "idddescuentosmediospago",
+						"description": "INTEGER"
+					},
+					{
+						"value": "iddfecha",
+						"label": "iddfecha",
+						"description": "INTEGER"
+					},
+					{
+						"value": "descripciondescuento",
+						"label": "descripciondescuento",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "descuento",
+						"label": "descuento",
+						"description": "INTEGER"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tblhdescuentosmediospago_temp_13d7a2",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694741952651": {
+			"nodeId": "node-1694741952651",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695147242532"
+			],
+			"name": "Destino gold_TblIChequeoPreciosMercadeo_redshift",
+			"generatedNodeName": "Destinogold_TblIChequeoPreciosMercadeo_redshift_node1694741952651",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tblichequeopreciosmercadeo",
+					"label": "tblichequeopreciosmercadeo",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "competidor",
+						"label": "competidor",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "categoria",
+						"label": "categoria",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "productocompetencia",
+						"label": "productocompetencia",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "productoolimpica",
+						"label": "productoolimpica",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "volumencompetencia",
+						"label": "volumencompetencia",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "volumenolimpica",
+						"label": "volumenolimpica",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "preciocompetencia",
+						"label": "preciocompetencia",
+						"description": "INTEGER"
+					},
+					{
+						"value": "precioolimpica",
+						"label": "precioolimpica",
+						"description": "INTEGER"
+					},
+					{
+						"value": "fecha",
+						"label": "fecha",
+						"description": "DATE"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "competidor",
+						"label": "competidor",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "categoria",
+						"label": "categoria",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "productocompetencia",
+						"label": "productocompetencia",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "productoolimpica",
+						"label": "productoolimpica",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "volumencompetencia",
+						"label": "volumencompetencia",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "volumenolimpica",
+						"label": "volumenolimpica",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "preciocompetencia",
+						"label": "preciocompetencia",
+						"description": "INTEGER"
+					},
+					{
+						"value": "precioolimpica",
+						"label": "precioolimpica",
+						"description": "INTEGER"
+					},
+					{
+						"value": "fecha",
+						"label": "fecha",
+						"description": "DATE"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tblichequeopreciosmercadeo_temp_7909a9",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695142964730": {
+			"nodeId": "node-1695142964730",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998613964"
+			],
+			"name": "Drop Duplicates  gold_TblDPromociones",
+			"generatedNodeName": "DropDuplicatesgold_TblDPromociones_node1695142964730",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"codigopromocion"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1695147242532": {
+			"nodeId": "node-1695147242532",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998073405"
+			],
+			"name": "Drop Duplicates gold_TblIChequeoPreciosMercadeo",
+			"generatedNodeName": "DropDuplicatesgold_TblIChequeoPreciosMercadeo_node1695147242532",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"competidor",
+				"categoria",
+				"productocompetencia",
+				"productoolimpica",
+				"volumencompetencia",
+				"volumenolimpica",
+				"preciocompetencia",
+				"precioolimpica",
+				"fecha"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1695147205380": {
+			"nodeId": "node-1695147205380",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998200878"
+			],
+			"name": "Drop Duplicates gold_TblIColombiaACV",
+			"generatedNodeName": "DropDuplicatesgold_TblIColombiaACV_node1695147205380",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"competidor",
+				"canal",
+				"anio",
+				"periodo",
+				"totalventacompetidortrimestre"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1694998390485": {
+			"nodeId": "node-1694998390485",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblIChequeoPreciosBI_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblIChequeoPreciosBI_parquet_delta_lake_node1694998390485",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblIChequeoPreciosBI_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblIChequeoPreciosBI_parquet_delta_lake/part-00000-0210df99-2264-4b09-8edb-20daa9512674-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "regional",
+						"fullPath": [
+							"regional"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grupocompras",
+						"fullPath": [
+							"grupocompras"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ean",
+						"fullPath": [
+							"ean"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plu",
+						"fullPath": [
+							"plu"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcion",
+						"fullPath": [
+							"descripcion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rolcategoria",
+						"fullPath": [
+							"rolcategoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "concepto",
+						"fullPath": [
+							"concepto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clase",
+						"fullPath": [
+							"clase"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "competidor",
+						"fullPath": [
+							"competidor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precioolimpica",
+						"fullPath": [
+							"precioolimpica"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "preciocompetencia",
+						"fullPath": [
+							"preciocompetencia"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precionuevo",
+						"fullPath": [
+							"precionuevo"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "margenolimpica",
+						"fullPath": [
+							"margenolimpica"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "margenprecionuevo",
+						"fullPath": [
+							"margenprecionuevo"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estado",
+						"fullPath": [
+							"estado"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha",
+						"fullPath": [
+							"fecha"
+						],
+						"type": "date",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694998748301": {
+			"nodeId": "node-1694998748301",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblIOlimpicaGlobal_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblIOlimpicaGlobal_parquet_delta_lake_node1694998748301",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblIOlimpicaGlobal_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblIOlimpicaGlobal_parquet_delta_lake/part-00000-fb9a2a37-c233-412c-8bdf-e0aa0f9a8478-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "negocio",
+						"fullPath": [
+							"negocio"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "anioinformacion",
+						"fullPath": [
+							"anioinformacion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalolimpicaventaanioanteriormillones",
+						"fullPath": [
+							"totalolimpicaventaanioanteriormillones"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalolimpicaventaanioactualmillones",
+						"fullPath": [
+							"totalolimpicaventaanioactualmillones"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalcolombiaventaanioanteriormillones",
+						"fullPath": [
+							"totalcolombiaventaanioanteriormillones"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalcolombiaventaanioactualmillones",
+						"fullPath": [
+							"totalcolombiaventaanioactualmillones"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "variacionmercado",
+						"fullPath": [
+							"variacionmercado"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "variacionolimpica",
+						"fullPath": [
+							"variacionolimpica"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shareanoanterior",
+						"fullPath": [
+							"shareanoanterior"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "shareanoactual",
+						"fullPath": [
+							"shareanoactual"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "diferenciashare",
+						"fullPath": [
+							"diferenciashare"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "oportunidadvaloradaanioactualmillones",
+						"fullPath": [
+							"oportunidadvaloradaanioactualmillones"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "enero",
+						"fullPath": [
+							"enero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "febrero",
+						"fullPath": [
+							"febrero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "marzo",
+						"fullPath": [
+							"marzo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "abril",
+						"fullPath": [
+							"abril"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "mayo",
+						"fullPath": [
+							"mayo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "junio",
+						"fullPath": [
+							"junio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "julio",
+						"fullPath": [
+							"julio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "agosto",
+						"fullPath": [
+							"agosto"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "septiembre",
+						"fullPath": [
+							"septiembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "octubre",
+						"fullPath": [
+							"octubre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "noviembre",
+						"fullPath": [
+							"noviembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "diciembre",
+						"fullPath": [
+							"diciembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalcostaanioactual",
+						"fullPath": [
+							"totalcostaanioactual"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costaenero",
+						"fullPath": [
+							"costaenero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costafebrero",
+						"fullPath": [
+							"costafebrero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costamarzo",
+						"fullPath": [
+							"costamarzo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costaabril",
+						"fullPath": [
+							"costaabril"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costamayo",
+						"fullPath": [
+							"costamayo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costajunio",
+						"fullPath": [
+							"costajunio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costajulio",
+						"fullPath": [
+							"costajulio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costaagosto",
+						"fullPath": [
+							"costaagosto"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costaseptiembre",
+						"fullPath": [
+							"costaseptiembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costaoctubre",
+						"fullPath": [
+							"costaoctubre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costanoviembre",
+						"fullPath": [
+							"costanoviembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "costadiciembre",
+						"fullPath": [
+							"costadiciembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalcentroanioactual",
+						"fullPath": [
+							"totalcentroanioactual"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centroenero",
+						"fullPath": [
+							"centroenero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centrofebrero",
+						"fullPath": [
+							"centrofebrero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centromarzo",
+						"fullPath": [
+							"centromarzo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centroabril",
+						"fullPath": [
+							"centroabril"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centromayo",
+						"fullPath": [
+							"centromayo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centrojunio",
+						"fullPath": [
+							"centrojunio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centrojulio",
+						"fullPath": [
+							"centrojulio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centroagosto",
+						"fullPath": [
+							"centroagosto"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centroseptiembre",
+						"fullPath": [
+							"centroseptiembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centrooctubre",
+						"fullPath": [
+							"centrooctubre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centronoviembre",
+						"fullPath": [
+							"centronoviembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "centrodiciembre",
+						"fullPath": [
+							"centrodiciembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totaloccidenteanioactual",
+						"fullPath": [
+							"totaloccidenteanioactual"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidenteenero",
+						"fullPath": [
+							"occidenteenero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidentefebrero",
+						"fullPath": [
+							"occidentefebrero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidentemarzo",
+						"fullPath": [
+							"occidentemarzo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidenteabril",
+						"fullPath": [
+							"occidenteabril"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidentemayo",
+						"fullPath": [
+							"occidentemayo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidentejunio",
+						"fullPath": [
+							"occidentejunio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidentejulio",
+						"fullPath": [
+							"occidentejulio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidenteagosto",
+						"fullPath": [
+							"occidenteagosto"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidenteseptiembre",
+						"fullPath": [
+							"occidenteseptiembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidenteoctubre",
+						"fullPath": [
+							"occidenteoctubre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidentenoviembre",
+						"fullPath": [
+							"occidentenoviembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "occidentediciembre",
+						"fullPath": [
+							"occidentediciembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalejecafeteroanioactual",
+						"fullPath": [
+							"totalejecafeteroanioactual"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeteroenero",
+						"fullPath": [
+							"ejecafeteroenero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeterofebrero",
+						"fullPath": [
+							"ejecafeterofebrero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeteromarzo",
+						"fullPath": [
+							"ejecafeteromarzo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeteroabril",
+						"fullPath": [
+							"ejecafeteroabril"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeteromayo",
+						"fullPath": [
+							"ejecafeteromayo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeterojunio",
+						"fullPath": [
+							"ejecafeterojunio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeterojulio",
+						"fullPath": [
+							"ejecafeterojulio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeteroagosto",
+						"fullPath": [
+							"ejecafeteroagosto"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeteroseptiembre",
+						"fullPath": [
+							"ejecafeteroseptiembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeterooctubre",
+						"fullPath": [
+							"ejecafeterooctubre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeteronoviembre",
+						"fullPath": [
+							"ejecafeteronoviembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ejecafeterodiciembre",
+						"fullPath": [
+							"ejecafeterodiciembre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694808964544": {
+			"nodeId": "node-1694808964544",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695147205380"
+			],
+			"name": "Destino gold_TblIColombiaACV_redshift",
+			"generatedNodeName": "Destinogold_TblIColombiaACV_redshift_node1694808964544",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tblicolombiaacv",
+					"label": "tblicolombiaacv",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "competidor",
+						"label": "competidor",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "canal",
+						"label": "canal",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "anio",
+						"label": "anio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "periodo",
+						"label": "periodo",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "totalventacompetidortrimestre",
+						"label": "totalventacompetidortrimestre",
+						"description": "INTEGER"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "competidor",
+						"label": "competidor",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "canal",
+						"label": "canal",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "anio",
+						"label": "anio",
+						"description": "INTEGER"
+					},
+					{
+						"value": "periodo",
+						"label": "periodo",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "totalventacompetidortrimestre",
+						"label": "totalventacompetidortrimestre",
+						"description": "INTEGER"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tblicolombiaacv_temp_4ca15e",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694998200878": {
+			"nodeId": "node-1694998200878",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblIColombiaACV_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblIColombiaACV_parquet_delta_lake_node1694998200878",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblIColombiaACV_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblIColombiaACV_parquet_delta_lake/part-00000-b208784b-784a-4d01-ba70-9eb7d2451553-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "competidor",
+						"fullPath": [
+							"competidor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "canal",
+						"fullPath": [
+							"canal"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "anio",
+						"fullPath": [
+							"anio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "periodo",
+						"fullPath": [
+							"periodo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "totalventacompetidortrimestre",
+						"fullPath": [
+							"totalventacompetidortrimestre"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695146285651": {
+			"nodeId": "node-1695146285651",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694998469262"
+			],
+			"name": "Drop Duplicates gold_TblDPlusap",
+			"generatedNodeName": "DropDuplicatesgold_TblDPlusap_node1695146285651",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [
+				"plusap"
+			],
+			"codeGenVersion": 2
+		},
+		"node-1694998073405": {
+			"nodeId": "node-1694998073405",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblIChequeoPreciosMercadeo_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblIChequeoPreciosMercadeo_parquet_delta_lake_node1694998073405",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblIChequeoPreciosMercadeo_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblIChequeoPreciosMercadeo_parquet_delta_lake/part-00000-fe02aa26-147a-4ee8-add0-e7cb5f3fb163-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "competidor",
+						"fullPath": [
+							"competidor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "categoria",
+						"fullPath": [
+							"categoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "productocompetencia",
+						"fullPath": [
+							"productocompetencia"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "productoolimpica",
+						"fullPath": [
+							"productoolimpica"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "volumencompetencia",
+						"fullPath": [
+							"volumencompetencia"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "volumenolimpica",
+						"fullPath": [
+							"volumenolimpica"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "preciocompetencia",
+						"fullPath": [
+							"preciocompetencia"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precioolimpica",
+						"fullPath": [
+							"precioolimpica"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha",
+						"fullPath": [
+							"fecha"
+						],
+						"type": "date",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694988403674": {
+			"nodeId": "node-1694988403674",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDClientes_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDClientes_parquet_delta_lake_node1694988403674",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblDClientes_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblDClientes_parquet_delta_lake/part-00000-6d902be0-921e-4405-ab7b-fcf224e3a784-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegociofavorito",
+						"fullPath": [
+							"iddnegociofavorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "numeroidentificacion",
+						"fullPath": [
+							"numeroidentificacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipoidentificacion",
+						"fullPath": [
+							"tipoidentificacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "primerapellido",
+						"fullPath": [
+							"primerapellido"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segundoapellido",
+						"fullPath": [
+							"segundoapellido"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombrecompleto",
+						"fullPath": [
+							"nombrecompleto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "genero",
+						"fullPath": [
+							"genero"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonofijo",
+						"fullPath": [
+							"telefonofijo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelular",
+						"fullPath": [
+							"telefonocelular"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelularalternativo",
+						"fullPath": [
+							"telefonocelularalternativo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correoelectronico",
+						"fullPath": [
+							"correoelectronico"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fechacreacion",
+						"fullPath": [
+							"fechacreacion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuariocreacion",
+						"fullPath": [
+							"usuariocreacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "flagriesgo",
+						"fullPath": [
+							"flagriesgo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "flagmayorista",
+						"fullPath": [
+							"flagmayorista"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "contactar",
+						"fullPath": [
+							"contactar"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694619699131": {
+			"nodeId": "node-1694619699131",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695146285651"
+			],
+			"name": "Destino gold_TblDPlusap_Redshift",
+			"generatedNodeName": "Destinogold_TblDPlusap_Redshift_node1694619699131",
+			"classification": "DataSink",
+			"type": "AmazonRedshift",
+			"streamingBatchInterval": 100,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "TblDPlusap",
+					"label": "TblDPlusap",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "merge",
+				"tableSchema": [
+					{
+						"value": "iddplu",
+						"label": "iddplu",
+						"description": "INTEGER"
+					},
+					{
+						"value": "plusap",
+						"label": "plusap",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "descripcionproducto",
+						"label": "descripcionproducto",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "ean",
+						"label": "ean",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "pais",
+						"label": "pais",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "origen",
+						"label": "origen",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "unimedida",
+						"label": "unimedida",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "tipomarca",
+						"label": "tipomarca",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "marca",
+						"label": "marca",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "clasemarca",
+						"label": "clasemarca",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "pesobruto",
+						"label": "pesobruto",
+						"description": "DOUBLE PRECISION"
+					},
+					{
+						"value": "unidadpesobruto",
+						"label": "unidadpesobruto",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "longitud",
+						"label": "longitud",
+						"description": "DOUBLE PRECISION"
+					},
+					{
+						"value": "ancho",
+						"label": "ancho",
+						"description": "DOUBLE PRECISION"
+					},
+					{
+						"value": "altura",
+						"label": "altura",
+						"description": "DOUBLE PRECISION"
+					},
+					{
+						"value": "unidadmedida",
+						"label": "unidadmedida",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "unidadcontenidoneto",
+						"label": "unidadcontenidoneto",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "departamento",
+						"label": "departamento",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "gruposeccion",
+						"label": "gruposeccion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "categoria",
+						"label": "categoria",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "subcategoria",
+						"label": "subcategoria",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "segmento",
+						"label": "segmento",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "subsegmento1",
+						"label": "subsegmento1",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "subsegmento2",
+						"label": "subsegmento2",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "seccion",
+						"label": "seccion",
+						"description": "VARCHAR"
+					},
+					{
+						"value": "tiposeccion",
+						"label": "tiposeccion",
+						"description": "VARCHAR"
+					}
+				],
+				"selectedColumns": [
+					{
+						"value": "plusap",
+						"label": "plusap",
+						"description": "VARCHAR"
+					}
+				],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.TblDPlusap_temp_98ceda",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nfrom awsglue.dynamicframe import DynamicFrame\nfrom awsglue import DynamicFrame\nfrom pyspark.sql import functions as SqlFuncs\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node Origen gold_TblDPromociones_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblDPromociones_parquet_delta_lake_node1694998613964_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblDPromociones_parquet_delta_lake/\")\n)\nOrigengold_TblDPromociones_parquet_delta_lake_node1694998613964 = DynamicFrame.fromDF(\n    Origengold_TblDPromociones_parquet_delta_lake_node1694998613964_df,\n    glueContext,\n    \"Origengold_TblDPromociones_parquet_delta_lake_node1694998613964\",\n)\n\n# Script generated for node Origen gold_TblIArbolCompetencia_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblIArbolCompetencia_parquet_delta_lake_node1694998328981_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblIArbolCompetencia_parquet_delta_lake/\")\n)\nOrigengold_TblIArbolCompetencia_parquet_delta_lake_node1694998328981 = (\n    DynamicFrame.fromDF(\n        Origengold_TblIArbolCompetencia_parquet_delta_lake_node1694998328981_df,\n        glueContext,\n        \"Origengold_TblIArbolCompetencia_parquet_delta_lake_node1694998328981\",\n    )\n)\n\n# Script generated for node Origen gold_TblDProveedores_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblDProveedores_parquet_delta_lake_node1694998699221_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblDProveedores_parquet_delta_lake/\")\n)\nOrigengold_TblDProveedores_parquet_delta_lake_node1694998699221 = DynamicFrame.fromDF(\n    Origengold_TblDProveedores_parquet_delta_lake_node1694998699221_df,\n    glueContext,\n    \"Origengold_TblDProveedores_parquet_delta_lake_node1694998699221\",\n)\n\n# Script generated for node Origen gold_TblDPlusap_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblDPlusap_parquet_delta_lake_node1694998469262_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblDPlusap_parquet_delta_lake/\")\n)\nOrigengold_TblDPlusap_parquet_delta_lake_node1694998469262 = DynamicFrame.fromDF(\n    Origengold_TblDPlusap_parquet_delta_lake_node1694998469262_df,\n    glueContext,\n    \"Origengold_TblDPlusap_parquet_delta_lake_node1694998469262\",\n)\n\n# Script generated for node Origen gold_TblDNegocios_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblDNegocios_parquet_delta_lake_node1694998563253_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblDNegocios_parquet_delta_lake/\")\n)\nOrigengold_TblDNegocios_parquet_delta_lake_node1694998563253 = DynamicFrame.fromDF(\n    Origengold_TblDNegocios_parquet_delta_lake_node1694998563253_df,\n    glueContext,\n    \"Origengold_TblDNegocios_parquet_delta_lake_node1694998563253\",\n)\n\n# Script generated for node Origen gold_TblHDescuentosMediosPago_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblHDescuentosMediosPago_parquet_delta_lake_node1694998248053_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblHDescuentosMediosPago_parquet_delta_lake/\")\n)\nOrigengold_TblHDescuentosMediosPago_parquet_delta_lake_node1694998248053 = (\n    DynamicFrame.fromDF(\n        Origengold_TblHDescuentosMediosPago_parquet_delta_lake_node1694998248053_df,\n        glueContext,\n        \"Origengold_TblHDescuentosMediosPago_parquet_delta_lake_node1694998248053\",\n    )\n)\n\n# Script generated for node Origen gold_TblIChequeoPreciosBI_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblIChequeoPreciosBI_parquet_delta_lake_node1694998390485_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblIChequeoPreciosBI_parquet_delta_lake/\")\n)\nOrigengold_TblIChequeoPreciosBI_parquet_delta_lake_node1694998390485 = (\n    DynamicFrame.fromDF(\n        Origengold_TblIChequeoPreciosBI_parquet_delta_lake_node1694998390485_df,\n        glueContext,\n        \"Origengold_TblIChequeoPreciosBI_parquet_delta_lake_node1694998390485\",\n    )\n)\n\n# Script generated for node Origen gold_TblIOlimpicaGlobal_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblIOlimpicaGlobal_parquet_delta_lake_node1694998748301_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblIOlimpicaGlobal_parquet_delta_lake/\")\n)\nOrigengold_TblIOlimpicaGlobal_parquet_delta_lake_node1694998748301 = (\n    DynamicFrame.fromDF(\n        Origengold_TblIOlimpicaGlobal_parquet_delta_lake_node1694998748301_df,\n        glueContext,\n        \"Origengold_TblIOlimpicaGlobal_parquet_delta_lake_node1694998748301\",\n    )\n)\n\n# Script generated for node Origen gold_TblIColombiaACV_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblIColombiaACV_parquet_delta_lake_node1694998200878_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblIColombiaACV_parquet_delta_lake/\")\n)\nOrigengold_TblIColombiaACV_parquet_delta_lake_node1694998200878 = DynamicFrame.fromDF(\n    Origengold_TblIColombiaACV_parquet_delta_lake_node1694998200878_df,\n    glueContext,\n    \"Origengold_TblIColombiaACV_parquet_delta_lake_node1694998200878\",\n)\n\n# Script generated for node Origen gold_TblDClientes_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblDClientes_parquet_delta_lake_node1694988403674_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblDClientes_parquet_delta_lake/\")\n)\nOrigengold_TblDClientes_parquet_delta_lake_node1694988403674 = DynamicFrame.fromDF(\n    Origengold_TblDClientes_parquet_delta_lake_node1694988403674_df,\n    glueContext,\n    \"Origengold_TblDClientes_parquet_delta_lake_node1694988403674\",\n)\n\n# Script generated for node Origen gold_TblIChequeoPreciosMercadeo_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblIChequeoPreciosMercadeo_parquet_delta_lake_node1694998073405_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblIChequeoPreciosMercadeo_parquet_delta_lake/\")\n)\nOrigengold_TblIChequeoPreciosMercadeo_parquet_delta_lake_node1694998073405 = (\n    DynamicFrame.fromDF(\n        Origengold_TblIChequeoPreciosMercadeo_parquet_delta_lake_node1694998073405_df,\n        glueContext,\n        \"Origengold_TblIChequeoPreciosMercadeo_parquet_delta_lake_node1694998073405\",\n    )\n)\n\n# Script generated for node Drop Duplicates  gold_TblDPromociones\nDropDuplicatesgold_TblDPromociones_node1695142964730 = DynamicFrame.fromDF(\n    Origengold_TblDPromociones_parquet_delta_lake_node1694998613964.toDF().dropDuplicates(\n        [\"codigopromocion\"]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblDPromociones_node1695142964730\",\n)\n\n# Script generated for node Drop Duplicates gold_TblIArbolCompetencia\nDropDuplicatesgold_TblIArbolCompetencia_node1695142861666 = DynamicFrame.fromDF(\n    Origengold_TblIArbolCompetencia_parquet_delta_lake_node1694998328981.toDF().dropDuplicates(\n        [\"cadena\", \"anio\", \"periodicidad\", \"periodo\", \"indicador\", \"valor\"]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblIArbolCompetencia_node1695142861666\",\n)\n\n# Script generated for node Drop Duplicates gold_TblDProveedores\nDropDuplicatesgold_TblDProveedores_node1695146425949 = DynamicFrame.fromDF(\n    Origengold_TblDProveedores_parquet_delta_lake_node1694998699221.toDF().dropDuplicates(\n        [\"nitsap\"]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblDProveedores_node1695146425949\",\n)\n\n# Script generated for node Drop Duplicates gold_TblDPlusap\nDropDuplicatesgold_TblDPlusap_node1695146285651 = DynamicFrame.fromDF(\n    Origengold_TblDPlusap_parquet_delta_lake_node1694998469262.toDF().dropDuplicates(\n        [\"plusap\"]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblDPlusap_node1695146285651\",\n)\n\n# Script generated for node Drop Duplicates gold_TblDNegocios\nDropDuplicatesgold_TblDNegocios_node1695146606684 = DynamicFrame.fromDF(\n    Origengold_TblDNegocios_parquet_delta_lake_node1694998563253.toDF().dropDuplicates(\n        [\"codigocentro\"]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblDNegocios_node1695146606684\",\n)\n\n# Script generated for node Drop Duplicates gold_TblHDescuentosMediosPago\nDropDuplicatesgold_TblHDescuentosMediosPago_node1695146800590 = DynamicFrame.fromDF(\n    Origengold_TblHDescuentosMediosPago_parquet_delta_lake_node1694998248053.toDF().dropDuplicates(\n        [\n            \"idtransaccion\",\n            \"idddescuentosmediospago\",\n            \"iddfecha\",\n            \"descripciondescuento\",\n            \"descuento\",\n        ]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblHDescuentosMediosPago_node1695146800590\",\n)\n\n# Script generated for node Drop Duplicates gold_TblIChequeoPreciosBI\nDropDuplicatesgold_TblIChequeoPreciosBI_node1695146847372 = DynamicFrame.fromDF(\n    Origengold_TblIChequeoPreciosBI_parquet_delta_lake_node1694998390485.toDF().dropDuplicates(\n        [\n            \"regional\",\n            \"grupocompras\",\n            \"ean\",\n            \"plu\",\n            \"descripcion\",\n            \"rolcategoria\",\n            \"concepto\",\n            \"clase\",\n            \"competidor\",\n            \"precioolimpica\",\n            \"preciocompetencia\",\n            \"precionuevo\",\n            \"margenolimpica\",\n            \"margenprecionuevo\",\n            \"estado\",\n            \"fecha\",\n        ]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblIChequeoPreciosBI_node1695146847372\",\n)\n\n# Script generated for node Drop Duplicates gold_TblIOlimpicaGlobal\nDropDuplicatesgold_TblIOlimpicaGlobal_node1695146925805 = DynamicFrame.fromDF(\n    Origengold_TblIOlimpicaGlobal_parquet_delta_lake_node1694998748301.toDF().dropDuplicates(\n        [\n            \"negocio\",\n            \"anioinformacion\",\n            \"totalolimpicaventaanioanteriormillones\",\n            \"totalolimpicaventaanioactualmillones\",\n            \"totalcolombiaventaanioanteriormillones\",\n            \"totalcolombiaventaanioactualmillones\",\n            \"variacionmercado\",\n            \"variacionolimpica\",\n            \"shareanoanterior\",\n            \"shareanoactual\",\n            \"diferenciashare\",\n            \"oportunidadvaloradaanioactualmillones\",\n            \"enero\",\n            \"febrero\",\n            \"marzo\",\n            \"abril\",\n            \"mayo\",\n            \"junio\",\n            \"julio\",\n            \"agosto\",\n            \"septiembre\",\n            \"octubre\",\n            \"noviembre\",\n            \"diciembre\",\n            \"totalcostaanioactual\",\n            \"costaenero\",\n            \"costafebrero\",\n            \"costamarzo\",\n            \"costaabril\",\n            \"costamayo\",\n            \"costajunio\",\n            \"costajulio\",\n            \"costaagosto\",\n            \"costaseptiembre\",\n            \"costaoctubre\",\n            \"costanoviembre\",\n            \"costadiciembre\",\n            \"totalcentroanioactual\",\n            \"centroenero\",\n            \"centrofebrero\",\n            \"centromarzo\",\n            \"centroabril\",\n            \"centromayo\",\n            \"centrojunio\",\n            \"centrojulio\",\n            \"centroagosto\",\n            \"centroseptiembre\",\n            \"centrooctubre\",\n            \"centronoviembre\",\n            \"centrodiciembre\",\n            \"totaloccidenteanioactual\",\n            \"occidenteenero\",\n            \"occidentefebrero\",\n            \"occidentemarzo\",\n            \"occidenteabril\",\n            \"occidentemayo\",\n            \"occidentejunio\",\n            \"occidentejulio\",\n            \"occidenteagosto\",\n            \"occidenteseptiembre\",\n            \"occidenteoctubre\",\n            \"occidentenoviembre\",\n            \"occidentediciembre\",\n            \"totalejecafeteroanioactual\",\n            \"ejecafeteroenero\",\n            \"ejecafeterofebrero\",\n            \"ejecafeteromarzo\",\n            \"ejecafeteroabril\",\n            \"ejecafeteromayo\",\n            \"ejecafeterojunio\",\n            \"ejecafeterojulio\",\n            \"ejecafeteroagosto\",\n            \"ejecafeteroseptiembre\",\n            \"ejecafeterooctubre\",\n            \"ejecafeteronoviembre\",\n            \"ejecafeterodiciembre\",\n        ]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblIOlimpicaGlobal_node1695146925805\",\n)\n\n# Script generated for node Drop Duplicates gold_TblIColombiaACV\nDropDuplicatesgold_TblIColombiaACV_node1695147205380 = DynamicFrame.fromDF(\n    Origengold_TblIColombiaACV_parquet_delta_lake_node1694998200878.toDF().dropDuplicates(\n        [\"competidor\", \"canal\", \"anio\", \"periodo\", \"totalventacompetidortrimestre\"]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblIColombiaACV_node1695147205380\",\n)\n\n# Script generated for node Drop Duplicates gold_TblDClientes\nDropDuplicatesgold_TblDClientes_node1695147299564 = DynamicFrame.fromDF(\n    Origengold_TblDClientes_parquet_delta_lake_node1694988403674.toDF().dropDuplicates(\n        [\"numeroidentificacion\"]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblDClientes_node1695147299564\",\n)\n\n# Script generated for node Drop Duplicates gold_TblIChequeoPreciosMercadeo\nDropDuplicatesgold_TblIChequeoPreciosMercadeo_node1695147242532 = DynamicFrame.fromDF(\n    Origengold_TblIChequeoPreciosMercadeo_parquet_delta_lake_node1694998073405.toDF().dropDuplicates(\n        [\n            \"competidor\",\n            \"categoria\",\n            \"productocompetencia\",\n            \"productoolimpica\",\n            \"volumencompetencia\",\n            \"volumenolimpica\",\n            \"preciocompetencia\",\n            \"precioolimpica\",\n            \"fecha\",\n        ]\n    ),\n    glueContext,\n    \"DropDuplicatesgold_TblIChequeoPreciosMercadeo_node1695147242532\",\n)\n\n# Script generated for node Destino gold_TblDPromociones_redshift\nDestinogold_TblDPromociones_redshift_node1694909104329 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblDPromociones_node1695142964730,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tbldpromociones USING public.tbldpromociones_temp_72ed1e ON tbldpromociones.codigopromocion = tbldpromociones_temp_72ed1e.codigopromocion WHEN MATCHED THEN UPDATE SET iddpromocion = tbldpromociones_temp_72ed1e.iddpromocion, codigopromocion = tbldpromociones_temp_72ed1e.codigopromocion, descripcionpromocion = tbldpromociones_temp_72ed1e.descripcionpromocion, nombregrupo = tbldpromociones_temp_72ed1e.nombregrupo, promocionvigente = tbldpromociones_temp_72ed1e.promocionvigente, fechainiciopromocion = tbldpromociones_temp_72ed1e.fechainiciopromocion, fechafinpromocion = tbldpromociones_temp_72ed1e.fechafinpromocion WHEN NOT MATCHED THEN INSERT VALUES (tbldpromociones_temp_72ed1e.iddpromocion, tbldpromociones_temp_72ed1e.codigopromocion, tbldpromociones_temp_72ed1e.descripcionpromocion, tbldpromociones_temp_72ed1e.nombregrupo, tbldpromociones_temp_72ed1e.promocionvigente, tbldpromociones_temp_72ed1e.fechainiciopromocion, tbldpromociones_temp_72ed1e.fechafinpromocion); DROP TABLE public.tbldpromociones_temp_72ed1e; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tbldpromociones_temp_72ed1e\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tbldpromociones (iddpromocion INTEGER, codigopromocion VARCHAR, descripcionpromocion VARCHAR, nombregrupo VARCHAR, promocionvigente VARCHAR, fechainiciopromocion VARCHAR, fechafinpromocion VARCHAR); DROP TABLE IF EXISTS public.tbldpromociones_temp_72ed1e; CREATE TABLE public.tbldpromociones_temp_72ed1e (iddpromocion INTEGER, codigopromocion VARCHAR, descripcionpromocion VARCHAR, nombregrupo VARCHAR, promocionvigente VARCHAR, fechainiciopromocion VARCHAR, fechafinpromocion VARCHAR);\",\n    },\n    transformation_ctx=\"Destinogold_TblDPromociones_redshift_node1694909104329\",\n)\n\n# Script generated for node Destino gold_TblIArbolCompetencia_redshift\nDestinogold_TblIArbolCompetencia_redshift_node1694724878902 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblIArbolCompetencia_node1695142861666,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tbliarbolcompetencia USING public.tbliarbolcompetencia_temp_e6cf19 ON tbliarbolcompetencia.cadena = tbliarbolcompetencia_temp_e6cf19.cadena AND tbliarbolcompetencia.anio = tbliarbolcompetencia_temp_e6cf19.anio AND tbliarbolcompetencia.periodicidad = tbliarbolcompetencia_temp_e6cf19.periodicidad AND tbliarbolcompetencia.periodo = tbliarbolcompetencia_temp_e6cf19.periodo AND tbliarbolcompetencia.indicador = tbliarbolcompetencia_temp_e6cf19.indicador AND tbliarbolcompetencia.valor = tbliarbolcompetencia_temp_e6cf19.valor WHEN MATCHED THEN UPDATE SET cadena = tbliarbolcompetencia_temp_e6cf19.cadena, anio = tbliarbolcompetencia_temp_e6cf19.anio, periodicidad = tbliarbolcompetencia_temp_e6cf19.periodicidad, periodo = tbliarbolcompetencia_temp_e6cf19.periodo, indicador = tbliarbolcompetencia_temp_e6cf19.indicador, valor = tbliarbolcompetencia_temp_e6cf19.valor WHEN NOT MATCHED THEN INSERT VALUES (tbliarbolcompetencia_temp_e6cf19.cadena, tbliarbolcompetencia_temp_e6cf19.anio, tbliarbolcompetencia_temp_e6cf19.periodicidad, tbliarbolcompetencia_temp_e6cf19.periodo, tbliarbolcompetencia_temp_e6cf19.indicador, tbliarbolcompetencia_temp_e6cf19.valor); DROP TABLE public.tbliarbolcompetencia_temp_e6cf19; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tbliarbolcompetencia_temp_e6cf19\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tbliarbolcompetencia (cadena VARCHAR, anio INTEGER, periodicidad VARCHAR, periodo REAL, indicador VARCHAR, valor REAL); DROP TABLE IF EXISTS public.tbliarbolcompetencia_temp_e6cf19; CREATE TABLE public.tbliarbolcompetencia_temp_e6cf19 (cadena VARCHAR, anio INTEGER, periodicidad VARCHAR, periodo REAL, indicador VARCHAR, valor REAL);\",\n    },\n    transformation_ctx=\"Destinogold_TblIArbolCompetencia_redshift_node1694724878902\",\n)\n\n# Script generated for node Destino gold_TblDProveedores_Redshift\nDestinogold_TblDProveedores_Redshift_node1694624365716 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblDProveedores_node1695146425949,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.TblDProveedores USING public.TblDProveedores_temp_8af595 ON TblDProveedores.nitsap = TblDProveedores_temp_8af595.nitsap WHEN MATCHED THEN UPDATE SET iddproveedor = TblDProveedores_temp_8af595.iddproveedor, nit = TblDProveedores_temp_8af595.nit, razonsocial = TblDProveedores_temp_8af595.razonsocial, nombreproveedor = TblDProveedores_temp_8af595.nombreproveedor, nitsap = TblDProveedores_temp_8af595.nitsap, razonsocialsap = TblDProveedores_temp_8af595.razonsocialsap, proveedortrade = TblDProveedores_temp_8af595.proveedortrade, tipoproveedor = TblDProveedores_temp_8af595.tipoproveedor WHEN NOT MATCHED THEN INSERT VALUES (TblDProveedores_temp_8af595.iddproveedor, TblDProveedores_temp_8af595.nit, TblDProveedores_temp_8af595.razonsocial, TblDProveedores_temp_8af595.nombreproveedor, TblDProveedores_temp_8af595.nitsap, TblDProveedores_temp_8af595.razonsocialsap, TblDProveedores_temp_8af595.proveedortrade, TblDProveedores_temp_8af595.tipoproveedor); DROP TABLE public.TblDProveedores_temp_8af595; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.TblDProveedores_temp_8af595\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.TblDProveedores (iddproveedor INTEGER, nit VARCHAR, razonsocial VARCHAR, nombreproveedor VARCHAR, nitsap VARCHAR, razonsocialsap VARCHAR, proveedortrade VARCHAR, tipoproveedor VARCHAR); DROP TABLE IF EXISTS public.TblDProveedores_temp_8af595; CREATE TABLE public.TblDProveedores_temp_8af595 (iddproveedor INTEGER, nit VARCHAR, razonsocial VARCHAR, nombreproveedor VARCHAR, nitsap VARCHAR, razonsocialsap VARCHAR, proveedortrade VARCHAR, tipoproveedor VARCHAR);\",\n    },\n    transformation_ctx=\"Destinogold_TblDProveedores_Redshift_node1694624365716\",\n)\n\n# Script generated for node Destino gold_TblDPlusap_Redshift\nDestinogold_TblDPlusap_Redshift_node1694619699131 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblDPlusap_node1695146285651,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.TblDPlusap USING public.TblDPlusap_temp_98ceda ON TblDPlusap.plusap = TblDPlusap_temp_98ceda.plusap WHEN MATCHED THEN UPDATE SET iddplu = TblDPlusap_temp_98ceda.iddplu, plusap = TblDPlusap_temp_98ceda.plusap, descripcionproducto = TblDPlusap_temp_98ceda.descripcionproducto, ean = TblDPlusap_temp_98ceda.ean, pais = TblDPlusap_temp_98ceda.pais, origen = TblDPlusap_temp_98ceda.origen, unimedida = TblDPlusap_temp_98ceda.unimedida, tipomarca = TblDPlusap_temp_98ceda.tipomarca, marca = TblDPlusap_temp_98ceda.marca, clasemarca = TblDPlusap_temp_98ceda.clasemarca, pesobruto = TblDPlusap_temp_98ceda.pesobruto, unidadpesobruto = TblDPlusap_temp_98ceda.unidadpesobruto, longitud = TblDPlusap_temp_98ceda.longitud, ancho = TblDPlusap_temp_98ceda.ancho, altura = TblDPlusap_temp_98ceda.altura, unidadmedida = TblDPlusap_temp_98ceda.unidadmedida, unidadcontenidoneto = TblDPlusap_temp_98ceda.unidadcontenidoneto, departamento = TblDPlusap_temp_98ceda.departamento, gruposeccion = TblDPlusap_temp_98ceda.gruposeccion, categoria = TblDPlusap_temp_98ceda.categoria, subcategoria = TblDPlusap_temp_98ceda.subcategoria, segmento = TblDPlusap_temp_98ceda.segmento, subsegmento1 = TblDPlusap_temp_98ceda.subsegmento1, subsegmento2 = TblDPlusap_temp_98ceda.subsegmento2, seccion = TblDPlusap_temp_98ceda.seccion, tiposeccion = TblDPlusap_temp_98ceda.tiposeccion WHEN NOT MATCHED THEN INSERT VALUES (TblDPlusap_temp_98ceda.iddplu, TblDPlusap_temp_98ceda.plusap, TblDPlusap_temp_98ceda.descripcionproducto, TblDPlusap_temp_98ceda.ean, TblDPlusap_temp_98ceda.pais, TblDPlusap_temp_98ceda.origen, TblDPlusap_temp_98ceda.unimedida, TblDPlusap_temp_98ceda.tipomarca, TblDPlusap_temp_98ceda.marca, TblDPlusap_temp_98ceda.clasemarca, TblDPlusap_temp_98ceda.pesobruto, TblDPlusap_temp_98ceda.unidadpesobruto, TblDPlusap_temp_98ceda.longitud, TblDPlusap_temp_98ceda.ancho, TblDPlusap_temp_98ceda.altura, TblDPlusap_temp_98ceda.unidadmedida, TblDPlusap_temp_98ceda.unidadcontenidoneto, TblDPlusap_temp_98ceda.departamento, TblDPlusap_temp_98ceda.gruposeccion, TblDPlusap_temp_98ceda.categoria, TblDPlusap_temp_98ceda.subcategoria, TblDPlusap_temp_98ceda.segmento, TblDPlusap_temp_98ceda.subsegmento1, TblDPlusap_temp_98ceda.subsegmento2, TblDPlusap_temp_98ceda.seccion, TblDPlusap_temp_98ceda.tiposeccion); DROP TABLE public.TblDPlusap_temp_98ceda; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.TblDPlusap_temp_98ceda\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.TblDPlusap (iddplu INTEGER, plusap VARCHAR, descripcionproducto VARCHAR, ean VARCHAR, pais VARCHAR, origen VARCHAR, unimedida VARCHAR, tipomarca VARCHAR, marca VARCHAR, clasemarca VARCHAR, pesobruto DOUBLE PRECISION, unidadpesobruto VARCHAR, longitud DOUBLE PRECISION, ancho DOUBLE PRECISION, altura DOUBLE PRECISION, unidadmedida VARCHAR, unidadcontenidoneto VARCHAR, departamento VARCHAR, gruposeccion VARCHAR, categoria VARCHAR, subcategoria VARCHAR, segmento VARCHAR, subsegmento1 VARCHAR, subsegmento2 VARCHAR, seccion VARCHAR, tiposeccion VARCHAR); DROP TABLE IF EXISTS public.TblDPlusap_temp_98ceda; CREATE TABLE public.TblDPlusap_temp_98ceda (iddplu INTEGER, plusap VARCHAR, descripcionproducto VARCHAR, ean VARCHAR, pais VARCHAR, origen VARCHAR, unimedida VARCHAR, tipomarca VARCHAR, marca VARCHAR, clasemarca VARCHAR, pesobruto DOUBLE PRECISION, unidadpesobruto VARCHAR, longitud DOUBLE PRECISION, ancho DOUBLE PRECISION, altura DOUBLE PRECISION, unidadmedida VARCHAR, unidadcontenidoneto VARCHAR, departamento VARCHAR, gruposeccion VARCHAR, categoria VARCHAR, subcategoria VARCHAR, segmento VARCHAR, subsegmento1 VARCHAR, subsegmento2 VARCHAR, seccion VARCHAR, tiposeccion VARCHAR);\",\n    },\n    transformation_ctx=\"Destinogold_TblDPlusap_Redshift_node1694619699131\",\n)\n\n# Script generated for node Destino gold_TblDNegocios_Redshift\nDestinogold_TblDNegocios_Redshift_node1694616149252 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblDNegocios_node1695146606684,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tbldnegocio USING public.tbldnegocio_temp_ea33d1 ON tbldnegocio.codigocentro = tbldnegocio_temp_ea33d1.codigocentro WHEN MATCHED THEN UPDATE SET iddnegocio = tbldnegocio_temp_ea33d1.iddnegocio, codigocentro = tbldnegocio_temp_ea33d1.codigocentro, descripcioncentro = tbldnegocio_temp_ea33d1.descripcioncentro, tipocentro = tbldnegocio_temp_ea33d1.tipocentro, direccion = tbldnegocio_temp_ea33d1.direccion, estrato = tbldnegocio_temp_ea33d1.estrato, antiguedad = tbldnegocio_temp_ea33d1.antiguedad, superficie = tbldnegocio_temp_ea33d1.superficie, codigozona = tbldnegocio_temp_ea33d1.codigozona, distrito = tbldnegocio_temp_ea33d1.distrito, region = tbldnegocio_temp_ea33d1.region, formato = tbldnegocio_temp_ea33d1.formato, codigodane = tbldnegocio_temp_ea33d1.codigodane, departamento = tbldnegocio_temp_ea33d1.departamento, ciudad = tbldnegocio_temp_ea33d1.ciudad, ciudadabrevidada = tbldnegocio_temp_ea33d1.ciudadabrevidada, rangoventas = tbldnegocio_temp_ea33d1.rangoventas, rangometros = tbldnegocio_temp_ea33d1.rangometros, tipociudad = tbldnegocio_temp_ea33d1.tipociudad WHEN NOT MATCHED THEN INSERT VALUES (tbldnegocio_temp_ea33d1.iddnegocio, tbldnegocio_temp_ea33d1.codigocentro, tbldnegocio_temp_ea33d1.descripcioncentro, tbldnegocio_temp_ea33d1.tipocentro, tbldnegocio_temp_ea33d1.direccion, tbldnegocio_temp_ea33d1.estrato, tbldnegocio_temp_ea33d1.antiguedad, tbldnegocio_temp_ea33d1.superficie, tbldnegocio_temp_ea33d1.codigozona, tbldnegocio_temp_ea33d1.distrito, tbldnegocio_temp_ea33d1.region, tbldnegocio_temp_ea33d1.formato, tbldnegocio_temp_ea33d1.codigodane, tbldnegocio_temp_ea33d1.departamento, tbldnegocio_temp_ea33d1.ciudad, tbldnegocio_temp_ea33d1.ciudadabrevidada, tbldnegocio_temp_ea33d1.rangoventas, tbldnegocio_temp_ea33d1.rangometros, tbldnegocio_temp_ea33d1.tipociudad); DROP TABLE public.tbldnegocio_temp_ea33d1; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tbldnegocio_temp_ea33d1\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tbldnegocio (iddnegocio INTEGER, codigocentro INTEGER, descripcioncentro VARCHAR, tipocentro VARCHAR, direccion VARCHAR, estrato INTEGER, antiguedad VARCHAR, superficie DOUBLE PRECISION, codigozona VARCHAR, distrito VARCHAR, region VARCHAR, formato VARCHAR, codigodane VARCHAR, departamento VARCHAR, ciudad VARCHAR, ciudadabrevidada VARCHAR, rangoventas VARCHAR, rangometros VARCHAR, tipociudad VARCHAR); DROP TABLE IF EXISTS public.tbldnegocio_temp_ea33d1; CREATE TABLE public.tbldnegocio_temp_ea33d1 (iddnegocio INTEGER, codigocentro INTEGER, descripcioncentro VARCHAR, tipocentro VARCHAR, direccion VARCHAR, estrato INTEGER, antiguedad VARCHAR, superficie DOUBLE PRECISION, codigozona VARCHAR, distrito VARCHAR, region VARCHAR, formato VARCHAR, codigodane VARCHAR, departamento VARCHAR, ciudad VARCHAR, ciudadabrevidada VARCHAR, rangoventas VARCHAR, rangometros VARCHAR, tipociudad VARCHAR);\",\n    },\n    transformation_ctx=\"Destinogold_TblDNegocios_Redshift_node1694616149252\",\n)\n\n# Script generated for node Destino gold_TblHDescuentosMediosPago_redshift\nDestinogold_TblHDescuentosMediosPago_redshift_node1694792287094 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblHDescuentosMediosPago_node1695146800590,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tblhdescuentosmediospago USING public.tblhdescuentosmediospago_temp_13d7a2 ON tblhdescuentosmediospago.idtransaccion = tblhdescuentosmediospago_temp_13d7a2.idtransaccion AND tblhdescuentosmediospago.idddescuentosmediospago = tblhdescuentosmediospago_temp_13d7a2.idddescuentosmediospago AND tblhdescuentosmediospago.iddfecha = tblhdescuentosmediospago_temp_13d7a2.iddfecha AND tblhdescuentosmediospago.descripciondescuento = tblhdescuentosmediospago_temp_13d7a2.descripciondescuento AND tblhdescuentosmediospago.descuento = tblhdescuentosmediospago_temp_13d7a2.descuento WHEN MATCHED THEN UPDATE SET idddescuentosmediospago = tblhdescuentosmediospago_temp_13d7a2.idddescuentosmediospago, iddfecha = tblhdescuentosmediospago_temp_13d7a2.iddfecha, descripciondescuento = tblhdescuentosmediospago_temp_13d7a2.descripciondescuento, descuento = tblhdescuentosmediospago_temp_13d7a2.descuento, idtransaccion = tblhdescuentosmediospago_temp_13d7a2.idtransaccion WHEN NOT MATCHED THEN INSERT VALUES (tblhdescuentosmediospago_temp_13d7a2.idddescuentosmediospago, tblhdescuentosmediospago_temp_13d7a2.iddfecha, tblhdescuentosmediospago_temp_13d7a2.descripciondescuento, tblhdescuentosmediospago_temp_13d7a2.descuento, tblhdescuentosmediospago_temp_13d7a2.idtransaccion); DROP TABLE public.tblhdescuentosmediospago_temp_13d7a2; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tblhdescuentosmediospago_temp_13d7a2\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tblhdescuentosmediospago (idddescuentosmediospago INTEGER, iddfecha INTEGER, descripciondescuento VARCHAR, descuento INTEGER, idtransaccion VARCHAR); DROP TABLE IF EXISTS public.tblhdescuentosmediospago_temp_13d7a2; CREATE TABLE public.tblhdescuentosmediospago_temp_13d7a2 (idddescuentosmediospago INTEGER, iddfecha INTEGER, descripciondescuento VARCHAR, descuento INTEGER, idtransaccion VARCHAR);\",\n    },\n    transformation_ctx=\"Destinogold_TblHDescuentosMediosPago_redshift_node1694792287094\",\n)\n\n# Script generated for node Destino gold_TblIChequeoPreciosBI_redshift\nDestinogold_TblIChequeoPreciosBI_redshift_node1694743706810 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblIChequeoPreciosBI_node1695146847372,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tblichequeopreciosbi USING public.tblichequeopreciosbi_temp_90646c ON tblichequeopreciosbi.regional = tblichequeopreciosbi_temp_90646c.regional AND tblichequeopreciosbi.grupocompras = tblichequeopreciosbi_temp_90646c.grupocompras AND tblichequeopreciosbi.ean = tblichequeopreciosbi_temp_90646c.ean AND tblichequeopreciosbi.plu = tblichequeopreciosbi_temp_90646c.plu AND tblichequeopreciosbi.descripcion = tblichequeopreciosbi_temp_90646c.descripcion AND tblichequeopreciosbi.rolcategoria = tblichequeopreciosbi_temp_90646c.rolcategoria AND tblichequeopreciosbi.concepto = tblichequeopreciosbi_temp_90646c.concepto AND tblichequeopreciosbi.clase = tblichequeopreciosbi_temp_90646c.clase AND tblichequeopreciosbi.competidor = tblichequeopreciosbi_temp_90646c.competidor AND tblichequeopreciosbi.precioolimpica = tblichequeopreciosbi_temp_90646c.precioolimpica AND tblichequeopreciosbi.preciocompetencia = tblichequeopreciosbi_temp_90646c.preciocompetencia AND tblichequeopreciosbi.precionuevo = tblichequeopreciosbi_temp_90646c.precionuevo AND tblichequeopreciosbi.margenolimpica = tblichequeopreciosbi_temp_90646c.margenolimpica AND tblichequeopreciosbi.margenprecionuevo = tblichequeopreciosbi_temp_90646c.margenprecionuevo AND tblichequeopreciosbi.estado = tblichequeopreciosbi_temp_90646c.estado AND tblichequeopreciosbi.fecha = tblichequeopreciosbi_temp_90646c.fecha WHEN MATCHED THEN UPDATE SET regional = tblichequeopreciosbi_temp_90646c.regional, grupocompras = tblichequeopreciosbi_temp_90646c.grupocompras, ean = tblichequeopreciosbi_temp_90646c.ean, plu = tblichequeopreciosbi_temp_90646c.plu, descripcion = tblichequeopreciosbi_temp_90646c.descripcion, rolcategoria = tblichequeopreciosbi_temp_90646c.rolcategoria, concepto = tblichequeopreciosbi_temp_90646c.concepto, clase = tblichequeopreciosbi_temp_90646c.clase, competidor = tblichequeopreciosbi_temp_90646c.competidor, precioolimpica = tblichequeopreciosbi_temp_90646c.precioolimpica, preciocompetencia = tblichequeopreciosbi_temp_90646c.preciocompetencia, precionuevo = tblichequeopreciosbi_temp_90646c.precionuevo, margenolimpica = tblichequeopreciosbi_temp_90646c.margenolimpica, margenprecionuevo = tblichequeopreciosbi_temp_90646c.margenprecionuevo, estado = tblichequeopreciosbi_temp_90646c.estado, fecha = tblichequeopreciosbi_temp_90646c.fecha WHEN NOT MATCHED THEN INSERT VALUES (tblichequeopreciosbi_temp_90646c.regional, tblichequeopreciosbi_temp_90646c.grupocompras, tblichequeopreciosbi_temp_90646c.ean, tblichequeopreciosbi_temp_90646c.plu, tblichequeopreciosbi_temp_90646c.descripcion, tblichequeopreciosbi_temp_90646c.rolcategoria, tblichequeopreciosbi_temp_90646c.concepto, tblichequeopreciosbi_temp_90646c.clase, tblichequeopreciosbi_temp_90646c.competidor, tblichequeopreciosbi_temp_90646c.precioolimpica, tblichequeopreciosbi_temp_90646c.preciocompetencia, tblichequeopreciosbi_temp_90646c.precionuevo, tblichequeopreciosbi_temp_90646c.margenolimpica, tblichequeopreciosbi_temp_90646c.margenprecionuevo, tblichequeopreciosbi_temp_90646c.estado, tblichequeopreciosbi_temp_90646c.fecha); DROP TABLE public.tblichequeopreciosbi_temp_90646c; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tblichequeopreciosbi_temp_90646c\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tblichequeopreciosbi (regional VARCHAR, grupocompras VARCHAR, ean VARCHAR, plu INTEGER, descripcion VARCHAR, rolcategoria VARCHAR, concepto VARCHAR, clase VARCHAR, competidor VARCHAR, precioolimpica DECIMAL, preciocompetencia DECIMAL, precionuevo DECIMAL, margenolimpica REAL, margenprecionuevo REAL, estado VARCHAR, fecha DATE); DROP TABLE IF EXISTS public.tblichequeopreciosbi_temp_90646c; CREATE TABLE public.tblichequeopreciosbi_temp_90646c (regional VARCHAR, grupocompras VARCHAR, ean VARCHAR, plu INTEGER, descripcion VARCHAR, rolcategoria VARCHAR, concepto VARCHAR, clase VARCHAR, competidor VARCHAR, precioolimpica DECIMAL, preciocompetencia DECIMAL, precionuevo DECIMAL, margenolimpica REAL, margenprecionuevo REAL, estado VARCHAR, fecha DATE);\",\n    },\n    transformation_ctx=\"Destinogold_TblIChequeoPreciosBI_redshift_node1694743706810\",\n)\n\n# Script generated for node Destino gold_TblIOlimpicaGlobal_redshift\nDestinogold_TblIOlimpicaGlobal_redshift_node1694711601712 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblIOlimpicaGlobal_node1695146925805,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tbliolimpicaglobal USING public.tbliolimpicaglobal_temp_1b560a ON tbliolimpicaglobal.negocio = tbliolimpicaglobal_temp_1b560a.negocio AND tbliolimpicaglobal.anioinformacion = tbliolimpicaglobal_temp_1b560a.anioinformacion AND tbliolimpicaglobal.totalolimpicaventaanioanteriormillones = tbliolimpicaglobal_temp_1b560a.totalolimpicaventaanioanteriormillones AND tbliolimpicaglobal.totalolimpicaventaanioactualmillones = tbliolimpicaglobal_temp_1b560a.totalolimpicaventaanioactualmillones AND tbliolimpicaglobal.totalcolombiaventaanioanteriormillones = tbliolimpicaglobal_temp_1b560a.totalcolombiaventaanioanteriormillones AND tbliolimpicaglobal.totalcolombiaventaanioactualmillones = tbliolimpicaglobal_temp_1b560a.totalcolombiaventaanioactualmillones AND tbliolimpicaglobal.variacionmercado = tbliolimpicaglobal_temp_1b560a.variacionmercado AND tbliolimpicaglobal.variacionolimpica = tbliolimpicaglobal_temp_1b560a.variacionolimpica AND tbliolimpicaglobal.shareanoanterior = tbliolimpicaglobal_temp_1b560a.shareanoanterior AND tbliolimpicaglobal.shareanoactual = tbliolimpicaglobal_temp_1b560a.shareanoactual AND tbliolimpicaglobal.diferenciashare = tbliolimpicaglobal_temp_1b560a.diferenciashare AND tbliolimpicaglobal.oportunidadvaloradaanioactualmillones = tbliolimpicaglobal_temp_1b560a.oportunidadvaloradaanioactualmillones AND tbliolimpicaglobal.enero = tbliolimpicaglobal_temp_1b560a.enero AND tbliolimpicaglobal.febrero = tbliolimpicaglobal_temp_1b560a.febrero AND tbliolimpicaglobal.marzo = tbliolimpicaglobal_temp_1b560a.marzo AND tbliolimpicaglobal.abril = tbliolimpicaglobal_temp_1b560a.abril AND tbliolimpicaglobal.mayo = tbliolimpicaglobal_temp_1b560a.mayo AND tbliolimpicaglobal.junio = tbliolimpicaglobal_temp_1b560a.junio AND tbliolimpicaglobal.julio = tbliolimpicaglobal_temp_1b560a.julio AND tbliolimpicaglobal.agosto = tbliolimpicaglobal_temp_1b560a.agosto AND tbliolimpicaglobal.septiembre = tbliolimpicaglobal_temp_1b560a.septiembre AND tbliolimpicaglobal.octubre = tbliolimpicaglobal_temp_1b560a.octubre AND tbliolimpicaglobal.noviembre = tbliolimpicaglobal_temp_1b560a.noviembre AND tbliolimpicaglobal.diciembre = tbliolimpicaglobal_temp_1b560a.diciembre AND tbliolimpicaglobal.totalcostaanioactual = tbliolimpicaglobal_temp_1b560a.totalcostaanioactual AND tbliolimpicaglobal.costaenero = tbliolimpicaglobal_temp_1b560a.costaenero AND tbliolimpicaglobal.costafebrero = tbliolimpicaglobal_temp_1b560a.costafebrero AND tbliolimpicaglobal.costamarzo = tbliolimpicaglobal_temp_1b560a.costamarzo AND tbliolimpicaglobal.costaabril = tbliolimpicaglobal_temp_1b560a.costaabril AND tbliolimpicaglobal.costamayo = tbliolimpicaglobal_temp_1b560a.costamayo AND tbliolimpicaglobal.costajunio = tbliolimpicaglobal_temp_1b560a.costajunio AND tbliolimpicaglobal.costajulio = tbliolimpicaglobal_temp_1b560a.costajulio AND tbliolimpicaglobal.costaagosto = tbliolimpicaglobal_temp_1b560a.costaagosto AND tbliolimpicaglobal.costaseptiembre = tbliolimpicaglobal_temp_1b560a.costaseptiembre AND tbliolimpicaglobal.costaoctubre = tbliolimpicaglobal_temp_1b560a.costaoctubre AND tbliolimpicaglobal.costanoviembre = tbliolimpicaglobal_temp_1b560a.costanoviembre AND tbliolimpicaglobal.costadiciembre = tbliolimpicaglobal_temp_1b560a.costadiciembre AND tbliolimpicaglobal.totalcentroanioactual = tbliolimpicaglobal_temp_1b560a.totalcentroanioactual AND tbliolimpicaglobal.centroenero = tbliolimpicaglobal_temp_1b560a.centroenero AND tbliolimpicaglobal.centrofebrero = tbliolimpicaglobal_temp_1b560a.centrofebrero AND tbliolimpicaglobal.centromarzo = tbliolimpicaglobal_temp_1b560a.centromarzo AND tbliolimpicaglobal.centroabril = tbliolimpicaglobal_temp_1b560a.centroabril AND tbliolimpicaglobal.centromayo = tbliolimpicaglobal_temp_1b560a.centromayo AND tbliolimpicaglobal.centrojunio = tbliolimpicaglobal_temp_1b560a.centrojunio AND tbliolimpicaglobal.centrojulio = tbliolimpicaglobal_temp_1b560a.centrojulio AND tbliolimpicaglobal.centroagosto = tbliolimpicaglobal_temp_1b560a.centroagosto AND tbliolimpicaglobal.centroseptiembre = tbliolimpicaglobal_temp_1b560a.centroseptiembre AND tbliolimpicaglobal.centrooctubre = tbliolimpicaglobal_temp_1b560a.centrooctubre AND tbliolimpicaglobal.centronoviembre = tbliolimpicaglobal_temp_1b560a.centronoviembre AND tbliolimpicaglobal.centrodiciembre = tbliolimpicaglobal_temp_1b560a.centrodiciembre AND tbliolimpicaglobal.totaloccidenteanioactual = tbliolimpicaglobal_temp_1b560a.totaloccidenteanioactual AND tbliolimpicaglobal.occidenteenero = tbliolimpicaglobal_temp_1b560a.occidenteenero AND tbliolimpicaglobal.occidentefebrero = tbliolimpicaglobal_temp_1b560a.occidentefebrero AND tbliolimpicaglobal.occidentemarzo = tbliolimpicaglobal_temp_1b560a.occidentemarzo AND tbliolimpicaglobal.occidenteabril = tbliolimpicaglobal_temp_1b560a.occidenteabril AND tbliolimpicaglobal.occidentemayo = tbliolimpicaglobal_temp_1b560a.occidentemayo AND tbliolimpicaglobal.occidentejunio = tbliolimpicaglobal_temp_1b560a.occidentejunio AND tbliolimpicaglobal.occidentejulio = tbliolimpicaglobal_temp_1b560a.occidentejulio AND tbliolimpicaglobal.occidenteagosto = tbliolimpicaglobal_temp_1b560a.occidenteagosto AND tbliolimpicaglobal.occidenteseptiembre = tbliolimpicaglobal_temp_1b560a.occidenteseptiembre AND tbliolimpicaglobal.occidenteoctubre = tbliolimpicaglobal_temp_1b560a.occidenteoctubre AND tbliolimpicaglobal.occidentenoviembre = tbliolimpicaglobal_temp_1b560a.occidentenoviembre AND tbliolimpicaglobal.occidentediciembre = tbliolimpicaglobal_temp_1b560a.occidentediciembre AND tbliolimpicaglobal.totalejecafeteroanioactual = tbliolimpicaglobal_temp_1b560a.totalejecafeteroanioactual AND tbliolimpicaglobal.ejecafeteroenero = tbliolimpicaglobal_temp_1b560a.ejecafeteroenero AND tbliolimpicaglobal.ejecafeterofebrero = tbliolimpicaglobal_temp_1b560a.ejecafeterofebrero AND tbliolimpicaglobal.ejecafeteromarzo = tbliolimpicaglobal_temp_1b560a.ejecafeteromarzo AND tbliolimpicaglobal.ejecafeteroabril = tbliolimpicaglobal_temp_1b560a.ejecafeteroabril AND tbliolimpicaglobal.ejecafeteromayo = tbliolimpicaglobal_temp_1b560a.ejecafeteromayo AND tbliolimpicaglobal.ejecafeterojunio = tbliolimpicaglobal_temp_1b560a.ejecafeterojunio AND tbliolimpicaglobal.ejecafeterojulio = tbliolimpicaglobal_temp_1b560a.ejecafeterojulio AND tbliolimpicaglobal.ejecafeteroagosto = tbliolimpicaglobal_temp_1b560a.ejecafeteroagosto AND tbliolimpicaglobal.ejecafeteroseptiembre = tbliolimpicaglobal_temp_1b560a.ejecafeteroseptiembre AND tbliolimpicaglobal.ejecafeterooctubre = tbliolimpicaglobal_temp_1b560a.ejecafeterooctubre AND tbliolimpicaglobal.ejecafeteronoviembre = tbliolimpicaglobal_temp_1b560a.ejecafeteronoviembre AND tbliolimpicaglobal.ejecafeterodiciembre = tbliolimpicaglobal_temp_1b560a.ejecafeterodiciembre WHEN MATCHED THEN UPDATE SET negocio = tbliolimpicaglobal_temp_1b560a.negocio, anioinformacion = tbliolimpicaglobal_temp_1b560a.anioinformacion, totalolimpicaventaanioanteriormillones = tbliolimpicaglobal_temp_1b560a.totalolimpicaventaanioanteriormillones, totalolimpicaventaanioactualmillones = tbliolimpicaglobal_temp_1b560a.totalolimpicaventaanioactualmillones, totalcolombiaventaanioanteriormillones = tbliolimpicaglobal_temp_1b560a.totalcolombiaventaanioanteriormillones, totalcolombiaventaanioactualmillones = tbliolimpicaglobal_temp_1b560a.totalcolombiaventaanioactualmillones, variacionmercado = tbliolimpicaglobal_temp_1b560a.variacionmercado, variacionolimpica = tbliolimpicaglobal_temp_1b560a.variacionolimpica, shareanoanterior = tbliolimpicaglobal_temp_1b560a.shareanoanterior, shareanoactual = tbliolimpicaglobal_temp_1b560a.shareanoactual, diferenciashare = tbliolimpicaglobal_temp_1b560a.diferenciashare, oportunidadvaloradaanioactualmillones = tbliolimpicaglobal_temp_1b560a.oportunidadvaloradaanioactualmillones, enero = tbliolimpicaglobal_temp_1b560a.enero, febrero = tbliolimpicaglobal_temp_1b560a.febrero, marzo = tbliolimpicaglobal_temp_1b560a.marzo, abril = tbliolimpicaglobal_temp_1b560a.abril, mayo = tbliolimpicaglobal_temp_1b560a.mayo, junio = tbliolimpicaglobal_temp_1b560a.junio, julio = tbliolimpicaglobal_temp_1b560a.julio, agosto = tbliolimpicaglobal_temp_1b560a.agosto, septiembre = tbliolimpicaglobal_temp_1b560a.septiembre, octubre = tbliolimpicaglobal_temp_1b560a.octubre, noviembre = tbliolimpicaglobal_temp_1b560a.noviembre, diciembre = tbliolimpicaglobal_temp_1b560a.diciembre, totalcostaanioactual = tbliolimpicaglobal_temp_1b560a.totalcostaanioactual, costaenero = tbliolimpicaglobal_temp_1b560a.costaenero, costafebrero = tbliolimpicaglobal_temp_1b560a.costafebrero, costamarzo = tbliolimpicaglobal_temp_1b560a.costamarzo, costaabril = tbliolimpicaglobal_temp_1b560a.costaabril, costamayo = tbliolimpicaglobal_temp_1b560a.costamayo, costajunio = tbliolimpicaglobal_temp_1b560a.costajunio, costajulio = tbliolimpicaglobal_temp_1b560a.costajulio, costaagosto = tbliolimpicaglobal_temp_1b560a.costaagosto, costaseptiembre = tbliolimpicaglobal_temp_1b560a.costaseptiembre, costaoctubre = tbliolimpicaglobal_temp_1b560a.costaoctubre, costanoviembre = tbliolimpicaglobal_temp_1b560a.costanoviembre, costadiciembre = tbliolimpicaglobal_temp_1b560a.costadiciembre, totalcentroanioactual = tbliolimpicaglobal_temp_1b560a.totalcentroanioactual, centroenero = tbliolimpicaglobal_temp_1b560a.centroenero, centrofebrero = tbliolimpicaglobal_temp_1b560a.centrofebrero, centromarzo = tbliolimpicaglobal_temp_1b560a.centromarzo, centroabril = tbliolimpicaglobal_temp_1b560a.centroabril, centromayo = tbliolimpicaglobal_temp_1b560a.centromayo, centrojunio = tbliolimpicaglobal_temp_1b560a.centrojunio, centrojulio = tbliolimpicaglobal_temp_1b560a.centrojulio, centroagosto = tbliolimpicaglobal_temp_1b560a.centroagosto, centroseptiembre = tbliolimpicaglobal_temp_1b560a.centroseptiembre, centrooctubre = tbliolimpicaglobal_temp_1b560a.centrooctubre, centronoviembre = tbliolimpicaglobal_temp_1b560a.centronoviembre, centrodiciembre = tbliolimpicaglobal_temp_1b560a.centrodiciembre, totaloccidenteanioactual = tbliolimpicaglobal_temp_1b560a.totaloccidenteanioactual, occidenteenero = tbliolimpicaglobal_temp_1b560a.occidenteenero, occidentefebrero = tbliolimpicaglobal_temp_1b560a.occidentefebrero, occidentemarzo = tbliolimpicaglobal_temp_1b560a.occidentemarzo, occidenteabril = tbliolimpicaglobal_temp_1b560a.occidenteabril, occidentemayo = tbliolimpicaglobal_temp_1b560a.occidentemayo, occidentejunio = tbliolimpicaglobal_temp_1b560a.occidentejunio, occidentejulio = tbliolimpicaglobal_temp_1b560a.occidentejulio, occidenteagosto = tbliolimpicaglobal_temp_1b560a.occidenteagosto, occidenteseptiembre = tbliolimpicaglobal_temp_1b560a.occidenteseptiembre, occidenteoctubre = tbliolimpicaglobal_temp_1b560a.occidenteoctubre, occidentenoviembre = tbliolimpicaglobal_temp_1b560a.occidentenoviembre, occidentediciembre = tbliolimpicaglobal_temp_1b560a.occidentediciembre, totalejecafeteroanioactual = tbliolimpicaglobal_temp_1b560a.totalejecafeteroanioactual, ejecafeteroenero = tbliolimpicaglobal_temp_1b560a.ejecafeteroenero, ejecafeterofebrero = tbliolimpicaglobal_temp_1b560a.ejecafeterofebrero, ejecafeteromarzo = tbliolimpicaglobal_temp_1b560a.ejecafeteromarzo, ejecafeteroabril = tbliolimpicaglobal_temp_1b560a.ejecafeteroabril, ejecafeteromayo = tbliolimpicaglobal_temp_1b560a.ejecafeteromayo, ejecafeterojunio = tbliolimpicaglobal_temp_1b560a.ejecafeterojunio, ejecafeterojulio = tbliolimpicaglobal_temp_1b560a.ejecafeterojulio, ejecafeteroagosto = tbliolimpicaglobal_temp_1b560a.ejecafeteroagosto, ejecafeteroseptiembre = tbliolimpicaglobal_temp_1b560a.ejecafeteroseptiembre, ejecafeterooctubre = tbliolimpicaglobal_temp_1b560a.ejecafeterooctubre, ejecafeteronoviembre = tbliolimpicaglobal_temp_1b560a.ejecafeteronoviembre, ejecafeterodiciembre = tbliolimpicaglobal_temp_1b560a.ejecafeterodiciembre WHEN NOT MATCHED THEN INSERT VALUES (tbliolimpicaglobal_temp_1b560a.negocio, tbliolimpicaglobal_temp_1b560a.anioinformacion, tbliolimpicaglobal_temp_1b560a.totalolimpicaventaanioanteriormillones, tbliolimpicaglobal_temp_1b560a.totalolimpicaventaanioactualmillones, tbliolimpicaglobal_temp_1b560a.totalcolombiaventaanioanteriormillones, tbliolimpicaglobal_temp_1b560a.totalcolombiaventaanioactualmillones, tbliolimpicaglobal_temp_1b560a.variacionmercado, tbliolimpicaglobal_temp_1b560a.variacionolimpica, tbliolimpicaglobal_temp_1b560a.shareanoanterior, tbliolimpicaglobal_temp_1b560a.shareanoactual, tbliolimpicaglobal_temp_1b560a.diferenciashare, tbliolimpicaglobal_temp_1b560a.oportunidadvaloradaanioactualmillones, tbliolimpicaglobal_temp_1b560a.enero, tbliolimpicaglobal_temp_1b560a.febrero, tbliolimpicaglobal_temp_1b560a.marzo, tbliolimpicaglobal_temp_1b560a.abril, tbliolimpicaglobal_temp_1b560a.mayo, tbliolimpicaglobal_temp_1b560a.junio, tbliolimpicaglobal_temp_1b560a.julio, tbliolimpicaglobal_temp_1b560a.agosto, tbliolimpicaglobal_temp_1b560a.septiembre, tbliolimpicaglobal_temp_1b560a.octubre, tbliolimpicaglobal_temp_1b560a.noviembre, tbliolimpicaglobal_temp_1b560a.diciembre, tbliolimpicaglobal_temp_1b560a.totalcostaanioactual, tbliolimpicaglobal_temp_1b560a.costaenero, tbliolimpicaglobal_temp_1b560a.costafebrero, tbliolimpicaglobal_temp_1b560a.costamarzo, tbliolimpicaglobal_temp_1b560a.costaabril, tbliolimpicaglobal_temp_1b560a.costamayo, tbliolimpicaglobal_temp_1b560a.costajunio, tbliolimpicaglobal_temp_1b560a.costajulio, tbliolimpicaglobal_temp_1b560a.costaagosto, tbliolimpicaglobal_temp_1b560a.costaseptiembre, tbliolimpicaglobal_temp_1b560a.costaoctubre, tbliolimpicaglobal_temp_1b560a.costanoviembre, tbliolimpicaglobal_temp_1b560a.costadiciembre, tbliolimpicaglobal_temp_1b560a.totalcentroanioactual, tbliolimpicaglobal_temp_1b560a.centroenero, tbliolimpicaglobal_temp_1b560a.centrofebrero, tbliolimpicaglobal_temp_1b560a.centromarzo, tbliolimpicaglobal_temp_1b560a.centroabril, tbliolimpicaglobal_temp_1b560a.centromayo, tbliolimpicaglobal_temp_1b560a.centrojunio, tbliolimpicaglobal_temp_1b560a.centrojulio, tbliolimpicaglobal_temp_1b560a.centroagosto, tbliolimpicaglobal_temp_1b560a.centroseptiembre, tbliolimpicaglobal_temp_1b560a.centrooctubre, tbliolimpicaglobal_temp_1b560a.centronoviembre, tbliolimpicaglobal_temp_1b560a.centrodiciembre, tbliolimpicaglobal_temp_1b560a.totaloccidenteanioactual, tbliolimpicaglobal_temp_1b560a.occidenteenero, tbliolimpicaglobal_temp_1b560a.occidentefebrero, tbliolimpicaglobal_temp_1b560a.occidentemarzo, tbliolimpicaglobal_temp_1b560a.occidenteabril, tbliolimpicaglobal_temp_1b560a.occidentemayo, tbliolimpicaglobal_temp_1b560a.occidentejunio, tbliolimpicaglobal_temp_1b560a.occidentejulio, tbliolimpicaglobal_temp_1b560a.occidenteagosto, tbliolimpicaglobal_temp_1b560a.occidenteseptiembre, tbliolimpicaglobal_temp_1b560a.occidenteoctubre, tbliolimpicaglobal_temp_1b560a.occidentenoviembre, tbliolimpicaglobal_temp_1b560a.occidentediciembre, tbliolimpicaglobal_temp_1b560a.totalejecafeteroanioactual, tbliolimpicaglobal_temp_1b560a.ejecafeteroenero, tbliolimpicaglobal_temp_1b560a.ejecafeterofebrero, tbliolimpicaglobal_temp_1b560a.ejecafeteromarzo, tbliolimpicaglobal_temp_1b560a.ejecafeteroabril, tbliolimpicaglobal_temp_1b560a.ejecafeteromayo, tbliolimpicaglobal_temp_1b560a.ejecafeterojunio, tbliolimpicaglobal_temp_1b560a.ejecafeterojulio, tbliolimpicaglobal_temp_1b560a.ejecafeteroagosto, tbliolimpicaglobal_temp_1b560a.ejecafeteroseptiembre, tbliolimpicaglobal_temp_1b560a.ejecafeterooctubre, tbliolimpicaglobal_temp_1b560a.ejecafeteronoviembre, tbliolimpicaglobal_temp_1b560a.ejecafeterodiciembre); DROP TABLE public.tbliolimpicaglobal_temp_1b560a; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tbliolimpicaglobal_temp_1b560a\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tbliolimpicaglobal (negocio VARCHAR, anioinformacion INTEGER, totalolimpicaventaanioanteriormillones INTEGER, totalolimpicaventaanioactualmillones INTEGER, totalcolombiaventaanioanteriormillones INTEGER, totalcolombiaventaanioactualmillones INTEGER, variacionmercado REAL, variacionolimpica REAL, shareanoanterior INTEGER, shareanoactual INTEGER, diferenciashare INTEGER, oportunidadvaloradaanioactualmillones INTEGER, enero INTEGER, febrero INTEGER, marzo INTEGER, abril INTEGER, mayo INTEGER, junio INTEGER, julio INTEGER, agosto INTEGER, septiembre INTEGER, octubre INTEGER, noviembre INTEGER, diciembre INTEGER, totalcostaanioactual INTEGER, costaenero INTEGER, costafebrero INTEGER, costamarzo INTEGER, costaabril INTEGER, costamayo INTEGER, costajunio INTEGER, costajulio INTEGER, costaagosto INTEGER, costaseptiembre INTEGER, costaoctubre INTEGER, costanoviembre INTEGER, costadiciembre INTEGER, totalcentroanioactual INTEGER, centroenero INTEGER, centrofebrero INTEGER, centromarzo INTEGER, centroabril INTEGER, centromayo INTEGER, centrojunio INTEGER, centrojulio INTEGER, centroagosto INTEGER, centroseptiembre INTEGER, centrooctubre INTEGER, centronoviembre INTEGER, centrodiciembre INTEGER, totaloccidenteanioactual INTEGER, occidenteenero INTEGER, occidentefebrero INTEGER, occidentemarzo INTEGER, occidenteabril INTEGER, occidentemayo INTEGER, occidentejunio INTEGER, occidentejulio INTEGER, occidenteagosto INTEGER, occidenteseptiembre INTEGER, occidenteoctubre INTEGER, occidentenoviembre INTEGER, occidentediciembre INTEGER, totalejecafeteroanioactual INTEGER, ejecafeteroenero INTEGER, ejecafeterofebrero INTEGER, ejecafeteromarzo INTEGER, ejecafeteroabril INTEGER, ejecafeteromayo INTEGER, ejecafeterojunio INTEGER, ejecafeterojulio INTEGER, ejecafeteroagosto INTEGER, ejecafeteroseptiembre INTEGER, ejecafeterooctubre INTEGER, ejecafeteronoviembre INTEGER, ejecafeterodiciembre INTEGER); DROP TABLE IF EXISTS public.tbliolimpicaglobal_temp_1b560a; CREATE TABLE public.tbliolimpicaglobal_temp_1b560a (negocio VARCHAR, anioinformacion INTEGER, totalolimpicaventaanioanteriormillones INTEGER, totalolimpicaventaanioactualmillones INTEGER, totalcolombiaventaanioanteriormillones INTEGER, totalcolombiaventaanioactualmillones INTEGER, variacionmercado REAL, variacionolimpica REAL, shareanoanterior INTEGER, shareanoactual INTEGER, diferenciashare INTEGER, oportunidadvaloradaanioactualmillones INTEGER, enero INTEGER, febrero INTEGER, marzo INTEGER, abril INTEGER, mayo INTEGER, junio INTEGER, julio INTEGER, agosto INTEGER, septiembre INTEGER, octubre INTEGER, noviembre INTEGER, diciembre INTEGER, totalcostaanioactual INTEGER, costaenero INTEGER, costafebrero INTEGER, costamarzo INTEGER, costaabril INTEGER, costamayo INTEGER, costajunio INTEGER, costajulio INTEGER, costaagosto INTEGER, costaseptiembre INTEGER, costaoctubre INTEGER, costanoviembre INTEGER, costadiciembre INTEGER, totalcentroanioactual INTEGER, centroenero INTEGER, centrofebrero INTEGER, centromarzo INTEGER, centroabril INTEGER, centromayo INTEGER, centrojunio INTEGER, centrojulio INTEGER, centroagosto INTEGER, centroseptiembre INTEGER, centrooctubre INTEGER, centronoviembre INTEGER, centrodiciembre INTEGER, totaloccidenteanioactual INTEGER, occidenteenero INTEGER, occidentefebrero INTEGER, occidentemarzo INTEGER, occidenteabril INTEGER, occidentemayo INTEGER, occidentejunio INTEGER, occidentejulio INTEGER, occidenteagosto INTEGER, occidenteseptiembre INTEGER, occidenteoctubre INTEGER, occidentenoviembre INTEGER, occidentediciembre INTEGER, totalejecafeteroanioactual INTEGER, ejecafeteroenero INTEGER, ejecafeterofebrero INTEGER, ejecafeteromarzo INTEGER, ejecafeteroabril INTEGER, ejecafeteromayo INTEGER, ejecafeterojunio INTEGER, ejecafeterojulio INTEGER, ejecafeteroagosto INTEGER, ejecafeteroseptiembre INTEGER, ejecafeterooctubre INTEGER, ejecafeteronoviembre INTEGER, ejecafeterodiciembre INTEGER);\",\n    },\n    transformation_ctx=\"Destinogold_TblIOlimpicaGlobal_redshift_node1694711601712\",\n)\n\n# Script generated for node Destino gold_TblIColombiaACV_redshift\nDestinogold_TblIColombiaACV_redshift_node1694808964544 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblIColombiaACV_node1695147205380,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tblicolombiaacv USING public.tblicolombiaacv_temp_4ca15e ON tblicolombiaacv.competidor = tblicolombiaacv_temp_4ca15e.competidor AND tblicolombiaacv.canal = tblicolombiaacv_temp_4ca15e.canal AND tblicolombiaacv.anio = tblicolombiaacv_temp_4ca15e.anio AND tblicolombiaacv.periodo = tblicolombiaacv_temp_4ca15e.periodo AND tblicolombiaacv.totalventacompetidortrimestre = tblicolombiaacv_temp_4ca15e.totalventacompetidortrimestre WHEN MATCHED THEN UPDATE SET competidor = tblicolombiaacv_temp_4ca15e.competidor, canal = tblicolombiaacv_temp_4ca15e.canal, anio = tblicolombiaacv_temp_4ca15e.anio, periodo = tblicolombiaacv_temp_4ca15e.periodo, totalventacompetidortrimestre = tblicolombiaacv_temp_4ca15e.totalventacompetidortrimestre WHEN NOT MATCHED THEN INSERT VALUES (tblicolombiaacv_temp_4ca15e.competidor, tblicolombiaacv_temp_4ca15e.canal, tblicolombiaacv_temp_4ca15e.anio, tblicolombiaacv_temp_4ca15e.periodo, tblicolombiaacv_temp_4ca15e.totalventacompetidortrimestre); DROP TABLE public.tblicolombiaacv_temp_4ca15e; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tblicolombiaacv_temp_4ca15e\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tblicolombiaacv (competidor VARCHAR, canal VARCHAR, anio INTEGER, periodo VARCHAR, totalventacompetidortrimestre INTEGER); DROP TABLE IF EXISTS public.tblicolombiaacv_temp_4ca15e; CREATE TABLE public.tblicolombiaacv_temp_4ca15e (competidor VARCHAR, canal VARCHAR, anio INTEGER, periodo VARCHAR, totalventacompetidortrimestre INTEGER);\",\n    },\n    transformation_ctx=\"Destinogold_TblIColombiaACV_redshift_node1694808964544\",\n)\n\n# Script generated for node Destino gold_TblDClientes_redshift\nDestinogold_TblDClientes_redshift_node1694988568419 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblDClientes_node1695147299564,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tbldclientes USING public.tbldclientes_temp_6b2de4 ON tbldclientes.numeroidentificacion = tbldclientes_temp_6b2de4.numeroidentificacion WHEN MATCHED THEN UPDATE SET iddcliente = tbldclientes_temp_6b2de4.iddcliente, iddnegociofavorito = tbldclientes_temp_6b2de4.iddnegociofavorito, numeroidentificacion = tbldclientes_temp_6b2de4.numeroidentificacion, tipoidentificacion = tbldclientes_temp_6b2de4.tipoidentificacion, nombre = tbldclientes_temp_6b2de4.nombre, primerapellido = tbldclientes_temp_6b2de4.primerapellido, segundoapellido = tbldclientes_temp_6b2de4.segundoapellido, nombrecompleto = tbldclientes_temp_6b2de4.nombrecompleto, genero = tbldclientes_temp_6b2de4.genero, direccion = tbldclientes_temp_6b2de4.direccion, ciudad = tbldclientes_temp_6b2de4.ciudad, telefonofijo = tbldclientes_temp_6b2de4.telefonofijo, telefonocelular = tbldclientes_temp_6b2de4.telefonocelular, telefonocelularalternativo = tbldclientes_temp_6b2de4.telefonocelularalternativo, correoelectronico = tbldclientes_temp_6b2de4.correoelectronico, fechacreacion = tbldclientes_temp_6b2de4.fechacreacion, usuariocreacion = tbldclientes_temp_6b2de4.usuariocreacion, flagriesgo = tbldclientes_temp_6b2de4.flagriesgo, flagmayorista = tbldclientes_temp_6b2de4.flagmayorista, contactar = tbldclientes_temp_6b2de4.contactar WHEN NOT MATCHED THEN INSERT VALUES (tbldclientes_temp_6b2de4.iddcliente, tbldclientes_temp_6b2de4.iddnegociofavorito, tbldclientes_temp_6b2de4.numeroidentificacion, tbldclientes_temp_6b2de4.tipoidentificacion, tbldclientes_temp_6b2de4.nombre, tbldclientes_temp_6b2de4.primerapellido, tbldclientes_temp_6b2de4.segundoapellido, tbldclientes_temp_6b2de4.nombrecompleto, tbldclientes_temp_6b2de4.genero, tbldclientes_temp_6b2de4.direccion, tbldclientes_temp_6b2de4.ciudad, tbldclientes_temp_6b2de4.telefonofijo, tbldclientes_temp_6b2de4.telefonocelular, tbldclientes_temp_6b2de4.telefonocelularalternativo, tbldclientes_temp_6b2de4.correoelectronico, tbldclientes_temp_6b2de4.fechacreacion, tbldclientes_temp_6b2de4.usuariocreacion, tbldclientes_temp_6b2de4.flagriesgo, tbldclientes_temp_6b2de4.flagmayorista, tbldclientes_temp_6b2de4.contactar); DROP TABLE public.tbldclientes_temp_6b2de4; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tbldclientes_temp_6b2de4\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tbldclientes (iddcliente INTEGER, iddnegociofavorito INTEGER, numeroidentificacion VARCHAR, tipoidentificacion VARCHAR, nombre VARCHAR, primerapellido VARCHAR, segundoapellido VARCHAR, nombrecompleto VARCHAR, genero VARCHAR, direccion VARCHAR, ciudad VARCHAR, telefonofijo VARCHAR, telefonocelular VARCHAR, telefonocelularalternativo VARCHAR, correoelectronico VARCHAR, fechacreacion INTEGER, usuariocreacion VARCHAR, flagriesgo INTEGER, flagmayorista INTEGER, contactar VARCHAR); DROP TABLE IF EXISTS public.tbldclientes_temp_6b2de4; CREATE TABLE public.tbldclientes_temp_6b2de4 (iddcliente INTEGER, iddnegociofavorito INTEGER, numeroidentificacion VARCHAR, tipoidentificacion VARCHAR, nombre VARCHAR, primerapellido VARCHAR, segundoapellido VARCHAR, nombrecompleto VARCHAR, genero VARCHAR, direccion VARCHAR, ciudad VARCHAR, telefonofijo VARCHAR, telefonocelular VARCHAR, telefonocelularalternativo VARCHAR, correoelectronico VARCHAR, fechacreacion INTEGER, usuariocreacion VARCHAR, flagriesgo INTEGER, flagmayorista INTEGER, contactar VARCHAR);\",\n    },\n    transformation_ctx=\"Destinogold_TblDClientes_redshift_node1694988568419\",\n)\n\n# Script generated for node Destino gold_TblIChequeoPreciosMercadeo_redshift\nDestinogold_TblIChequeoPreciosMercadeo_redshift_node1694741952651 = glueContext.write_dynamic_frame.from_options(\n    frame=DropDuplicatesgold_TblIChequeoPreciosMercadeo_node1695147242532,\n    connection_type=\"redshift\",\n    connection_options={\n        \"postactions\": \"BEGIN; MERGE INTO public.tblichequeopreciosmercadeo USING public.tblichequeopreciosmercadeo_temp_7909a9 ON tblichequeopreciosmercadeo.competidor = tblichequeopreciosmercadeo_temp_7909a9.competidor AND tblichequeopreciosmercadeo.categoria = tblichequeopreciosmercadeo_temp_7909a9.categoria AND tblichequeopreciosmercadeo.productocompetencia = tblichequeopreciosmercadeo_temp_7909a9.productocompetencia AND tblichequeopreciosmercadeo.productoolimpica = tblichequeopreciosmercadeo_temp_7909a9.productoolimpica AND tblichequeopreciosmercadeo.volumencompetencia = tblichequeopreciosmercadeo_temp_7909a9.volumencompetencia AND tblichequeopreciosmercadeo.volumenolimpica = tblichequeopreciosmercadeo_temp_7909a9.volumenolimpica AND tblichequeopreciosmercadeo.preciocompetencia = tblichequeopreciosmercadeo_temp_7909a9.preciocompetencia AND tblichequeopreciosmercadeo.precioolimpica = tblichequeopreciosmercadeo_temp_7909a9.precioolimpica AND tblichequeopreciosmercadeo.fecha = tblichequeopreciosmercadeo_temp_7909a9.fecha WHEN MATCHED THEN UPDATE SET competidor = tblichequeopreciosmercadeo_temp_7909a9.competidor, categoria = tblichequeopreciosmercadeo_temp_7909a9.categoria, productocompetencia = tblichequeopreciosmercadeo_temp_7909a9.productocompetencia, productoolimpica = tblichequeopreciosmercadeo_temp_7909a9.productoolimpica, volumencompetencia = tblichequeopreciosmercadeo_temp_7909a9.volumencompetencia, volumenolimpica = tblichequeopreciosmercadeo_temp_7909a9.volumenolimpica, preciocompetencia = tblichequeopreciosmercadeo_temp_7909a9.preciocompetencia, precioolimpica = tblichequeopreciosmercadeo_temp_7909a9.precioolimpica, fecha = tblichequeopreciosmercadeo_temp_7909a9.fecha WHEN NOT MATCHED THEN INSERT VALUES (tblichequeopreciosmercadeo_temp_7909a9.competidor, tblichequeopreciosmercadeo_temp_7909a9.categoria, tblichequeopreciosmercadeo_temp_7909a9.productocompetencia, tblichequeopreciosmercadeo_temp_7909a9.productoolimpica, tblichequeopreciosmercadeo_temp_7909a9.volumencompetencia, tblichequeopreciosmercadeo_temp_7909a9.volumenolimpica, tblichequeopreciosmercadeo_temp_7909a9.preciocompetencia, tblichequeopreciosmercadeo_temp_7909a9.precioolimpica, tblichequeopreciosmercadeo_temp_7909a9.fecha); DROP TABLE public.tblichequeopreciosmercadeo_temp_7909a9; END;\",\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tblichequeopreciosmercadeo_temp_7909a9\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n        \"preactions\": \"CREATE TABLE IF NOT EXISTS public.tblichequeopreciosmercadeo (competidor VARCHAR, categoria VARCHAR, productocompetencia VARCHAR, productoolimpica VARCHAR, volumencompetencia VARCHAR, volumenolimpica VARCHAR, preciocompetencia INTEGER, precioolimpica INTEGER, fecha DATE); DROP TABLE IF EXISTS public.tblichequeopreciosmercadeo_temp_7909a9; CREATE TABLE public.tblichequeopreciosmercadeo_temp_7909a9 (competidor VARCHAR, categoria VARCHAR, productocompetencia VARCHAR, productoolimpica VARCHAR, volumencompetencia VARCHAR, volumenolimpica VARCHAR, preciocompetencia INTEGER, precioolimpica INTEGER, fecha DATE);\",\n    },\n    transformation_ctx=\"Destinogold_TblIChequeoPreciosMercadeo_redshift_node1694741952651\",\n)\n\njob.commit()\n"
+}

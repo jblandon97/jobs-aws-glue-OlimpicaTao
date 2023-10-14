@@ -1,0 +1,1222 @@
+{
+	"jobConfig": {
+		"name": "TL_PipelineLimpiezaMantenidaVentas",
+		"description": "",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.8X",
+		"numberOfWorkers": 12,
+		"maxCapacity": 96,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "TL_PipelineLimpiezaMantenidaVentas.py",
+		"scriptLocation": "s3://aws-us-gold/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-17T00:37:03.791Z",
+		"developerMode": false,
+		"connectionsList": [
+			"conexion_olimpicatao_dwh_redshift"
+		],
+		"temporaryDirectory": "s3://aws-us-gold/temp-dir/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": false,
+		"metrics": true,
+		"spark": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1694659484927": {
+			"nodeId": "node-1694659484927",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDProveedores_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDProveedores_parquet_delta_lake_node1694659484927",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "gold_tbldproveedores_parquet_delta_lake",
+			"format": "delta",
+			"additionalDeltaOptions": {},
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		},
+		"node-1695612209043": {
+			"nodeId": "node-1695612209043",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695441582087"
+			],
+			"name": "Drop Duplicates cleansed_provee_plusap_parquet 3",
+			"generatedNodeName": "DropDuplicatescleansed_provee_plusap_parquet3_node1695612209043",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694659368566": {
+			"nodeId": "node-1694659368566",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDPromociones_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDPromociones_parquet_delta_lake_node1694659368566",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "gold_tbldpromociones_parquet_delta_lake",
+			"format": "delta",
+			"additionalDeltaOptions": {},
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		},
+		"node-1694645986961": {
+			"nodeId": "node-1694645986961",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen tbldtiempo",
+			"generatedNodeName": "Origentbldtiempo_node1694645986961",
+			"classification": "DataSource",
+			"type": "AmazonRedshift",
+			"isCatalog": false,
+			"data": {
+				"accessType": "connection",
+				"sourceType": "table",
+				"connection": {
+					"value": "conexion_olimpicatao_dwh_redshift",
+					"label": "conexion_olimpicatao_dwh_redshift",
+					"description": "-"
+				},
+				"schema": {
+					"value": "public",
+					"label": "public",
+					"description": null
+				},
+				"catalogDatabase": null,
+				"catalogRedshiftTable": null,
+				"catalogRedshiftSchema": null,
+				"table": {
+					"value": "tbldtiempo",
+					"label": "tbldtiempo",
+					"description": "public"
+				},
+				"catalogTable": null,
+				"tempDir": "s3://aws-glue-assets-535608989088-us-east-2/temporary/",
+				"iamRole": null,
+				"sampleQuery": null,
+				"preAction": null,
+				"postAction": null,
+				"action": "append",
+				"tableSchema": [],
+				"selectedColumns": [],
+				"crawlerConnection": null,
+				"tablePrefix": null,
+				"upsert": false,
+				"mergeAction": "simple",
+				"mergeWhenMatched": "update",
+				"mergeWhenNotMatched": "insert",
+				"mergeClause": null,
+				"stagingTable": "public.tbldtiempo_temp_10b864",
+				"advancedOptions": []
+			},
+			"calculatedType": "",
+			"codeGenVersion": 2,
+			"outputSchemas": [
+				[
+					{
+						"type": "int",
+						"key": "iddtiempo",
+						"fullPath": [
+							"iddtiempo"
+						]
+					},
+					{
+						"type": "date",
+						"key": "fecha",
+						"fullPath": [
+							"fecha"
+						]
+					},
+					{
+						"type": "string",
+						"key": "fechapersonalizada",
+						"fullPath": [
+							"fechapersonalizada"
+						]
+					},
+					{
+						"type": "int",
+						"key": "dia",
+						"fullPath": [
+							"dia"
+						]
+					},
+					{
+						"type": "string",
+						"key": "nombredia",
+						"fullPath": [
+							"nombredia"
+						]
+					},
+					{
+						"type": "int",
+						"key": "mes",
+						"fullPath": [
+							"mes"
+						]
+					},
+					{
+						"type": "string",
+						"key": "nombremes",
+						"fullPath": [
+							"nombremes"
+						]
+					},
+					{
+						"type": "int",
+						"key": "periodo",
+						"fullPath": [
+							"periodo"
+						]
+					},
+					{
+						"type": "int",
+						"key": "anio",
+						"fullPath": [
+							"anio"
+						]
+					},
+					{
+						"type": "int",
+						"key": "semana",
+						"fullPath": [
+							"semana"
+						]
+					},
+					{
+						"type": "int",
+						"key": "trimestre",
+						"fullPath": [
+							"trimestre"
+						]
+					},
+					{
+						"type": "int",
+						"key": "semestre",
+						"fullPath": [
+							"semestre"
+						]
+					}
+				]
+			]
+		},
+		"node-1694645885618": {
+			"nodeId": "node-1694645885618",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen cleansed_provee_plusap_parquet 1",
+			"generatedNodeName": "Origencleansed_provee_plusap_parquet1_node1694645885618",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_provee_plusap_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694974060998": {
+			"nodeId": "node-1694974060998",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694645885618"
+			],
+			"name": "Drop Duplicates cleansed_provee_plusap_parquet 1",
+			"generatedNodeName": "DropDuplicatescleansed_provee_plusap_parquet1_node1694974060998",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694660825303": {
+			"nodeId": "node-1694660825303",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDClientes_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDClientes_parquet_delta_lake_node1694660825303",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblDClientes_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblDClientes_parquet_delta_lake/part-00000-6d902be0-921e-4405-ab7b-fcf224e3a784-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddnegociofavorito",
+						"fullPath": [
+							"iddnegociofavorito"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "numeroidentificacion",
+						"fullPath": [
+							"numeroidentificacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipoidentificacion",
+						"fullPath": [
+							"tipoidentificacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre",
+						"fullPath": [
+							"nombre"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "primerapellido",
+						"fullPath": [
+							"primerapellido"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segundoapellido",
+						"fullPath": [
+							"segundoapellido"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombrecompleto",
+						"fullPath": [
+							"nombrecompleto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "genero",
+						"fullPath": [
+							"genero"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonofijo",
+						"fullPath": [
+							"telefonofijo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelular",
+						"fullPath": [
+							"telefonocelular"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "telefonocelularalternativo",
+						"fullPath": [
+							"telefonocelularalternativo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "correoelectronico",
+						"fullPath": [
+							"correoelectronico"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fechacreacion",
+						"fullPath": [
+							"fechacreacion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "usuariocreacion",
+						"fullPath": [
+							"usuariocreacion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "flagriesgo",
+						"fullPath": [
+							"flagriesgo"
+						],
+						"type": "tinyint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "flagmayorista",
+						"fullPath": [
+							"flagmayorista"
+						],
+						"type": "tinyint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "contactar",
+						"fullPath": [
+							"contactar"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695441544608": {
+			"nodeId": "node-1695441544608",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen cleansed_provee_plusap_parquet 2",
+			"generatedNodeName": "Origencleansed_provee_plusap_parquet2_node1695441544608",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_provee_plusap_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694660913008": {
+			"nodeId": "node-1694660913008",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694974366722",
+				"node-1694659768854",
+				"node-1694659368566",
+				"node-1694660825303",
+				"node-1694645986961",
+				"node-1694659484927",
+				"node-1694974060998",
+				"node-1695612167586",
+				"node-1695612209043",
+				"node-1695614085654"
+			],
+			"name": "SQL Query TblHVentas",
+			"generatedNodeName": "SQLQueryTblHVentas_node1694660913008",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1694974366722",
+					"alias": "MD1"
+				},
+				{
+					"from": "node-1694659768854",
+					"alias": "MD2"
+				},
+				{
+					"from": "node-1694659368566",
+					"alias": "MD4"
+				},
+				{
+					"from": "node-1694660825303",
+					"alias": "MD5"
+				},
+				{
+					"from": "node-1694645986961",
+					"alias": "MD6"
+				},
+				{
+					"from": "node-1694659484927",
+					"alias": "MD8"
+				},
+				{
+					"from": "node-1694974060998",
+					"alias": "MD7"
+				},
+				{
+					"from": "node-1695612167586",
+					"alias": "MD7_1"
+				},
+				{
+					"from": "node-1695612209043",
+					"alias": "MD7_2"
+				},
+				{
+					"from": "node-1695614085654",
+					"alias": "MD3"
+				}
+			],
+			"outputSchemas": [
+				[
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddcliente",
+						"fullPath": [
+							"iddcliente"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddplusap",
+						"fullPath": [
+							"iddplusap"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddproveedor",
+						"fullPath": [
+							"iddproveedor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddpromociones",
+						"fullPath": [
+							"iddpromociones"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddfecha",
+						"fullPath": [
+							"iddfecha"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "hora",
+						"fullPath": [
+							"hora"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transaccion",
+						"fullPath": [
+							"transaccion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "idtransaccion",
+						"fullPath": [
+							"idtransaccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "factura",
+						"fullPath": [
+							"factura"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "numerotarjetaplata",
+						"fullPath": [
+							"numerotarjetaplata"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "flagclientetarjetaplata",
+						"fullPath": [
+							"flagclientetarjetaplata"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plusicol",
+						"fullPath": [
+							"plusicol"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocajero",
+						"fullPath": [
+							"codigocajero"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "canal",
+						"fullPath": [
+							"canal"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "kilos",
+						"fullPath": [
+							"kilos"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "operacionmediopago",
+						"fullPath": [
+							"operacionmediopago"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigomediopago",
+						"fullPath": [
+							"codigomediopago"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "cantidad",
+						"fullPath": [
+							"cantidad"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuentounitario",
+						"fullPath": [
+							"descuentounitario"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ventabruta",
+						"fullPath": [
+							"ventabruta"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ventaneta",
+						"fullPath": [
+							"ventaneta"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ventasiniva",
+						"fullPath": [
+							"ventasiniva"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuento",
+						"fullPath": [
+							"descuento"
+						],
+						"type": "decimal",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precioregular",
+						"fullPath": [
+							"precioregular"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "preciounitario",
+						"fullPath": [
+							"preciounitario"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select distinct \r\n    -- cast(concat(\"8888\", MD1.plu_sap) as bigint) left1,\r\n    -- MD7.llave_cp right1,\r\n    -- cast(MD1.llave_cp as bigint) left2,\r\n    -- MD7_1.llave_cp right2,\r\n    -- cast(concat(\"9999\", MD1.plu_sap) as bigint) left3,\r\n    -- MD7_2.llave_cp right3,\r\n    \r\n    -- coalesce(MD7.nit_sap,MD7_1.nit_sap,MD7_2.nit_sap) as nitsap, \r\n    \r\n    -- cast(replace(MD8.nitsap, ' ', '') as bigint) as nitproveedores\r\n\r\n    CAST(MD2.iddnegocio AS int) AS iddnegocio,\r\n\r\n\tCAST(MD5.iddcliente AS int) AS iddcliente,\r\n\r\n\tCAST(MD3.iddplu AS int) AS iddplusap,\r\n\r\n\tCAST(MD8.iddproveedor AS int) AS iddproveedor,\r\n\r\n\tCAST(MD4.iddpromocion AS int) AS iddpromociones,\r\n\r\n\tCAST(MD6.iddtiempo AS\tint)\tAS iddfecha,\r\n\r\n\tCAST(MD1.hora AS int) AS hora,\r\n\r\n\tCAST(MD1.transaccion AS int) AS transaccion,\r\n\r\n\tCAST(MD1.transac AS varchar(100)) AS idtransaccion,\r\n\r\n\tCAST(MD1.factura AS int) AS factura,\r\n\r\n\tCAST(MD1.tp AS varchar(100)) AS numerotarjetaplata,\r\n\r\n\tCAST(MD1.cliente_tp AS int) AS flagclientetarjetaplata,\r\n\r\n\tCAST(MD1.plu_sicol AS int) AS plusicol,\r\n\r\n\tCAST(MD1.cod_cajero AS int) AS codigocajero,\r\n\r\n\tCAST(MD1.canal AS varchar(50)) AS canal,\r\n\r\n\tCAST(MD1.kilos AS decimal(9, 2)) AS kilos,\r\n\r\n\tCAST(MD1.operacion_mp AS varchar(100)) AS operacionmediopago,\r\n\r\n\tCAST(MD1.medio_pago AS int) AS codigomediopago,\r\n\r\n\tCAST(replace(MD1.cantidad, ',', '.') AS float) AS cantidad,\r\n\r\n\tCAST(MD1.descuento_uni AS int) AS descuentounitario,\r\n\r\n\tCAST(replace(MD1.venta_bruta, ',', '.') AS decimal(20,2)) AS ventabruta,\r\n\r\n\tCAST(replace(MD1.venta_neta, ',', '.') AS decimal(20,2)) AS ventaneta,\r\n\r\n\tCAST(replace(MD1.venta_sin_iva, ',', '.') AS decimal(20,2)) AS ventasiniva,\r\n\r\n\tCAST(replace(MD1.descuento, ',', '.') AS decimal(20,2)) AS descuento,\r\n\r\n\tCAST(MD1.precio_regular AS int) AS precioregular,\r\n\r\n\tCAST(MD1.precio_uni AS int) AS preciounitario\r\n\r\nfrom MD1\r\n\r\nleft join MD2 ON CAST(MD2.codigocentro AS varchar(100)) = replace(MD1.centro, ' ', '')\r\n\r\n-- left join MD3 ON CAST(MD3.plusap AS varchar(100)) = replace(MD1.plu_sap, ' ', '')\r\n\r\nleft join MD3 ON MD3.plusap = cast(replace(MD1.plu_sap, ' ', '') as bigint)\r\n\r\nleft join MD4 ON replace(MD4.codigopromocion, ' ', '') = replace(MD1.promo_id, ' ', '')\r\n\r\nleft join MD5 ON replace(MD5.numeroidentificacion, ' ', '') = replace(MD1.cedula_cli, ' ', '') \r\n\r\nleft join MD6 ON CAST(MD6.iddtiempo AS int) = MD1.fecha\r\n\r\nleft join MD7 on cast(concat('8888', MD1.plu_sap) as bigint) = MD7.llave_cp\r\n\r\nleft join MD7_1 on cast(MD1.llave_cp as bigint) = MD7_1.llave_cp\r\n\r\nleft join MD7_2 on cast(concat('9999', MD1.plu_sap) as bigint) = MD7_2.llave_cp\r\n\r\nleft join MD8 ON coalesce(MD7.nit_sap,MD7_1.nit_sap,MD7_2.nit_sap) = cast(replace(MD8.nitsap, ' ', '') as bigint)",
+			"codeGenVersion": 2
+		},
+		"node-1694659148104": {
+			"nodeId": "node-1694659148104",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDPlusap_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDPlusap_parquet_delta_lake_node1694659148104",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "gold_tbldplusap_parquet_delta_lake",
+			"format": "delta",
+			"additionalDeltaOptions": {},
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		},
+		"node-1694659768854": {
+			"nodeId": "node-1694659768854",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDNegocios_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDNegocios_parquet_delta_lake_node1694659768854",
+			"classification": "DataSource",
+			"type": "Catalog",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "gold_tbldnegocios_parquet_delta_lake",
+			"format": "delta",
+			"additionalDeltaOptions": {},
+			"calculatedType": "",
+			"runtimeParameters": [],
+			"codeGenVersion": 2
+		},
+		"node-1695612167586": {
+			"nodeId": "node-1695612167586",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695441544608"
+			],
+			"name": "Drop Duplicates cleansed_provee_plusap_parquet 2",
+			"generatedNodeName": "DropDuplicatescleansed_provee_plusap_parquet2_node1695612167586",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694974366722": {
+			"nodeId": "node-1694974366722",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694644041816"
+			],
+			"name": "Drop Duplicates cleansed_venta_parquet",
+			"generatedNodeName": "DropDuplicatescleansed_venta_parquet_node1694974366722",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694644041816": {
+			"nodeId": "node-1694644041816",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen cleansed_venta_parquet",
+			"generatedNodeName": "Origencleansed_venta_parquet_node1694644041816",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_venta_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1695614085654": {
+			"nodeId": "node-1695614085654",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen gold_TblDPlusap_parquet_delta_lake",
+			"generatedNodeName": "Origengold_TblDPlusap_parquet_delta_lake_node1695614085654",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": false,
+			"format": "delta",
+			"paths": [
+				"s3://aws-us-gold/data/TblDPlusap_parquet_delta_lake/"
+			],
+			"compressionType": null,
+			"exclusions": [],
+			"groupFiles": null,
+			"groupSize": null,
+			"recurse": null,
+			"maxBand": null,
+			"maxFilesInBand": null,
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"enableSamplePath": false,
+				"samplePath": "s3://aws-us-gold/data/TblDPlusap_parquet_delta_lake/part-00000-75d2f73a-bce4-4d71-88f5-bfff36d10f51-c000.snappy.parquet",
+				"boundedOption": null
+			},
+			"additionalDeltaOptions": {},
+			"outputSchemas": [
+				[
+					{
+						"key": "iddplu",
+						"fullPath": [
+							"iddplu"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plusap",
+						"fullPath": [
+							"plusap"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcionproducto",
+						"fullPath": [
+							"descripcionproducto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ean",
+						"fullPath": [
+							"ean"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pais",
+						"fullPath": [
+							"pais"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "origen",
+						"fullPath": [
+							"origen"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unimedida",
+						"fullPath": [
+							"unimedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipomarca",
+						"fullPath": [
+							"tipomarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "marca",
+						"fullPath": [
+							"marca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clasemarca",
+						"fullPath": [
+							"clasemarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pesobruto",
+						"fullPath": [
+							"pesobruto"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadpesobruto",
+						"fullPath": [
+							"unidadpesobruto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "longitud",
+						"fullPath": [
+							"longitud"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ancho",
+						"fullPath": [
+							"ancho"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "altura",
+						"fullPath": [
+							"altura"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadmedida",
+						"fullPath": [
+							"unidadmedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadcontenidoneto",
+						"fullPath": [
+							"unidadcontenidoneto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "gruposeccion",
+						"fullPath": [
+							"gruposeccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "categoria",
+						"fullPath": [
+							"categoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subcategoria",
+						"fullPath": [
+							"subcategoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segmento",
+						"fullPath": [
+							"segmento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegmento1",
+						"fullPath": [
+							"subsegmento1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegmento2",
+						"fullPath": [
+							"subsegmento2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "seccion",
+						"fullPath": [
+							"seccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tiposeccion",
+						"fullPath": [
+							"tiposeccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1695441582087": {
+			"nodeId": "node-1695441582087",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen cleansed_provee_plusap_parquet 3",
+			"generatedNodeName": "Origencleansed_provee_plusap_parquet3_node1695441582087",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_provee_plusap_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694662612312": {
+			"nodeId": "node-1694662612312",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694660913008"
+			],
+			"name": "Destino gold_TblHVentas_parquet_delta_lake",
+			"generatedNodeName": "Destinogold_TblHVentas_parquet_delta_lake_node1694662612312",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblHVentas_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nfrom awsglue.dynamicframe import DynamicFrame\nfrom awsglue import DynamicFrame\nfrom pyspark.sql import functions as SqlFuncs\n\n\ndef sparkSqlQuery(glueContext, query, mapping, transformation_ctx) -> DynamicFrame:\n    for alias, frame in mapping.items():\n        frame.toDF().createOrReplaceTempView(alias)\n    result = spark.sql(query)\n    return DynamicFrame.fromDF(result, glueContext, transformation_ctx)\n\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node Origen gold_TblDProveedores_parquet_delta_lake\nOrigengold_TblDProveedores_parquet_delta_lake_node1694659484927_df = (\n    glueContext.create_data_frame.from_catalog(\n        database=\"olimpica_tao_db\", table_name=\"gold_tbldproveedores_parquet_delta_lake\"\n    )\n)\nOrigengold_TblDProveedores_parquet_delta_lake_node1694659484927 = DynamicFrame.fromDF(\n    Origengold_TblDProveedores_parquet_delta_lake_node1694659484927_df,\n    glueContext,\n    \"Origengold_TblDProveedores_parquet_delta_lake_node1694659484927\",\n)\n\n# Script generated for node Origen cleansed_provee_plusap_parquet 1\nOrigencleansed_provee_plusap_parquet1_node1694645885618 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_provee_plusap_parquet\",\n        transformation_ctx=\"Origencleansed_provee_plusap_parquet1_node1694645885618\",\n    )\n)\n\n# Script generated for node Origen tbldtiempo\nOrigentbldtiempo_node1694645986961 = glueContext.create_dynamic_frame.from_options(\n    connection_type=\"redshift\",\n    connection_options={\n        \"redshiftTmpDir\": \"s3://aws-glue-assets-535608989088-us-east-2/temporary/\",\n        \"useConnectionProperties\": \"true\",\n        \"dbtable\": \"public.tbldtiempo\",\n        \"connectionName\": \"conexion_olimpicatao_dwh_redshift\",\n    },\n    transformation_ctx=\"Origentbldtiempo_node1694645986961\",\n)\n\n# Script generated for node Origen gold_TblDPromociones_parquet_delta_lake\nOrigengold_TblDPromociones_parquet_delta_lake_node1694659368566_df = (\n    glueContext.create_data_frame.from_catalog(\n        database=\"olimpica_tao_db\", table_name=\"gold_tbldpromociones_parquet_delta_lake\"\n    )\n)\nOrigengold_TblDPromociones_parquet_delta_lake_node1694659368566 = DynamicFrame.fromDF(\n    Origengold_TblDPromociones_parquet_delta_lake_node1694659368566_df,\n    glueContext,\n    \"Origengold_TblDPromociones_parquet_delta_lake_node1694659368566\",\n)\n\n# Script generated for node Origen gold_TblDClientes_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblDClientes_parquet_delta_lake_node1694660825303_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblDClientes_parquet_delta_lake/\")\n)\nOrigengold_TblDClientes_parquet_delta_lake_node1694660825303 = DynamicFrame.fromDF(\n    Origengold_TblDClientes_parquet_delta_lake_node1694660825303_df,\n    glueContext,\n    \"Origengold_TblDClientes_parquet_delta_lake_node1694660825303\",\n)\n\n# Script generated for node Origen gold_TblDPlusap_parquet_delta_lake\nOrigengold_TblDPlusap_parquet_delta_lake_node1694659148104_df = (\n    glueContext.create_data_frame.from_catalog(\n        database=\"olimpica_tao_db\", table_name=\"gold_tbldplusap_parquet_delta_lake\"\n    )\n)\nOrigengold_TblDPlusap_parquet_delta_lake_node1694659148104 = DynamicFrame.fromDF(\n    Origengold_TblDPlusap_parquet_delta_lake_node1694659148104_df,\n    glueContext,\n    \"Origengold_TblDPlusap_parquet_delta_lake_node1694659148104\",\n)\n\n# Script generated for node Origen cleansed_provee_plusap_parquet 2\nOrigencleansed_provee_plusap_parquet2_node1695441544608 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_provee_plusap_parquet\",\n        transformation_ctx=\"Origencleansed_provee_plusap_parquet2_node1695441544608\",\n    )\n)\n\n# Script generated for node Origen gold_TblDNegocios_parquet_delta_lake\nOrigengold_TblDNegocios_parquet_delta_lake_node1694659768854_df = (\n    glueContext.create_data_frame.from_catalog(\n        database=\"olimpica_tao_db\", table_name=\"gold_tbldnegocios_parquet_delta_lake\"\n    )\n)\nOrigengold_TblDNegocios_parquet_delta_lake_node1694659768854 = DynamicFrame.fromDF(\n    Origengold_TblDNegocios_parquet_delta_lake_node1694659768854_df,\n    glueContext,\n    \"Origengold_TblDNegocios_parquet_delta_lake_node1694659768854\",\n)\n\n# Script generated for node Origen cleansed_venta_parquet\nOrigencleansed_venta_parquet_node1694644041816 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_venta_parquet\",\n        transformation_ctx=\"Origencleansed_venta_parquet_node1694644041816\",\n    )\n)\n\n# Script generated for node Origen gold_TblDPlusap_parquet_delta_lake\nadditionalOptions = {}\nOrigengold_TblDPlusap_parquet_delta_lake_node1695614085654_df = (\n    spark.read.format(\"delta\")\n    .options(**additionalOptions)\n    .load(\"s3://aws-us-gold/data/TblDPlusap_parquet_delta_lake/\")\n)\nOrigengold_TblDPlusap_parquet_delta_lake_node1695614085654 = DynamicFrame.fromDF(\n    Origengold_TblDPlusap_parquet_delta_lake_node1695614085654_df,\n    glueContext,\n    \"Origengold_TblDPlusap_parquet_delta_lake_node1695614085654\",\n)\n\n# Script generated for node Origen cleansed_provee_plusap_parquet 3\nOrigencleansed_provee_plusap_parquet3_node1695441582087 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_provee_plusap_parquet\",\n        transformation_ctx=\"Origencleansed_provee_plusap_parquet3_node1695441582087\",\n    )\n)\n\n# Script generated for node Drop Duplicates cleansed_provee_plusap_parquet 1\nDropDuplicatescleansed_provee_plusap_parquet1_node1694974060998 = DynamicFrame.fromDF(\n    Origencleansed_provee_plusap_parquet1_node1694645885618.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_provee_plusap_parquet1_node1694974060998\",\n)\n\n# Script generated for node Drop Duplicates cleansed_provee_plusap_parquet 2\nDropDuplicatescleansed_provee_plusap_parquet2_node1695612167586 = DynamicFrame.fromDF(\n    Origencleansed_provee_plusap_parquet2_node1695441544608.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_provee_plusap_parquet2_node1695612167586\",\n)\n\n# Script generated for node Drop Duplicates cleansed_venta_parquet\nDropDuplicatescleansed_venta_parquet_node1694974366722 = DynamicFrame.fromDF(\n    Origencleansed_venta_parquet_node1694644041816.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_venta_parquet_node1694974366722\",\n)\n\n# Script generated for node Drop Duplicates cleansed_provee_plusap_parquet 3\nDropDuplicatescleansed_provee_plusap_parquet3_node1695612209043 = DynamicFrame.fromDF(\n    Origencleansed_provee_plusap_parquet3_node1695441582087.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_provee_plusap_parquet3_node1695612209043\",\n)\n\n# Script generated for node SQL Query TblHVentas\nSqlQuery56 = \"\"\"\nselect distinct \n    -- cast(concat(\"8888\", MD1.plu_sap) as bigint) left1,\n    -- MD7.llave_cp right1,\n    -- cast(MD1.llave_cp as bigint) left2,\n    -- MD7_1.llave_cp right2,\n    -- cast(concat(\"9999\", MD1.plu_sap) as bigint) left3,\n    -- MD7_2.llave_cp right3,\n    \n    -- coalesce(MD7.nit_sap,MD7_1.nit_sap,MD7_2.nit_sap) as nitsap, \n    \n    -- cast(replace(MD8.nitsap, ' ', '') as bigint) as nitproveedores\n\n    CAST(MD2.iddnegocio AS int) AS iddnegocio,\n\n\tCAST(MD5.iddcliente AS int) AS iddcliente,\n\n\tCAST(MD3.iddplu AS int) AS iddplusap,\n\n\tCAST(MD8.iddproveedor AS int) AS iddproveedor,\n\n\tCAST(MD4.iddpromocion AS int) AS iddpromociones,\n\n\tCAST(MD6.iddtiempo AS\tint)\tAS iddfecha,\n\n\tCAST(MD1.hora AS int) AS hora,\n\n\tCAST(MD1.transaccion AS int) AS transaccion,\n\n\tCAST(MD1.transac AS varchar(100)) AS idtransaccion,\n\n\tCAST(MD1.factura AS int) AS factura,\n\n\tCAST(MD1.tp AS varchar(100)) AS numerotarjetaplata,\n\n\tCAST(MD1.cliente_tp AS int) AS flagclientetarjetaplata,\n\n\tCAST(MD1.plu_sicol AS int) AS plusicol,\n\n\tCAST(MD1.cod_cajero AS int) AS codigocajero,\n\n\tCAST(MD1.canal AS varchar(50)) AS canal,\n\n\tCAST(MD1.kilos AS decimal(9, 2)) AS kilos,\n\n\tCAST(MD1.operacion_mp AS varchar(100)) AS operacionmediopago,\n\n\tCAST(MD1.medio_pago AS int) AS codigomediopago,\n\n\tCAST(replace(MD1.cantidad, ',', '.') AS float) AS cantidad,\n\n\tCAST(MD1.descuento_uni AS int) AS descuentounitario,\n\n\tCAST(replace(MD1.venta_bruta, ',', '.') AS decimal(20,2)) AS ventabruta,\n\n\tCAST(replace(MD1.venta_neta, ',', '.') AS decimal(20,2)) AS ventaneta,\n\n\tCAST(replace(MD1.venta_sin_iva, ',', '.') AS decimal(20,2)) AS ventasiniva,\n\n\tCAST(replace(MD1.descuento, ',', '.') AS decimal(20,2)) AS descuento,\n\n\tCAST(MD1.precio_regular AS int) AS precioregular,\n\n\tCAST(MD1.precio_uni AS int) AS preciounitario\n\nfrom MD1\n\nleft join MD2 ON CAST(MD2.codigocentro AS varchar(100)) = replace(MD1.centro, ' ', '')\n\n-- left join MD3 ON CAST(MD3.plusap AS varchar(100)) = replace(MD1.plu_sap, ' ', '')\n\nleft join MD3 ON MD3.plusap = cast(replace(MD1.plu_sap, ' ', '') as bigint)\n\nleft join MD4 ON replace(MD4.codigopromocion, ' ', '') = replace(MD1.promo_id, ' ', '')\n\nleft join MD5 ON replace(MD5.numeroidentificacion, ' ', '') = replace(MD1.cedula_cli, ' ', '') \n\nleft join MD6 ON CAST(MD6.iddtiempo AS int) = MD1.fecha\n\nleft join MD7 on cast(concat('8888', MD1.plu_sap) as bigint) = MD7.llave_cp\n\nleft join MD7_1 on cast(MD1.llave_cp as bigint) = MD7_1.llave_cp\n\nleft join MD7_2 on cast(concat('9999', MD1.plu_sap) as bigint) = MD7_2.llave_cp\n\nleft join MD8 ON coalesce(MD7.nit_sap,MD7_1.nit_sap,MD7_2.nit_sap) = cast(replace(MD8.nitsap, ' ', '') as bigint)\n\"\"\"\nSQLQueryTblHVentas_node1694660913008 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery56,\n    mapping={\n        \"MD1\": DropDuplicatescleansed_venta_parquet_node1694974366722,\n        \"MD2\": Origengold_TblDNegocios_parquet_delta_lake_node1694659768854,\n        \"MD4\": Origengold_TblDPromociones_parquet_delta_lake_node1694659368566,\n        \"MD5\": Origengold_TblDClientes_parquet_delta_lake_node1694660825303,\n        \"MD6\": Origentbldtiempo_node1694645986961,\n        \"MD8\": Origengold_TblDProveedores_parquet_delta_lake_node1694659484927,\n        \"MD7\": DropDuplicatescleansed_provee_plusap_parquet1_node1694974060998,\n        \"MD7_1\": DropDuplicatescleansed_provee_plusap_parquet2_node1695612167586,\n        \"MD7_2\": DropDuplicatescleansed_provee_plusap_parquet3_node1695612209043,\n        \"MD3\": Origengold_TblDPlusap_parquet_delta_lake_node1695614085654,\n    },\n    transformation_ctx=\"SQLQueryTblHVentas_node1694660913008\",\n)\n\n# Script generated for node Destino gold_TblHVentas_parquet_delta_lake\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblHVentas_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\nDestinogold_TblHVentas_parquet_delta_lake_node1694662612312_df = (\n    SQLQueryTblHVentas_node1694660913008.toDF()\n)\nDestinogold_TblHVentas_parquet_delta_lake_node1694662612312_df.write.format(\n    \"delta\"\n).options(**additional_options).mode(\"append\").save()\n\njob.commit()\n",
+	"redshift-s3-select": "s3://aws-glue-assets-535608989088-us-east-2/temporary/"
+}

@@ -1,0 +1,5871 @@
+{
+	"jobConfig": {
+		"name": "TL_PipelineLimpiezaDataMantenida",
+		"description": "\n",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.8X",
+		"numberOfWorkers": 12,
+		"maxCapacity": 96,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "TL_PipelineLimpiezaDataMantenida.py",
+		"scriptLocation": "s3://aws-us-gold/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-01T22:58:11.459Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://aws-us-gold/temp-dir/",
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": false,
+		"metrics": true,
+		"spark": true,
+		"pythonPath": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_common.py,s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py,s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_uuid.py",
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1693799639153": {
+			"nodeId": "node-1693799639153",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693797177641"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1693799639153",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"iddfecha"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"LEFT(transac,8) as iddfecha"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "idddescuentosmediospago",
+						"fullPath": [
+							"idddescuentosmediospago"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddfecha",
+						"fullPath": [
+							"iddfecha"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "promocion_mp",
+						"fullPath": [
+							"promocion_mp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuento_mp",
+						"fullPath": [
+							"descuento_mp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transac",
+						"fullPath": [
+							"transac"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694967854873": {
+			"nodeId": "node-1694967854873",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693610774853"
+			],
+			"name": "Drop Duplicates cleansed_descuentos_medios_de_pago",
+			"generatedNodeName": "DropDuplicatescleansed_descuentos_medios_de_pago_node1694967854873",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694152344768": {
+			"nodeId": "node-1694152344768",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694152130676"
+			],
+			"name": "gold_TblIOlimpicaGlobal",
+			"generatedNodeName": "gold_TblIOlimpicaGlobal_node1694152344768",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblIOlimpicaGlobal_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693608042007": {
+			"nodeId": "node-1693608042007",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_plusaps",
+			"generatedNodeName": "cleansed_plusaps_node1693608042007",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_plusaps_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1693611169499": {
+			"nodeId": "node-1693611169499",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694193110160"
+			],
+			"name": "gold_TblDPromociones",
+			"generatedNodeName": "gold_TblDPromociones_node1693611169499",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblDPromociones_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693690422375": {
+			"nodeId": "node-1693690422375",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693690165794"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1693690422375",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "iddproveedor",
+					"fromPath": [
+						"iddproveedor"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "razonsocial",
+					"fromPath": [
+						"razon"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nombreproveedor",
+					"fromPath": [
+						"proveedor"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nit",
+					"fromPath": [
+						"nit"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "proveedortrade",
+					"fromPath": [
+						"provee_trade"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nitsap",
+					"fromPath": [
+						"nit_sap"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "razonsocialsap",
+					"fromPath": [
+						"razon_sap"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipoproveedor",
+					"fromPath": [
+						"tipo_provee"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uuid",
+					"fromPath": [
+						"uuid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694193507259": {
+			"nodeId": "node-1694193507259",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694152523614"
+			],
+			"name": "SQL Query TblIChequeoPreciosMercadeo",
+			"generatedNodeName": "SQLQueryTblIChequeoPreciosMercadeo_node1694193507259",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1694152523614",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select \ndistinct  \ncompetidor,\ncategoria,\nproductocompetencia,\nproductoolimpica,\nvolumencompetencia,\nvolumenolimpica,\npreciocompetencia,\nprecioolimpica,\nfecha\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694092391130": {
+			"nodeId": "node-1694092391130",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694192782714"
+			],
+			"name": "gold_TblIColombiaACV",
+			"generatedNodeName": "gold_TblIColombiaACV_node1694092391130",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblIColombiaACV_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693878845056": {
+			"nodeId": "node-1693878845056",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693690422375"
+			],
+			"name": "SQL Query TblDProveedores",
+			"generatedNodeName": "SQLQueryTblDProveedores_node1693878845056",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1693690422375",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select\ndistinct\niddproveedor,\nnit,\nrazonsocial,\nnombreproveedor,\nnitsap,\nrazonsocialsap,\nproveedortrade,\ntipoproveedor\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1693802773243": {
+			"nodeId": "node-1693802773243",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693802567168"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1693802773243",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "plusap",
+					"fromPath": [
+						"plusap"
+					],
+					"toType": "long",
+					"fromType": "bigint",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pais",
+					"fromPath": [
+						"pais"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "origen",
+					"fromPath": [
+						"origen"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ean",
+					"fromPath": [
+						"ean"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripcionproducto",
+					"fromPath": [
+						"articulo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "marca",
+					"fromPath": [
+						"marca"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "longitud",
+					"fromPath": [
+						"longitud"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ancho",
+					"fromPath": [
+						"ancho"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "altura",
+					"fromPath": [
+						"altura"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "departamento",
+					"fromPath": [
+						"departamento"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "categoria",
+					"fromPath": [
+						"categoria"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "segmento",
+					"fromPath": [
+						"segmento"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "seccion",
+					"fromPath": [
+						"seccion"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unimedida",
+					"fromPath": [
+						"unimedida"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipomarca",
+					"fromPath": [
+						"tipomarca"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clasemarca",
+					"fromPath": [
+						"clasemarca"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "pesobruto",
+					"fromPath": [
+						"pesobruto"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadpesobruto",
+					"fromPath": [
+						"unidadpesobruto"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadmedida",
+					"fromPath": [
+						"unidadmedida"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadcontenidoneto",
+					"fromPath": [
+						"unidadcontenido_neto"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subcategoria",
+					"fromPath": [
+						"subcategoria"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subsegmento1",
+					"fromPath": [
+						"subsegemento1"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subsegmento2",
+					"fromPath": [
+						"subsegemento2"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tiposeccion",
+					"fromPath": [
+						"tiposec"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "gruposeccion",
+					"fromPath": [
+						"gruposec"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uuid",
+					"fromPath": [
+						"uuid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "iddplu",
+					"fromPath": [
+						"iddplu"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694967895429": {
+			"nodeId": "node-1694967895429",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694090962097"
+			],
+			"name": "Drop Duplicates cleansed_arbol_de_competencia",
+			"generatedNodeName": "DropDuplicatescleansed_arbol_de_competencia_node1694967895429",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694092110794": {
+			"nodeId": "node-1694092110794",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_colombia_acv",
+			"generatedNodeName": "cleansed_colombia_acv_node1694092110794",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_colombia_acv_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694968063180": {
+			"nodeId": "node-1694968063180",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694092515490"
+			],
+			"name": "Drop Duplicates cleansed_chequeo_de_precios_dos",
+			"generatedNodeName": "DropDuplicatescleansed_chequeo_de_precios_dos_node1694968063180",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694193110160": {
+			"nodeId": "node-1694193110160",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694064887009"
+			],
+			"name": "SQL Query TblDPromociones",
+			"generatedNodeName": "SQLQueryTblDPromociones_node1694193110160",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1694064887009",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": [
+				[
+					{
+						"key": "iddpromocion",
+						"fullPath": [
+							"iddpromocion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigopromocion",
+						"fullPath": [
+							"codigopromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcionpromocion",
+						"fullPath": [
+							"descripcionpromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcionreglapromocion",
+						"fullPath": [
+							"descripcionreglapromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tiporeglapromocion",
+						"fullPath": [
+							"tiporeglapromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombregrupo",
+						"fullPath": [
+							"nombregrupo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "promocionvigente",
+						"fullPath": [
+							"promocionvigente"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fechainiciopromocion",
+						"fullPath": [
+							"fechainiciopromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fechafinpromocion",
+						"fullPath": [
+							"fechafinpromocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select \ndistinct \niddpromocion,\ncodigopromocion,\ndescripcionpromocion,\n-- descripcionreglapromocion,\n-- tiporeglapromocion,\nnombregrupo,\npromocionvigente,\nfechainiciopromocion,\nfechafinpromocion\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694193278707": {
+			"nodeId": "node-1694193278707",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694091064905"
+			],
+			"name": "SQL Query TblIArbolCompetencia",
+			"generatedNodeName": "SQLQueryTblIArbolCompetencia_node1694193278707",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1694091064905",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select \ndistinct \ncadena,\nanio,\nperiodicidad,\nperiodo,\nindicador,\nvalor\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694967660029": {
+			"nodeId": "node-1694967660029",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694092110794"
+			],
+			"name": "Drop Duplicates cleansed_colombia_acv",
+			"generatedNodeName": "DropDuplicatescleansed_colombia_acv_node1694967660029",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694093229641": {
+			"nodeId": "node-1694093229641",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694193656771"
+			],
+			"name": "gold_TblIChequeoPreciosBI",
+			"generatedNodeName": "gold_TblIChequeoPreciosBI_node1694093229641",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblIChequeoPreciosBI_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694064887009": {
+			"nodeId": "node-1694064887009",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694404589562"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694064887009",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "codigopromocion",
+					"fromPath": [
+						"promo_id"
+					],
+					"toType": "string",
+					"fromType": "bigint",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripcionpromocion",
+					"fromPath": [
+						"oferta"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nombregrupo",
+					"fromPath": [
+						"nombre_desagrupamiento"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "promocionvigente",
+					"fromPath": [
+						"promocion_es_actual"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fechainiciopromocion",
+					"fromPath": [
+						"fecha_inicio_promocion"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fechafinpromocion",
+					"fromPath": [
+						"fecha_fin_promocion"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uuid",
+					"fromPath": [
+						"uuid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "iddpromocion",
+					"fromPath": [
+						"iddpromocion"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693690165794": {
+			"nodeId": "node-1693690165794",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693689998109"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1693690165794",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"iddproveedor"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddproveedor"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "iddproveedor",
+						"fullPath": [
+							"iddproveedor"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "razon",
+						"fullPath": [
+							"razon"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "proveedor",
+						"fullPath": [
+							"proveedor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nit",
+						"fullPath": [
+							"nit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "provee_trade",
+						"fullPath": [
+							"provee_trade"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nit_sap",
+						"fullPath": [
+							"nit_sap"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "razon_sap",
+						"fullPath": [
+							"razon_sap"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_provee",
+						"fullPath": [
+							"tipo_provee"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694148356276": {
+			"nodeId": "node-1694148356276",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_informe_de_olimpica_vs_global",
+			"generatedNodeName": "cleansed_informe_de_olimpica_vs_global_node1694148356276",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_informe_de_olimpica_vs_global_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1693877789509": {
+			"nodeId": "node-1693877789509",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693800846238"
+			],
+			"name": "SQL Query TblHDescuentosMediosPago",
+			"generatedNodeName": "SQLQueryTblHDescuentosMediosPago_node1693877789509",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1693800846238",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select\ndistinct\nidddescuentosmediospago,\niddfecha,\nidtransaccion,\nsubstring(descuento, 1,position(',' in descuento)-1) as descuento,\ndescripciondescuento\nfrom myDataSource;",
+			"codeGenVersion": 2
+		},
+		"node-1693876035526": {
+			"nodeId": "node-1693876035526",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693802773243"
+			],
+			"name": "SQL Query TblDPlusap",
+			"generatedNodeName": "SQLQueryTblDPlusap_node1693876035526",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1693802773243",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": [
+				[
+					{
+						"key": "iddplu",
+						"fullPath": [
+							"iddplu"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plusap",
+						"fullPath": [
+							"plusap"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcionproducto",
+						"fullPath": [
+							"descripcionproducto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ean",
+						"fullPath": [
+							"ean"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pais",
+						"fullPath": [
+							"pais"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "origen",
+						"fullPath": [
+							"origen"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unimedida",
+						"fullPath": [
+							"unimedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipomarca",
+						"fullPath": [
+							"tipomarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "marca",
+						"fullPath": [
+							"marca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clasemarca",
+						"fullPath": [
+							"clasemarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pesobruto",
+						"fullPath": [
+							"pesobruto"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadpesobruto",
+						"fullPath": [
+							"unidadpesobruto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "longitud",
+						"fullPath": [
+							"longitud"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ancho",
+						"fullPath": [
+							"ancho"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "altura",
+						"fullPath": [
+							"altura"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadmedida",
+						"fullPath": [
+							"unidadmedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadcontenidoneto",
+						"fullPath": [
+							"unidadcontenidoneto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "gruposeccion",
+						"fullPath": [
+							"gruposeccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "categoria",
+						"fullPath": [
+							"categoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subcategoria",
+						"fullPath": [
+							"subcategoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segmento",
+						"fullPath": [
+							"segmento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegmento1",
+						"fullPath": [
+							"subsegmento1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegmento2",
+						"fullPath": [
+							"subsegmento2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "seccion",
+						"fullPath": [
+							"seccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tiposeccion",
+						"fullPath": [
+							"tiposeccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select \ndistinct\niddplu,\nplusap,\ndescripcionproducto,\nean,\npais,\norigen,\nunimedida,\ntipomarca,\nmarca,\nclasemarca,\npesobruto,\nunidadpesobruto,\nlongitud,\nancho,\naltura,\nunidadmedida,\nunidadcontenidoneto,\ndepartamento,\ngruposeccion,\ncategoria,\nsubcategoria,\nsegmento,\nsubsegmento1,\nsubsegmento2,\nseccion,\ntiposeccion\nfrom myDataSource;",
+			"codeGenVersion": 2
+		},
+		"node-1694092589162": {
+			"nodeId": "node-1694092589162",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694968063180"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694092589162",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "regional",
+					"fromPath": [
+						"regional"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "grupocompras",
+					"fromPath": [
+						"grupocompras"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ean",
+					"fromPath": [
+						"ean"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "plu",
+					"fromPath": [
+						"plu"
+					],
+					"toType": "int",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripcion",
+					"fromPath": [
+						"descripcion"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rolcategoria",
+					"fromPath": [
+						"rol_de_la_categoria"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "concepto",
+					"fromPath": [
+						"concepto"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clase",
+					"fromPath": [
+						"clase"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "competidor",
+					"fromPath": [
+						"competencia_min"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "precioolimpica",
+					"fromPath": [
+						"precio_olimpica"
+					],
+					"toType": "decimal",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "preciocompetencia",
+					"fromPath": [
+						"precio_comp"
+					],
+					"toType": "decimal",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "precionuevo",
+					"fromPath": [
+						"precio_nuevo"
+					],
+					"toType": "decimal",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "margenolimpica",
+					"fromPath": [
+						"margen_olimpica"
+					],
+					"toType": "float",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "margenprecionuevo",
+					"fromPath": [
+						"margen_precio_nuevo"
+					],
+					"toType": "float",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "estado",
+					"fromPath": [
+						"estado"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fecha",
+					"fromPath": [
+						"fecha"
+					],
+					"toType": "date",
+					"fromType": "date",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694967706040": {
+			"nodeId": "node-1694967706040",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694148356276"
+			],
+			"name": "Drop Duplicates cleansed_informe_de_olimpica_vs_global",
+			"generatedNodeName": "DropDuplicatescleansed_informe_de_olimpica_vs_global_node1694967706040",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1695315569395": {
+			"nodeId": "node-1695315569395",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693608237298"
+			],
+			"name": "Drop Duplicates",
+			"generatedNodeName": "DropDuplicates_node1695315569395",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694091812250": {
+			"nodeId": "node-1694091812250",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694193278707"
+			],
+			"name": "gold_TblIArbolCompetencia",
+			"generatedNodeName": "gold_TblIArbolCompetencia_node1694091812250",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblIArbolCompetencia_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693608237298": {
+			"nodeId": "node-1693608237298",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695315297087"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1693608237298",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "plusap",
+					"fromPath": [
+						"plu_sap"
+					],
+					"toType": "long",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "plu_nombre",
+					"fromPath": [
+						"plu_nombre"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "abc_nal",
+					"fromPath": [
+						"abc_nal"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "abc_cat",
+					"fromPath": [
+						"abc_cat"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "pais",
+					"fromPath": [
+						"pais"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "origen",
+					"fromPath": [
+						"origen"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ean",
+					"fromPath": [
+						"ean"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "articulo",
+					"fromPath": [
+						"articulo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "marca",
+					"fromPath": [
+						"marca"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "consignado",
+					"fromPath": [
+						"consignado"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "contenido",
+					"fromPath": [
+						"contenido"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "explosion",
+					"fromPath": [
+						"explosion"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "longitud",
+					"fromPath": [
+						"longitud"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ancho",
+					"fromPath": [
+						"ancho"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "altura",
+					"fromPath": [
+						"altura"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "departamento",
+					"fromPath": [
+						"departamento"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "categoria",
+					"fromPath": [
+						"categoria"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "segmento",
+					"fromPath": [
+						"segmento"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "dirección_nal.#0",
+					"fromPath": [
+						"dirección_nal.#0"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "agrupación",
+					"fromPath": [
+						"agrupación"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "dias_obj_neg#1",
+					"fromPath": [
+						"dias_obj_neg#1"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "dias_obj#2",
+					"fromPath": [
+						"dias_obj#2"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "seccion",
+					"fromPath": [
+						"seccion"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unimedida",
+					"fromPath": [
+						"uni_medida"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipomarca",
+					"fromPath": [
+						"tipo_marca"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "clasemarca",
+					"fromPath": [
+						"clase_marca"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fuente_aprov",
+					"fromPath": [
+						"fuente_aprov"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "exc_agotados",
+					"fromPath": [
+						"exc_agotados"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "pesobruto",
+					"fromPath": [
+						"peso_bruto"
+					],
+					"toType": "double",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadpesobruto",
+					"fromPath": [
+						"unidad_peso_bruto"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadmedida",
+					"fromPath": [
+						"unidad_medida"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "unidadcontenido_neto",
+					"fromPath": [
+						"unidad_contenido_neto"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subcategoria",
+					"fromPath": [
+						"sub_categoria"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subsegemento1",
+					"fromPath": [
+						"sub_segemento1"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "subsegemento2",
+					"fromPath": [
+						"sub_segemento2"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipo_cat",
+					"fromPath": [
+						"tipo_cat"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				},
+				{
+					"toKey": "tiposec",
+					"fromPath": [
+						"tipo_sec"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "gruposec",
+					"fromPath": [
+						"grupo_sec"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693689998109": {
+			"nodeId": "node-1693689998109",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694967955708"
+			],
+			"name": "UUID",
+			"generatedNodeName": "UUID_node1693689998109",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [],
+			"functionName": "gs_uuid",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_uuid.py",
+			"version": "1.0.0",
+			"transformName": "gs_uuid",
+			"outputSchemas": [
+				[
+					{
+						"key": "razon",
+						"fullPath": [
+							"razon"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "proveedor",
+						"fullPath": [
+							"proveedor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nit",
+						"fullPath": [
+							"nit"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "provee_trade",
+						"fullPath": [
+							"provee_trade"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nit_sap",
+						"fullPath": [
+							"nit_sap"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "razon_sap",
+						"fullPath": [
+							"razon_sap"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipo_provee",
+						"fullPath": [
+							"tipo_provee"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694967993988": {
+			"nodeId": "node-1694967993988",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694148460927"
+			],
+			"name": "Drop Duplicates cleansed_chequeo_de_precios_uno",
+			"generatedNodeName": "DropDuplicatescleansed_chequeo_de_precios_uno_node1694967993988",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1693513951281": {
+			"nodeId": "node-1693513951281",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1692293126993"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1693513951281",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "codigocentro",
+					"fromPath": [
+						"codigocentro"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripcioncentro",
+					"fromPath": [
+						"descripcioncentro"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipocentro",
+					"fromPath": [
+						"tipocentro"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "direccion",
+					"fromPath": [
+						"direccion"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "estrato",
+					"fromPath": [
+						"estrato"
+					],
+					"toType": "int",
+					"fromType": "bigint",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "antiguedad",
+					"fromPath": [
+						"antiguedad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "superficie",
+					"fromPath": [
+						"superficie"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "codigozona",
+					"fromPath": [
+						"codigozona"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "distrito",
+					"fromPath": [
+						"distrito"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "region",
+					"fromPath": [
+						"region"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "formato",
+					"fromPath": [
+						"formato"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "codigodane",
+					"fromPath": [
+						"codigodane"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "departamento",
+					"fromPath": [
+						"departamento"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ciudad",
+					"fromPath": [
+						"ciudad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ciudadabrevidada",
+					"fromPath": [
+						"ciudadabrevidada"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rangoventas",
+					"fromPath": [
+						"rangoventas"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rangometros",
+					"fromPath": [
+						"rangometros"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipociudad",
+					"fromPath": [
+						"tipociudad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694967797691": {
+			"nodeId": "node-1694967797691",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694058960647"
+			],
+			"name": "Drop Duplicates cleansed_maestro_promociones",
+			"generatedNodeName": "DropDuplicatescleansed_maestro_promociones_node1694967797691",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1692293126993": {
+			"nodeId": "node-1692293126993",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1692284613254"
+			],
+			"name": "Select From Collection",
+			"generatedNodeName": "SelectFromCollection_node1692293126993",
+			"classification": "Transform",
+			"type": "SelectFromCollection",
+			"index": 0,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694152743921": {
+			"nodeId": "node-1694152743921",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694193507259"
+			],
+			"name": "gold_TblIChequeoPreciosMercadeo",
+			"generatedNodeName": "gold_TblIChequeoPreciosMercadeo_node1694152743921",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblIChequeoPreciosMercadeo_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693690771424": {
+			"nodeId": "node-1693690771424",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693878845056"
+			],
+			"name": "gold_TblDProveedores",
+			"generatedNodeName": "gold_TblDProveedores_node1693690771424",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblDProveedores_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694967955708": {
+			"nodeId": "node-1694967955708",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693609153756"
+			],
+			"name": "Drop Duplicates cleansed_provee_detalle",
+			"generatedNodeName": "DropDuplicatescleansed_provee_detalle_node1694967955708",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1694193765402": {
+			"nodeId": "node-1694193765402",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693804609287"
+			],
+			"name": "SQL Query TblDNegocios",
+			"generatedNodeName": "SQLQueryTblDNegocios_node1694193765402",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1693804609287",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select distinct \n\niddnegocio\n,\ncodigocentro\n,\ndescripcioncentro\n,\ntipocentro\n,\ndireccion\n,\nestrato\n,\nantiguedad\n,\nsuperficie\n,\ncodigozona\n,\ndistrito\n,\nregion\n,\nformato\n,\ncodigodane\n,\ndepartamento\n,\nciudad\n,\nciudadabrevidada\n,\nrangoventas\n,\nrangometros\n,\ntipociudad\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694091064905": {
+			"nodeId": "node-1694091064905",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694967895429"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694091064905",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "cadena",
+					"fromPath": [
+						"cadena"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "anio",
+					"fromPath": [
+						"anio"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "periodicidad",
+					"fromPath": [
+						"periodicidad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "periodo",
+					"fromPath": [
+						"periodo"
+					],
+					"toType": "float",
+					"fromType": "float",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "indicador",
+					"fromPath": [
+						"indicador"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "valor",
+					"fromPath": [
+						"valor"
+					],
+					"toType": "float",
+					"fromType": "float",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694058960647": {
+			"nodeId": "node-1694058960647",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_maestro_promociones",
+			"generatedNodeName": "cleansed_maestro_promociones_node1694058960647",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_maestro_promociones_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1693610774853": {
+			"nodeId": "node-1693610774853",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_descuentos_medios_de_pago",
+			"generatedNodeName": "cleansed_descuentos_medios_de_pago_node1693610774853",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_descuentos_medios_de_pago_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1695315297087": {
+			"nodeId": "node-1695315297087",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693608042007"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1695315297087",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"plu_sap"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"ltrim(rtrim(plu_sap))"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694090962097": {
+			"nodeId": "node-1694090962097",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_arbol_de_competencia",
+			"generatedNodeName": "cleansed_arbol_de_competencia_node1694090962097",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_arbol_de_competencia_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1693801179910": {
+			"nodeId": "node-1693801179910",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694794702401"
+			],
+			"name": "gold_TblHDescuentosMediosPago",
+			"generatedNodeName": "gold_TblHDescuentosMediosPago_node1693801179910",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblHDescuentosMediosPago_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693607289237": {
+			"nodeId": "node-1693607289237",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694193765402"
+			],
+			"name": "gold_TblDNegocios",
+			"generatedNodeName": "gold_TblDNegocios_node1693607289237",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblDNegocios_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694794702401": {
+			"nodeId": "node-1694794702401",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693877789509"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694794702401",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "idddescuentosmediospago",
+					"fromPath": [
+						"idddescuentosmediospago"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "iddfecha",
+					"fromPath": [
+						"iddfecha"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripciondescuento",
+					"fromPath": [
+						"descripciondescuento"
+					],
+					"toType": "varchar",
+					"fromType": "varchar",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descuento",
+					"fromPath": [
+						"descuento"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "idtransaccion",
+					"fromPath": [
+						"idtransaccion"
+					],
+					"toType": "varchar",
+					"fromType": "varchar",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694193656771": {
+			"nodeId": "node-1694193656771",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694092589162"
+			],
+			"name": "SQL Query TblIChequeoPreciosBI",
+			"generatedNodeName": "SQLQueryTblIChequeoPreciosBI_node1694193656771",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1694092589162",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": [
+				[
+					{
+						"key": "regional",
+						"fullPath": [
+							"regional"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "grupocompras",
+						"fullPath": [
+							"grupocompras"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ean",
+						"fullPath": [
+							"ean"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "plu",
+						"fullPath": [
+							"plu"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcion",
+						"fullPath": [
+							"descripcion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rolcategoria",
+						"fullPath": [
+							"rolcategoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "concepto",
+						"fullPath": [
+							"concepto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clase",
+						"fullPath": [
+							"clase"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "competidor",
+						"fullPath": [
+							"competidor"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precioolimpica",
+						"fullPath": [
+							"precioolimpica"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "preciocompetencia",
+						"fullPath": [
+							"preciocompetencia"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "precionuevo",
+						"fullPath": [
+							"precionuevo"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "margenolimpica",
+						"fullPath": [
+							"margenolimpica"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "margenprecionuevo",
+						"fullPath": [
+							"margenprecionuevo"
+						],
+						"type": "float",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estado",
+						"fullPath": [
+							"estado"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha",
+						"fullPath": [
+							"fecha"
+						],
+						"type": "date",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select \ndistinct\nregional,\ngrupocompras,\nean,\nplu,\ndescripcion,\nrolcategoria,\nconcepto,\nclase,\ncompetidor,\nprecioolimpica,\npreciocompetencia,\nprecionuevo,\nmargenolimpica,\nmargenprecionuevo,\nestado,\nfecha\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694152523614": {
+			"nodeId": "node-1694152523614",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694967993988"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694152523614",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "competidor",
+					"fromPath": [
+						"competidor"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "categoria",
+					"fromPath": [
+						"categoria"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "productocompetencia",
+					"fromPath": [
+						"productocompetencia"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "productoolimpica",
+					"fromPath": [
+						"productoolimpica"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "volumencompetencia",
+					"fromPath": [
+						"volumencompetencia"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "volumenolimpica",
+					"fromPath": [
+						"volumenolimpica"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "preciocompetencia",
+					"fromPath": [
+						"preciocompetencia"
+					],
+					"toType": "int",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "precioolimpica",
+					"fromPath": [
+						"precioolimpica"
+					],
+					"toType": "int",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "fecha",
+					"fromPath": [
+						"fecha"
+					],
+					"toType": "date",
+					"fromType": "date",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694151555995": {
+			"nodeId": "node-1694151555995",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694967706040"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694151555995",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "negocio",
+					"fromPath": [
+						"negocio"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalolimpicaventaanioanteriormillones",
+					"fromPath": [
+						"totalolimpicaventaanioanteriormillones"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalcolombiaventaanioanteriormillones",
+					"fromPath": [
+						"totalcolombiaventaanioanteriormillones"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalolimpicaventaanioactualmillones",
+					"fromPath": [
+						"totalolimpicaventaanioactualmillones"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalcolombiaventaanioactualmillones",
+					"fromPath": [
+						"totalcolombiaventaanioactualmillones"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "variacionmercado",
+					"fromPath": [
+						"variacionmercado"
+					],
+					"toType": "float",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "variacionolimpica",
+					"fromPath": [
+						"variacionolimpica"
+					],
+					"toType": "float",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shareanoanterior",
+					"fromPath": [
+						"shareanoanterior"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "shareanoactual",
+					"fromPath": [
+						"shareanoactual"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "diferenciashare",
+					"fromPath": [
+						"diferenciashare"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "oportunidadvaloradaanioactualmillones",
+					"fromPath": [
+						"oportunidadvaloradaanioactualmillones"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "enero",
+					"fromPath": [
+						"enero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "febrero",
+					"fromPath": [
+						"febrero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "marzo",
+					"fromPath": [
+						"marzo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "abril",
+					"fromPath": [
+						"abril"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "mayo",
+					"fromPath": [
+						"mayo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "junio",
+					"fromPath": [
+						"junio"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "julio",
+					"fromPath": [
+						"julio"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "agosto",
+					"fromPath": [
+						"agosto"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "septiembre",
+					"fromPath": [
+						"septiembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "octubre",
+					"fromPath": [
+						"octubre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "noviembre",
+					"fromPath": [
+						"noviembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "diciembre",
+					"fromPath": [
+						"diciembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalcostaanioactual",
+					"fromPath": [
+						"totalcostaanioactual"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaenero",
+					"fromPath": [
+						"costaenero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costafebrero",
+					"fromPath": [
+						"costafebrero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costamarzo",
+					"fromPath": [
+						"costamarzo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaabril",
+					"fromPath": [
+						"costaabril"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costamayo",
+					"fromPath": [
+						"costamayo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costajunio",
+					"fromPath": [
+						"costajunio"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costajulio",
+					"fromPath": [
+						"costajulio"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaagosto",
+					"fromPath": [
+						"costaagosto"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaseptiembre",
+					"fromPath": [
+						"costaseptiembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costaoctubre",
+					"fromPath": [
+						"costaoctubre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costanoviembre",
+					"fromPath": [
+						"costanoviembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "costadiciembre",
+					"fromPath": [
+						"costadiciembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalcentroanioactual",
+					"fromPath": [
+						"totalcentroanioactual"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centroenero",
+					"fromPath": [
+						"centroenero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrofebrero",
+					"fromPath": [
+						"centrofebrero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centromarzo",
+					"fromPath": [
+						"centromarzo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centroabril",
+					"fromPath": [
+						"centroabril"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centromayo",
+					"fromPath": [
+						"centromayo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrojunio",
+					"fromPath": [
+						"centrojunio"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrojulio",
+					"fromPath": [
+						"centrojulio"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centroagosto",
+					"fromPath": [
+						"centroagosto"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centroseptiembre",
+					"fromPath": [
+						"centroseptiembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrooctubre",
+					"fromPath": [
+						"centrooctubre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centronoviembre",
+					"fromPath": [
+						"centronoviembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "centrodiciembre",
+					"fromPath": [
+						"centrodiciembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totaloccidenteanioactual",
+					"fromPath": [
+						"totaloccidenteanioactual"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteenero",
+					"fromPath": [
+						"occidenteenero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentefebrero",
+					"fromPath": [
+						"occidentefebrero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentemarzo",
+					"fromPath": [
+						"occidentemarzo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteabril",
+					"fromPath": [
+						"occidenteabril"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentemayo",
+					"fromPath": [
+						"occidentemayo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentejunio",
+					"fromPath": [
+						"occidentejunio"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentejulio",
+					"fromPath": [
+						"occidentejulio"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteagosto",
+					"fromPath": [
+						"occidenteagosto"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteseptiembre",
+					"fromPath": [
+						"occidenteseptiembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidenteoctubre",
+					"fromPath": [
+						"occidenteoctubre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentenoviembre",
+					"fromPath": [
+						"occidentenoviembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "occidentediciembre",
+					"fromPath": [
+						"occidentediciembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalejecafeteroanioactual",
+					"fromPath": [
+						"totalejecafeteroanioactual"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteroenero",
+					"fromPath": [
+						"ejecafeteroenero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterofebrero",
+					"fromPath": [
+						"ejecafeterofebrero"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteromarzo",
+					"fromPath": [
+						"ejecafeteromarzo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteroabril",
+					"fromPath": [
+						"ejecafeteroabril"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteromayo",
+					"fromPath": [
+						"ejecafeteromayo"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterojunio",
+					"fromPath": [
+						"ejecafeterojunio"
+					],
+					"toType": "int",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterojulio",
+					"fromPath": [
+						"ejecafeterojulio"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteroagosto",
+					"fromPath": [
+						"ejecafeteroagosto"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteroseptiembre",
+					"fromPath": [
+						"ejecafeteroseptiembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterooctubre",
+					"fromPath": [
+						"ejecafeterooctubre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeteronoviembre",
+					"fromPath": [
+						"ejecafeteronoviembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ejecafeterodiciembre",
+					"fromPath": [
+						"ejecafeterodiciembre"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "anioinformacion",
+					"fromPath": [
+						"anioinformacion"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1692284613254": {
+			"nodeId": "node-1692284613254",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694968116397"
+			],
+			"name": "RenameColumnDF",
+			"generatedNodeName": "RenameColumnDF_node1692284613254",
+			"classification": "Transform",
+			"type": "CustomCode",
+			"code": "\nfrom pyspark.sql.functions import col\n\n# This will return a new DF with all the columns + id\n\ndata = dfc.select(list(dfc.keys())[0]).toDF()\n#df_ranamecols=data.select((data.centro.cast(IntegerType())).alias('codigocentro'),col(\"nombre_centro\").alias(\"descripcioncentro\"),col(\"tipo_centro\").alias(\"tipocentro\"),col(\"direccion\").alias(\"direccion\"),col(\"estrato\").alias(\"estrato\"),col(\"antiguedad\").alias(\"antiguedad\"),col(\"superficie\").alias(\"superficie\"),col(\"zona\").alias(\"codigozona\"),col(\"distrito\").alias(\"distrito\"),col(\"region\").alias(\"region\"),col(\"formato\").alias(\"formato\"),col(\"ciudad_dane\").alias(\"codigodane\"),col(\"departamento\").alias(\"departamento\"),col(\"ciudad\").alias(\"ciudad\"),col(\"ciu\").alias(\"ciudadabrevidada\"))\ndf_ranamecols=data.select(col(\"centro\").alias(\"codigocentro\"),col(\"nombre_centro\").alias(\"descripcioncentro\"),col(\"tipo_centro\").alias(\"tipocentro\"),col(\"direccion\").alias(\"direccion\"),col(\"estrato\").alias(\"estrato\"),col(\"antiguedad\").alias(\"antiguedad\"),col(\"superficie\").alias(\"superficie\"),col(\"zona\").alias(\"codigozona\"),col(\"distrito\").alias(\"distrito\"),col(\"region\").alias(\"region\"),col(\"formato\").alias(\"formato\"),col(\"ciudad_dane\").alias(\"codigodane\"),col(\"departamento\").alias(\"departamento\"),col(\"ciudad\").alias(\"ciudad\"),col(\"ciu\").alias(\"ciudadabrevidada\"), col(\"rango_ventas\").alias(\"rangoventas\"), col(\"rango_metros\").alias(\"rangometros\"), col(\"tipo_ciudad\").alias(\"tipociudad\"))\ndf_ranamecols = DynamicFrame.fromDF(df_ranamecols, glueContext, \"RenameColumnDF\")\nreturn(DynamicFrameCollection({\"CustomTransform0\": df_ranamecols}, glueContext))\n\n",
+			"className": "RenameColumnDF",
+			"outputSchemas": [
+				[
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693804546308": {
+			"nodeId": "node-1693804546308",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693804295630"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1693804546308",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"iddnegocio"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddnegocio"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "iddnegocio",
+						"fullPath": [
+							"iddnegocio"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangoventas",
+						"fullPath": [
+							"rangoventas"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "rangometros",
+						"fullPath": [
+							"rangometros"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipociudad",
+						"fullPath": [
+							"tipociudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693802567168": {
+			"nodeId": "node-1693802567168",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693802288446"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1693802567168",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"iddplu"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddplu"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "plusap",
+						"fullPath": [
+							"plusap"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pais",
+						"fullPath": [
+							"pais"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "origen",
+						"fullPath": [
+							"origen"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ean",
+						"fullPath": [
+							"ean"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "articulo",
+						"fullPath": [
+							"articulo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "marca",
+						"fullPath": [
+							"marca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "longitud",
+						"fullPath": [
+							"longitud"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ancho",
+						"fullPath": [
+							"ancho"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "altura",
+						"fullPath": [
+							"altura"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "categoria",
+						"fullPath": [
+							"categoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segmento",
+						"fullPath": [
+							"segmento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "seccion",
+						"fullPath": [
+							"seccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unimedida",
+						"fullPath": [
+							"unimedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipomarca",
+						"fullPath": [
+							"tipomarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clasemarca",
+						"fullPath": [
+							"clasemarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pesobruto",
+						"fullPath": [
+							"pesobruto"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadpesobruto",
+						"fullPath": [
+							"unidadpesobruto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadmedida",
+						"fullPath": [
+							"unidadmedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadcontenido_neto",
+						"fullPath": [
+							"unidadcontenido_neto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subcategoria",
+						"fullPath": [
+							"subcategoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegemento1",
+						"fullPath": [
+							"subsegemento1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegemento2",
+						"fullPath": [
+							"subsegemento2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tiposec",
+						"fullPath": [
+							"tiposec"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "gruposec",
+						"fullPath": [
+							"gruposec"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddplu",
+						"fullPath": [
+							"iddplu"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693797177641": {
+			"nodeId": "node-1693797177641",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693796133556"
+			],
+			"name": "Derived Column",
+			"generatedNodeName": "DerivedColumn_node1693797177641",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"idddescuentosmediospago"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS idddescuentosmediospago"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "idddescuentosmediospago",
+						"fullPath": [
+							"idddescuentosmediospago"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "promocion_mp",
+						"fullPath": [
+							"promocion_mp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuento_mp",
+						"fullPath": [
+							"descuento_mp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transac",
+						"fullPath": [
+							"transac"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693804295630": {
+			"nodeId": "node-1693804295630",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693513951281"
+			],
+			"name": "UUID",
+			"generatedNodeName": "UUID_node1693804295630",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [],
+			"functionName": "gs_uuid",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_uuid.py",
+			"version": "1.0.0",
+			"transformName": "gs_uuid",
+			"outputSchemas": [
+				[
+					{
+						"key": "codigocentro",
+						"fullPath": [
+							"codigocentro"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descripcioncentro",
+						"fullPath": [
+							"descripcioncentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipocentro",
+						"fullPath": [
+							"tipocentro"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "direccion",
+						"fullPath": [
+							"direccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "estrato",
+						"fullPath": [
+							"estrato"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "antiguedad",
+						"fullPath": [
+							"antiguedad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "superficie",
+						"fullPath": [
+							"superficie"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigozona",
+						"fullPath": [
+							"codigozona"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "distrito",
+						"fullPath": [
+							"distrito"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "region",
+						"fullPath": [
+							"region"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "formato",
+						"fullPath": [
+							"formato"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "codigodane",
+						"fullPath": [
+							"codigodane"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudad",
+						"fullPath": [
+							"ciudad"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ciudadabrevidada",
+						"fullPath": [
+							"ciudadabrevidada"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693796133556": {
+			"nodeId": "node-1693796133556",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694967854873"
+			],
+			"name": "UUID",
+			"generatedNodeName": "UUID_node1693796133556",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [],
+			"functionName": "gs_uuid",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_uuid.py",
+			"version": "1.0.0",
+			"transformName": "gs_uuid",
+			"outputSchemas": [
+				[
+					{
+						"key": "promocion_mp",
+						"fullPath": [
+							"promocion_mp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "descuento_mp",
+						"fullPath": [
+							"descuento_mp"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "transac",
+						"fullPath": [
+							"transac"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694404589562": {
+			"nodeId": "node-1694404589562",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694404557682"
+			],
+			"name": "Derived Column iddpromocion",
+			"generatedNodeName": "DerivedColumniddpromocion_node1694404589562",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [
+				{
+					"name": "colName",
+					"value": [
+						"iddpromocion"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				},
+				{
+					"name": "expr",
+					"value": [
+						"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddpromocion"
+					],
+					"isOptional": false,
+					"type": "str",
+					"listType": null
+				}
+			],
+			"functionName": "gs_derived",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_derived.py",
+			"version": "1.0.0",
+			"transformName": "gs_derived",
+			"outputSchemas": [
+				[
+					{
+						"key": "promo_id",
+						"fullPath": [
+							"promo_id"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "oferta",
+						"fullPath": [
+							"oferta"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre_desagrupamiento",
+						"fullPath": [
+							"nombre_desagrupamiento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "promocion_es_actual",
+						"fullPath": [
+							"promocion_es_actual"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_inicio_promocion",
+						"fullPath": [
+							"fecha_inicio_promocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_fin_promocion",
+						"fullPath": [
+							"fecha_fin_promocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "iddpromocion",
+						"fullPath": [
+							"iddpromocion"
+						],
+						"type": "int",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694968116397": {
+			"nodeId": "node-1694968116397",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1692284041548"
+			],
+			"name": "Drop Duplicates cleansed_maestro_negocios",
+			"generatedNodeName": "DropDuplicatescleansed_maestro_negocios_node1694968116397",
+			"classification": "Transform",
+			"type": "DropDuplicates",
+			"parentsValid": true,
+			"calculatedType": "",
+			"columns": [],
+			"codeGenVersion": 2
+		},
+		"node-1693800846238": {
+			"nodeId": "node-1693800846238",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693799639153"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1693800846238",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "idddescuentosmediospago",
+					"fromPath": [
+						"idddescuentosmediospago"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "iddfecha",
+					"fromPath": [
+						"iddfecha"
+					],
+					"toType": "int",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripciondescuento",
+					"fromPath": [
+						"promocion_mp"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descuento",
+					"fromPath": [
+						"descuento_mp"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "idtransaccion",
+					"fromPath": [
+						"transac"
+					],
+					"toType": "varchar",
+					"fromType": "bigint",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uuid",
+					"fromPath": [
+						"uuid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693608254827": {
+			"nodeId": "node-1693608254827",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693876035526"
+			],
+			"name": "gold_TblDPlusap",
+			"generatedNodeName": "gold_TblDPlusap_node1693608254827",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "delta",
+			"compression": "snappy",
+			"path": "s3://aws-us-gold/data/TblDPlusap_parquet_delta_lake/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": false,
+				"updateBehavior": null,
+				"database": null,
+				"table": null
+			},
+			"updateCatalogOptions": "none",
+			"additionalOptions": {},
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694192782714": {
+			"nodeId": "node-1694192782714",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694092239481"
+			],
+			"name": "SQL Query TblIColombiaACV",
+			"generatedNodeName": "SQLQueryTblIColombiaACV_node1694192782714",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1694092239481",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select \ndistinct \ncompetidor,\ncanal,\nanio,\nperiodo,\ntotalventacompetidortrimestre\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1693804609287": {
+			"nodeId": "node-1693804609287",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1693804546308"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1693804609287",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "iddnegocio",
+					"fromPath": [
+						"iddnegocio"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "codigocentro",
+					"fromPath": [
+						"codigocentro"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "descripcioncentro",
+					"fromPath": [
+						"descripcioncentro"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipocentro",
+					"fromPath": [
+						"tipocentro"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "direccion",
+					"fromPath": [
+						"direccion"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "estrato",
+					"fromPath": [
+						"estrato"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "antiguedad",
+					"fromPath": [
+						"antiguedad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "superficie",
+					"fromPath": [
+						"superficie"
+					],
+					"toType": "double",
+					"fromType": "double",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "codigozona",
+					"fromPath": [
+						"codigozona"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "distrito",
+					"fromPath": [
+						"distrito"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "region",
+					"fromPath": [
+						"region"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "formato",
+					"fromPath": [
+						"formato"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "codigodane",
+					"fromPath": [
+						"codigodane"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "departamento",
+					"fromPath": [
+						"departamento"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ciudad",
+					"fromPath": [
+						"ciudad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "ciudadabrevidada",
+					"fromPath": [
+						"ciudadabrevidada"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rangoventas",
+					"fromPath": [
+						"rangoventas"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "rangometros",
+					"fromPath": [
+						"rangometros"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "tipociudad",
+					"fromPath": [
+						"tipociudad"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "uuid",
+					"fromPath": [
+						"uuid"
+					],
+					"toType": "string",
+					"fromType": "string",
+					"dropped": true,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693802288446": {
+			"nodeId": "node-1693802288446",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1695315569395"
+			],
+			"name": "UUID",
+			"generatedNodeName": "UUID_node1693802288446",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [],
+			"functionName": "gs_uuid",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_uuid.py",
+			"version": "1.0.0",
+			"transformName": "gs_uuid",
+			"outputSchemas": [
+				[
+					{
+						"key": "plusap",
+						"fullPath": [
+							"plusap"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pais",
+						"fullPath": [
+							"pais"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "origen",
+						"fullPath": [
+							"origen"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ean",
+						"fullPath": [
+							"ean"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "articulo",
+						"fullPath": [
+							"articulo"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "marca",
+						"fullPath": [
+							"marca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "longitud",
+						"fullPath": [
+							"longitud"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "ancho",
+						"fullPath": [
+							"ancho"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "altura",
+						"fullPath": [
+							"altura"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "departamento",
+						"fullPath": [
+							"departamento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "categoria",
+						"fullPath": [
+							"categoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "segmento",
+						"fullPath": [
+							"segmento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "seccion",
+						"fullPath": [
+							"seccion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unimedida",
+						"fullPath": [
+							"unimedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tipomarca",
+						"fullPath": [
+							"tipomarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "clasemarca",
+						"fullPath": [
+							"clasemarca"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "pesobruto",
+						"fullPath": [
+							"pesobruto"
+						],
+						"type": "double",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadpesobruto",
+						"fullPath": [
+							"unidadpesobruto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadmedida",
+						"fullPath": [
+							"unidadmedida"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "unidadcontenido_neto",
+						"fullPath": [
+							"unidadcontenido_neto"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subcategoria",
+						"fullPath": [
+							"subcategoria"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegemento1",
+						"fullPath": [
+							"subsegemento1"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "subsegemento2",
+						"fullPath": [
+							"subsegemento2"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "tiposec",
+						"fullPath": [
+							"tiposec"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "gruposec",
+						"fullPath": [
+							"gruposec"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1693609153756": {
+			"nodeId": "node-1693609153756",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_provee_detalle",
+			"generatedNodeName": "cleansed_provee_detalle_node1693609153756",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_provee_detalle_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694148460927": {
+			"nodeId": "node-1694148460927",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_chequeo_de_precios_uno",
+			"generatedNodeName": "cleansed_chequeo_de_precios_uno_node1694148460927",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_chequeo_de_precios_uno_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694404557682": {
+			"nodeId": "node-1694404557682",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694967797691"
+			],
+			"name": "UUID",
+			"generatedNodeName": "UUID_node1694404557682",
+			"classification": "Transform",
+			"type": "DynamicTransform",
+			"parameters": [],
+			"functionName": "gs_uuid",
+			"path": "s3://aws-glue-studio-transforms-251189692203-prod-us-east-2/gs_uuid.py",
+			"version": "1.0.0",
+			"transformName": "gs_uuid",
+			"outputSchemas": [
+				[
+					{
+						"key": "promo_id",
+						"fullPath": [
+							"promo_id"
+						],
+						"type": "bigint",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "oferta",
+						"fullPath": [
+							"oferta"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "nombre_desagrupamiento",
+						"fullPath": [
+							"nombre_desagrupamiento"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "promocion_es_actual",
+						"fullPath": [
+							"promocion_es_actual"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_inicio_promocion",
+						"fullPath": [
+							"fecha_inicio_promocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "fecha_fin_promocion",
+						"fullPath": [
+							"fecha_fin_promocion"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					},
+					{
+						"key": "uuid",
+						"fullPath": [
+							"uuid"
+						],
+						"type": "string",
+						"glueStudioType": null,
+						"children": null
+					}
+				]
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1694092515490": {
+			"nodeId": "node-1694092515490",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_chequeo_de_precios_dos",
+			"generatedNodeName": "cleansed_chequeo_de_precios_dos_node1694092515490",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_chequeo_de_precios_dos_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694152130676": {
+			"nodeId": "node-1694152130676",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694151555995"
+			],
+			"name": "SQL Query TblIOlimpicaGlobal",
+			"generatedNodeName": "SQLQueryTblIOlimpicaGlobal_node1694152130676",
+			"classification": "Transform",
+			"type": "SqlCode",
+			"sqlAliases": [
+				{
+					"from": "node-1694151555995",
+					"alias": "myDataSource"
+				}
+			],
+			"outputSchemas": null,
+			"parentsValid": true,
+			"calculatedType": "",
+			"sqlQuery": "select\ndistinct\nnegocio,\nanioinformacion,\ntotalolimpicaventaanioanteriormillones,\ntotalolimpicaventaanioactualmillones,\ntotalcolombiaventaanioanteriormillones,\ntotalcolombiaventaanioactualmillones,\nvariacionmercado,\nvariacionolimpica,\nshareanoanterior,\nshareanoactual,\ndiferenciashare,\noportunidadvaloradaanioactualmillones,\nenero,\nfebrero,\nmarzo,\nabril,\nmayo,\njunio,\njulio,\nagosto,\nseptiembre,\noctubre,\nnoviembre,\ndiciembre,\ntotalcostaanioactual,\ncostaenero,\ncostafebrero,\ncostamarzo,\ncostaabril,\ncostamayo,\ncostajunio,\ncostajulio,\ncostaagosto,\ncostaseptiembre,\ncostaoctubre,\ncostanoviembre,\ncostadiciembre,\ntotalcentroanioactual,\ncentroenero,\ncentrofebrero,\ncentromarzo,\ncentroabril,\ncentromayo,\ncentrojunio,\ncentrojulio,\ncentroagosto,\ncentroseptiembre,\ncentrooctubre,\ncentronoviembre,\ncentrodiciembre,\ntotaloccidenteanioactual,\noccidenteenero,\noccidentefebrero,\noccidentemarzo,\noccidenteabril,\noccidentemayo,\noccidentejunio,\noccidentejulio,\noccidenteagosto,\noccidenteseptiembre,\noccidenteoctubre,\noccidentenoviembre,\noccidentediciembre,\ntotalejecafeteroanioactual,\nejecafeteroenero,\nejecafeterofebrero,\nejecafeteromarzo,\nejecafeteroabril,\nejecafeteromayo,\nejecafeterojunio,\nejecafeterojulio,\nejecafeteroagosto,\nejecafeteroseptiembre,\nejecafeterooctubre,\nejecafeteronoviembre,\nejecafeterodiciembre\nfrom myDataSource",
+			"codeGenVersion": 2
+		},
+		"node-1694092239481": {
+			"nodeId": "node-1694092239481",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1694967660029"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1694092239481",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "competidor",
+					"fromPath": [
+						"competidor"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "canal",
+					"fromPath": [
+						"canal"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "anio",
+					"fromPath": [
+						"anio"
+					],
+					"toType": "int",
+					"fromType": "int",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "periodo",
+					"fromPath": [
+						"periodo"
+					],
+					"toType": "varchar",
+					"fromType": "string",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "totalventacompetidortrimestre",
+					"fromPath": [
+						"totalventacompetidortrimestre"
+					],
+					"toType": "int",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1692284041548": {
+			"nodeId": "node-1692284041548",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "cleansed_maestro_negocios",
+			"generatedNodeName": "cleansed_maestro_negocios_node1692284041548",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "olimpica_tao_db",
+			"table": "cleansed_maestro_negocios_parquet",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\nimport gs_uuid\nfrom awsglue.dynamicframe import DynamicFrameCollection\nfrom awsglue.dynamicframe import DynamicFrame\nfrom awsglue import DynamicFrame\nimport gs_derived\nfrom pyspark.sql import functions as SqlFuncs\n\n\ndef sparkSqlQuery(glueContext, query, mapping, transformation_ctx) -> DynamicFrame:\n    for alias, frame in mapping.items():\n        frame.toDF().createOrReplaceTempView(alias)\n    result = spark.sql(query)\n    return DynamicFrame.fromDF(result, glueContext, transformation_ctx)\n\n\n# Script generated for node RenameColumnDF\ndef RenameColumnDF(glueContext, dfc) -> DynamicFrameCollection:\n    from pyspark.sql.functions import col\n\n    # This will return a new DF with all the columns + id\n\n    data = dfc.select(list(dfc.keys())[0]).toDF()\n    # df_ranamecols=data.select((data.centro.cast(IntegerType())).alias('codigocentro'),col(\"nombre_centro\").alias(\"descripcioncentro\"),col(\"tipo_centro\").alias(\"tipocentro\"),col(\"direccion\").alias(\"direccion\"),col(\"estrato\").alias(\"estrato\"),col(\"antiguedad\").alias(\"antiguedad\"),col(\"superficie\").alias(\"superficie\"),col(\"zona\").alias(\"codigozona\"),col(\"distrito\").alias(\"distrito\"),col(\"region\").alias(\"region\"),col(\"formato\").alias(\"formato\"),col(\"ciudad_dane\").alias(\"codigodane\"),col(\"departamento\").alias(\"departamento\"),col(\"ciudad\").alias(\"ciudad\"),col(\"ciu\").alias(\"ciudadabrevidada\"))\n    df_ranamecols = data.select(\n        col(\"centro\").alias(\"codigocentro\"),\n        col(\"nombre_centro\").alias(\"descripcioncentro\"),\n        col(\"tipo_centro\").alias(\"tipocentro\"),\n        col(\"direccion\").alias(\"direccion\"),\n        col(\"estrato\").alias(\"estrato\"),\n        col(\"antiguedad\").alias(\"antiguedad\"),\n        col(\"superficie\").alias(\"superficie\"),\n        col(\"zona\").alias(\"codigozona\"),\n        col(\"distrito\").alias(\"distrito\"),\n        col(\"region\").alias(\"region\"),\n        col(\"formato\").alias(\"formato\"),\n        col(\"ciudad_dane\").alias(\"codigodane\"),\n        col(\"departamento\").alias(\"departamento\"),\n        col(\"ciudad\").alias(\"ciudad\"),\n        col(\"ciu\").alias(\"ciudadabrevidada\"),\n        col(\"rango_ventas\").alias(\"rangoventas\"),\n        col(\"rango_metros\").alias(\"rangometros\"),\n        col(\"tipo_ciudad\").alias(\"tipociudad\"),\n    )\n    df_ranamecols = DynamicFrame.fromDF(df_ranamecols, glueContext, \"RenameColumnDF\")\n    return DynamicFrameCollection({\"CustomTransform0\": df_ranamecols}, glueContext)\n\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node cleansed_plusaps\ncleansed_plusaps_node1693608042007 = glueContext.create_dynamic_frame.from_catalog(\n    database=\"olimpica_tao_db\",\n    table_name=\"cleansed_plusaps_parquet\",\n    transformation_ctx=\"cleansed_plusaps_node1693608042007\",\n)\n\n# Script generated for node cleansed_colombia_acv\ncleansed_colombia_acv_node1694092110794 = glueContext.create_dynamic_frame.from_catalog(\n    database=\"olimpica_tao_db\",\n    table_name=\"cleansed_colombia_acv_parquet\",\n    transformation_ctx=\"cleansed_colombia_acv_node1694092110794\",\n)\n\n# Script generated for node cleansed_informe_de_olimpica_vs_global\ncleansed_informe_de_olimpica_vs_global_node1694148356276 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_informe_de_olimpica_vs_global_parquet\",\n        transformation_ctx=\"cleansed_informe_de_olimpica_vs_global_node1694148356276\",\n    )\n)\n\n# Script generated for node cleansed_maestro_promociones\ncleansed_maestro_promociones_node1694058960647 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_maestro_promociones_parquet\",\n        transformation_ctx=\"cleansed_maestro_promociones_node1694058960647\",\n    )\n)\n\n# Script generated for node cleansed_descuentos_medios_de_pago\ncleansed_descuentos_medios_de_pago_node1693610774853 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_descuentos_medios_de_pago_parquet\",\n        transformation_ctx=\"cleansed_descuentos_medios_de_pago_node1693610774853\",\n    )\n)\n\n# Script generated for node cleansed_arbol_de_competencia\ncleansed_arbol_de_competencia_node1694090962097 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_arbol_de_competencia_parquet\",\n        transformation_ctx=\"cleansed_arbol_de_competencia_node1694090962097\",\n    )\n)\n\n# Script generated for node cleansed_provee_detalle\ncleansed_provee_detalle_node1693609153756 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_provee_detalle_parquet\",\n        transformation_ctx=\"cleansed_provee_detalle_node1693609153756\",\n    )\n)\n\n# Script generated for node cleansed_chequeo_de_precios_uno\ncleansed_chequeo_de_precios_uno_node1694148460927 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_chequeo_de_precios_uno_parquet\",\n        transformation_ctx=\"cleansed_chequeo_de_precios_uno_node1694148460927\",\n    )\n)\n\n# Script generated for node cleansed_chequeo_de_precios_dos\ncleansed_chequeo_de_precios_dos_node1694092515490 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_chequeo_de_precios_dos_parquet\",\n        transformation_ctx=\"cleansed_chequeo_de_precios_dos_node1694092515490\",\n    )\n)\n\n# Script generated for node cleansed_maestro_negocios\ncleansed_maestro_negocios_node1692284041548 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"olimpica_tao_db\",\n        table_name=\"cleansed_maestro_negocios_parquet\",\n        transformation_ctx=\"cleansed_maestro_negocios_node1692284041548\",\n    )\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1695315297087 = cleansed_plusaps_node1693608042007.gs_derived(\n    colName=\"plu_sap\", expr=\"ltrim(rtrim(plu_sap))\"\n)\n\n# Script generated for node Drop Duplicates cleansed_colombia_acv\nDropDuplicatescleansed_colombia_acv_node1694967660029 = DynamicFrame.fromDF(\n    cleansed_colombia_acv_node1694092110794.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_colombia_acv_node1694967660029\",\n)\n\n# Script generated for node Drop Duplicates cleansed_informe_de_olimpica_vs_global\nDropDuplicatescleansed_informe_de_olimpica_vs_global_node1694967706040 = DynamicFrame.fromDF(\n    cleansed_informe_de_olimpica_vs_global_node1694148356276.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_informe_de_olimpica_vs_global_node1694967706040\",\n)\n\n# Script generated for node Drop Duplicates cleansed_maestro_promociones\nDropDuplicatescleansed_maestro_promociones_node1694967797691 = DynamicFrame.fromDF(\n    cleansed_maestro_promociones_node1694058960647.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_maestro_promociones_node1694967797691\",\n)\n\n# Script generated for node Drop Duplicates cleansed_descuentos_medios_de_pago\nDropDuplicatescleansed_descuentos_medios_de_pago_node1694967854873 = (\n    DynamicFrame.fromDF(\n        cleansed_descuentos_medios_de_pago_node1693610774853.toDF().dropDuplicates(),\n        glueContext,\n        \"DropDuplicatescleansed_descuentos_medios_de_pago_node1694967854873\",\n    )\n)\n\n# Script generated for node Drop Duplicates cleansed_arbol_de_competencia\nDropDuplicatescleansed_arbol_de_competencia_node1694967895429 = DynamicFrame.fromDF(\n    cleansed_arbol_de_competencia_node1694090962097.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_arbol_de_competencia_node1694967895429\",\n)\n\n# Script generated for node Drop Duplicates cleansed_provee_detalle\nDropDuplicatescleansed_provee_detalle_node1694967955708 = DynamicFrame.fromDF(\n    cleansed_provee_detalle_node1693609153756.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_provee_detalle_node1694967955708\",\n)\n\n# Script generated for node Drop Duplicates cleansed_chequeo_de_precios_uno\nDropDuplicatescleansed_chequeo_de_precios_uno_node1694967993988 = DynamicFrame.fromDF(\n    cleansed_chequeo_de_precios_uno_node1694148460927.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_chequeo_de_precios_uno_node1694967993988\",\n)\n\n# Script generated for node Drop Duplicates cleansed_chequeo_de_precios_dos\nDropDuplicatescleansed_chequeo_de_precios_dos_node1694968063180 = DynamicFrame.fromDF(\n    cleansed_chequeo_de_precios_dos_node1694092515490.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_chequeo_de_precios_dos_node1694968063180\",\n)\n\n# Script generated for node Drop Duplicates cleansed_maestro_negocios\nDropDuplicatescleansed_maestro_negocios_node1694968116397 = DynamicFrame.fromDF(\n    cleansed_maestro_negocios_node1692284041548.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicatescleansed_maestro_negocios_node1694968116397\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1693608237298 = ApplyMapping.apply(\n    frame=DerivedColumn_node1695315297087,\n    mappings=[\n        (\"plu_sap\", \"string\", \"plusap\", \"long\"),\n        (\"pais\", \"string\", \"pais\", \"varchar\"),\n        (\"origen\", \"string\", \"origen\", \"varchar\"),\n        (\"ean\", \"string\", \"ean\", \"varchar\"),\n        (\"articulo\", \"string\", \"articulo\", \"varchar\"),\n        (\"marca\", \"string\", \"marca\", \"varchar\"),\n        (\"longitud\", \"double\", \"longitud\", \"double\"),\n        (\"ancho\", \"double\", \"ancho\", \"double\"),\n        (\"altura\", \"double\", \"altura\", \"double\"),\n        (\"departamento\", \"string\", \"departamento\", \"varchar\"),\n        (\"categoria\", \"string\", \"categoria\", \"varchar\"),\n        (\"segmento\", \"string\", \"segmento\", \"varchar\"),\n        (\"seccion\", \"string\", \"seccion\", \"varchar\"),\n        (\"uni_medida\", \"string\", \"unimedida\", \"varchar\"),\n        (\"tipo_marca\", \"string\", \"tipomarca\", \"varchar\"),\n        (\"clase_marca\", \"string\", \"clasemarca\", \"varchar\"),\n        (\"peso_bruto\", \"string\", \"pesobruto\", \"double\"),\n        (\"unidad_peso_bruto\", \"string\", \"unidadpesobruto\", \"varchar\"),\n        (\"unidad_medida\", \"string\", \"unidadmedida\", \"varchar\"),\n        (\"unidad_contenido_neto\", \"string\", \"unidadcontenido_neto\", \"varchar\"),\n        (\"sub_categoria\", \"string\", \"subcategoria\", \"varchar\"),\n        (\"sub_segemento1\", \"string\", \"subsegemento1\", \"varchar\"),\n        (\"sub_segemento2\", \"string\", \"subsegemento2\", \"varchar\"),\n        (\"tipo_sec\", \"string\", \"tiposec\", \"varchar\"),\n        (\"grupo_sec\", \"string\", \"gruposec\", \"varchar\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1693608237298\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694092239481 = ApplyMapping.apply(\n    frame=DropDuplicatescleansed_colombia_acv_node1694967660029,\n    mappings=[\n        (\"competidor\", \"string\", \"competidor\", \"varchar\"),\n        (\"canal\", \"string\", \"canal\", \"varchar\"),\n        (\"anio\", \"int\", \"anio\", \"int\"),\n        (\"periodo\", \"string\", \"periodo\", \"varchar\"),\n        (\n            \"totalventacompetidortrimestre\",\n            \"long\",\n            \"totalventacompetidortrimestre\",\n            \"int\",\n        ),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694092239481\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694151555995 = ApplyMapping.apply(\n    frame=DropDuplicatescleansed_informe_de_olimpica_vs_global_node1694967706040,\n    mappings=[\n        (\"negocio\", \"string\", \"negocio\", \"varchar\"),\n        (\n            \"totalolimpicaventaanioanteriormillones\",\n            \"double\",\n            \"totalolimpicaventaanioanteriormillones\",\n            \"int\",\n        ),\n        (\n            \"totalcolombiaventaanioanteriormillones\",\n            \"double\",\n            \"totalcolombiaventaanioanteriormillones\",\n            \"int\",\n        ),\n        (\n            \"totalolimpicaventaanioactualmillones\",\n            \"double\",\n            \"totalolimpicaventaanioactualmillones\",\n            \"int\",\n        ),\n        (\n            \"totalcolombiaventaanioactualmillones\",\n            \"double\",\n            \"totalcolombiaventaanioactualmillones\",\n            \"int\",\n        ),\n        (\"variacionmercado\", \"double\", \"variacionmercado\", \"float\"),\n        (\"variacionolimpica\", \"double\", \"variacionolimpica\", \"float\"),\n        (\"shareanoanterior\", \"double\", \"shareanoanterior\", \"int\"),\n        (\"shareanoactual\", \"double\", \"shareanoactual\", \"int\"),\n        (\"diferenciashare\", \"double\", \"diferenciashare\", \"int\"),\n        (\n            \"oportunidadvaloradaanioactualmillones\",\n            \"double\",\n            \"oportunidadvaloradaanioactualmillones\",\n            \"int\",\n        ),\n        (\"enero\", \"double\", \"enero\", \"int\"),\n        (\"febrero\", \"double\", \"febrero\", \"int\"),\n        (\"marzo\", \"double\", \"marzo\", \"int\"),\n        (\"abril\", \"double\", \"abril\", \"int\"),\n        (\"mayo\", \"double\", \"mayo\", \"int\"),\n        (\"junio\", \"double\", \"junio\", \"int\"),\n        (\"julio\", \"string\", \"julio\", \"int\"),\n        (\"agosto\", \"string\", \"agosto\", \"int\"),\n        (\"septiembre\", \"string\", \"septiembre\", \"int\"),\n        (\"octubre\", \"string\", \"octubre\", \"int\"),\n        (\"noviembre\", \"string\", \"noviembre\", \"int\"),\n        (\"diciembre\", \"string\", \"diciembre\", \"int\"),\n        (\"totalcostaanioactual\", \"double\", \"totalcostaanioactual\", \"int\"),\n        (\"costaenero\", \"double\", \"costaenero\", \"int\"),\n        (\"costafebrero\", \"double\", \"costafebrero\", \"int\"),\n        (\"costamarzo\", \"double\", \"costamarzo\", \"int\"),\n        (\"costaabril\", \"double\", \"costaabril\", \"int\"),\n        (\"costamayo\", \"double\", \"costamayo\", \"int\"),\n        (\"costajunio\", \"double\", \"costajunio\", \"int\"),\n        (\"costajulio\", \"string\", \"costajulio\", \"int\"),\n        (\"costaagosto\", \"string\", \"costaagosto\", \"int\"),\n        (\"costaseptiembre\", \"string\", \"costaseptiembre\", \"int\"),\n        (\"costaoctubre\", \"string\", \"costaoctubre\", \"int\"),\n        (\"costanoviembre\", \"string\", \"costanoviembre\", \"int\"),\n        (\"costadiciembre\", \"string\", \"costadiciembre\", \"int\"),\n        (\"totalcentroanioactual\", \"double\", \"totalcentroanioactual\", \"int\"),\n        (\"centroenero\", \"double\", \"centroenero\", \"int\"),\n        (\"centrofebrero\", \"double\", \"centrofebrero\", \"int\"),\n        (\"centromarzo\", \"double\", \"centromarzo\", \"int\"),\n        (\"centroabril\", \"double\", \"centroabril\", \"int\"),\n        (\"centromayo\", \"double\", \"centromayo\", \"int\"),\n        (\"centrojunio\", \"double\", \"centrojunio\", \"int\"),\n        (\"centrojulio\", \"string\", \"centrojulio\", \"int\"),\n        (\"centroagosto\", \"string\", \"centroagosto\", \"int\"),\n        (\"centroseptiembre\", \"string\", \"centroseptiembre\", \"int\"),\n        (\"centrooctubre\", \"string\", \"centrooctubre\", \"int\"),\n        (\"centronoviembre\", \"string\", \"centronoviembre\", \"int\"),\n        (\"centrodiciembre\", \"string\", \"centrodiciembre\", \"int\"),\n        (\"totaloccidenteanioactual\", \"double\", \"totaloccidenteanioactual\", \"int\"),\n        (\"occidenteenero\", \"double\", \"occidenteenero\", \"int\"),\n        (\"occidentefebrero\", \"double\", \"occidentefebrero\", \"int\"),\n        (\"occidentemarzo\", \"double\", \"occidentemarzo\", \"int\"),\n        (\"occidenteabril\", \"double\", \"occidenteabril\", \"int\"),\n        (\"occidentemayo\", \"double\", \"occidentemayo\", \"int\"),\n        (\"occidentejunio\", \"double\", \"occidentejunio\", \"int\"),\n        (\"occidentejulio\", \"string\", \"occidentejulio\", \"int\"),\n        (\"occidenteagosto\", \"string\", \"occidenteagosto\", \"int\"),\n        (\"occidenteseptiembre\", \"string\", \"occidenteseptiembre\", \"int\"),\n        (\"occidenteoctubre\", \"string\", \"occidenteoctubre\", \"int\"),\n        (\"occidentenoviembre\", \"string\", \"occidentenoviembre\", \"int\"),\n        (\"occidentediciembre\", \"string\", \"occidentediciembre\", \"int\"),\n        (\"totalejecafeteroanioactual\", \"double\", \"totalejecafeteroanioactual\", \"int\"),\n        (\"ejecafeteroenero\", \"double\", \"ejecafeteroenero\", \"int\"),\n        (\"ejecafeterofebrero\", \"double\", \"ejecafeterofebrero\", \"int\"),\n        (\"ejecafeteromarzo\", \"double\", \"ejecafeteromarzo\", \"int\"),\n        (\"ejecafeteroabril\", \"double\", \"ejecafeteroabril\", \"int\"),\n        (\"ejecafeteromayo\", \"double\", \"ejecafeteromayo\", \"int\"),\n        (\"ejecafeterojunio\", \"double\", \"ejecafeterojunio\", \"int\"),\n        (\"ejecafeterojulio\", \"string\", \"ejecafeterojulio\", \"int\"),\n        (\"ejecafeteroagosto\", \"string\", \"ejecafeteroagosto\", \"int\"),\n        (\"ejecafeteroseptiembre\", \"string\", \"ejecafeteroseptiembre\", \"int\"),\n        (\"ejecafeterooctubre\", \"string\", \"ejecafeterooctubre\", \"int\"),\n        (\"ejecafeteronoviembre\", \"string\", \"ejecafeteronoviembre\", \"int\"),\n        (\"ejecafeterodiciembre\", \"string\", \"ejecafeterodiciembre\", \"int\"),\n        (\"anioinformacion\", \"int\", \"anioinformacion\", \"int\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694151555995\",\n)\n\n# Script generated for node UUID\nUUID_node1694404557682 = (\n    DropDuplicatescleansed_maestro_promociones_node1694967797691.gs_uuid()\n)\n\n# Script generated for node UUID\nUUID_node1693796133556 = (\n    DropDuplicatescleansed_descuentos_medios_de_pago_node1694967854873.gs_uuid()\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694091064905 = ApplyMapping.apply(\n    frame=DropDuplicatescleansed_arbol_de_competencia_node1694967895429,\n    mappings=[\n        (\"cadena\", \"string\", \"cadena\", \"varchar\"),\n        (\"anio\", \"int\", \"anio\", \"int\"),\n        (\"periodicidad\", \"string\", \"periodicidad\", \"varchar\"),\n        (\"periodo\", \"float\", \"periodo\", \"float\"),\n        (\"indicador\", \"string\", \"indicador\", \"varchar\"),\n        (\"valor\", \"float\", \"valor\", \"float\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694091064905\",\n)\n\n# Script generated for node UUID\nUUID_node1693689998109 = (\n    DropDuplicatescleansed_provee_detalle_node1694967955708.gs_uuid()\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694152523614 = ApplyMapping.apply(\n    frame=DropDuplicatescleansed_chequeo_de_precios_uno_node1694967993988,\n    mappings=[\n        (\"competidor\", \"string\", \"competidor\", \"varchar\"),\n        (\"categoria\", \"string\", \"categoria\", \"varchar\"),\n        (\"productocompetencia\", \"string\", \"productocompetencia\", \"varchar\"),\n        (\"productoolimpica\", \"string\", \"productoolimpica\", \"varchar\"),\n        (\"volumencompetencia\", \"string\", \"volumencompetencia\", \"varchar\"),\n        (\"volumenolimpica\", \"string\", \"volumenolimpica\", \"varchar\"),\n        (\"preciocompetencia\", \"long\", \"preciocompetencia\", \"int\"),\n        (\"precioolimpica\", \"long\", \"precioolimpica\", \"int\"),\n        (\"fecha\", \"date\", \"fecha\", \"date\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694152523614\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694092589162 = ApplyMapping.apply(\n    frame=DropDuplicatescleansed_chequeo_de_precios_dos_node1694968063180,\n    mappings=[\n        (\"regional\", \"string\", \"regional\", \"varchar\"),\n        (\"grupocompras\", \"string\", \"grupocompras\", \"varchar\"),\n        (\"ean\", \"string\", \"ean\", \"varchar\"),\n        (\"plu\", \"long\", \"plu\", \"int\"),\n        (\"descripcion\", \"string\", \"descripcion\", \"varchar\"),\n        (\"rol_de_la_categoria\", \"string\", \"rolcategoria\", \"string\"),\n        (\"concepto\", \"string\", \"concepto\", \"varchar\"),\n        (\"clase\", \"string\", \"clase\", \"varchar\"),\n        (\"competencia_min\", \"string\", \"competidor\", \"string\"),\n        (\"precio_olimpica\", \"long\", \"precioolimpica\", \"decimal\"),\n        (\"precio_comp\", \"long\", \"preciocompetencia\", \"decimal\"),\n        (\"precio_nuevo\", \"string\", \"precionuevo\", \"decimal\"),\n        (\"margen_olimpica\", \"string\", \"margenolimpica\", \"float\"),\n        (\"margen_precio_nuevo\", \"string\", \"margenprecionuevo\", \"float\"),\n        (\"estado\", \"string\", \"estado\", \"varchar\"),\n        (\"fecha\", \"date\", \"fecha\", \"date\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694092589162\",\n)\n\n# Script generated for node RenameColumnDF\nRenameColumnDF_node1692284613254 = RenameColumnDF(\n    glueContext,\n    DynamicFrameCollection(\n        {\n            \"DropDuplicatescleansed_maestro_negocios_node1694968116397\": DropDuplicatescleansed_maestro_negocios_node1694968116397\n        },\n        glueContext,\n    ),\n)\n\n# Script generated for node Drop Duplicates\nDropDuplicates_node1695315569395 = DynamicFrame.fromDF(\n    ChangeSchema_node1693608237298.toDF().dropDuplicates(),\n    glueContext,\n    \"DropDuplicates_node1695315569395\",\n)\n\n# Script generated for node SQL Query TblIColombiaACV\nSqlQuery107 = \"\"\"\nselect \ndistinct \ncompetidor,\ncanal,\nanio,\nperiodo,\ntotalventacompetidortrimestre\nfrom myDataSource\n\"\"\"\nSQLQueryTblIColombiaACV_node1694192782714 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery107,\n    mapping={\"myDataSource\": ChangeSchema_node1694092239481},\n    transformation_ctx=\"SQLQueryTblIColombiaACV_node1694192782714\",\n)\n\n# Script generated for node SQL Query TblIOlimpicaGlobal\nSqlQuery108 = \"\"\"\nselect\ndistinct\nnegocio,\nanioinformacion,\ntotalolimpicaventaanioanteriormillones,\ntotalolimpicaventaanioactualmillones,\ntotalcolombiaventaanioanteriormillones,\ntotalcolombiaventaanioactualmillones,\nvariacionmercado,\nvariacionolimpica,\nshareanoanterior,\nshareanoactual,\ndiferenciashare,\noportunidadvaloradaanioactualmillones,\nenero,\nfebrero,\nmarzo,\nabril,\nmayo,\njunio,\njulio,\nagosto,\nseptiembre,\noctubre,\nnoviembre,\ndiciembre,\ntotalcostaanioactual,\ncostaenero,\ncostafebrero,\ncostamarzo,\ncostaabril,\ncostamayo,\ncostajunio,\ncostajulio,\ncostaagosto,\ncostaseptiembre,\ncostaoctubre,\ncostanoviembre,\ncostadiciembre,\ntotalcentroanioactual,\ncentroenero,\ncentrofebrero,\ncentromarzo,\ncentroabril,\ncentromayo,\ncentrojunio,\ncentrojulio,\ncentroagosto,\ncentroseptiembre,\ncentrooctubre,\ncentronoviembre,\ncentrodiciembre,\ntotaloccidenteanioactual,\noccidenteenero,\noccidentefebrero,\noccidentemarzo,\noccidenteabril,\noccidentemayo,\noccidentejunio,\noccidentejulio,\noccidenteagosto,\noccidenteseptiembre,\noccidenteoctubre,\noccidentenoviembre,\noccidentediciembre,\ntotalejecafeteroanioactual,\nejecafeteroenero,\nejecafeterofebrero,\nejecafeteromarzo,\nejecafeteroabril,\nejecafeteromayo,\nejecafeterojunio,\nejecafeterojulio,\nejecafeteroagosto,\nejecafeteroseptiembre,\nejecafeterooctubre,\nejecafeteronoviembre,\nejecafeterodiciembre\nfrom myDataSource\n\"\"\"\nSQLQueryTblIOlimpicaGlobal_node1694152130676 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery108,\n    mapping={\"myDataSource\": ChangeSchema_node1694151555995},\n    transformation_ctx=\"SQLQueryTblIOlimpicaGlobal_node1694152130676\",\n)\n\n# Script generated for node Derived Column iddpromocion\nDerivedColumniddpromocion_node1694404589562 = UUID_node1694404557682.gs_derived(\n    colName=\"iddpromocion\", expr=\"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddpromocion\"\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1693797177641 = UUID_node1693796133556.gs_derived(\n    colName=\"idddescuentosmediospago\",\n    expr=\"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS idddescuentosmediospago\",\n)\n\n# Script generated for node SQL Query TblIArbolCompetencia\nSqlQuery102 = \"\"\"\nselect \ndistinct \ncadena,\nanio,\nperiodicidad,\nperiodo,\nindicador,\nvalor\nfrom myDataSource\n\"\"\"\nSQLQueryTblIArbolCompetencia_node1694193278707 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery102,\n    mapping={\"myDataSource\": ChangeSchema_node1694091064905},\n    transformation_ctx=\"SQLQueryTblIArbolCompetencia_node1694193278707\",\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1693690165794 = UUID_node1693689998109.gs_derived(\n    colName=\"iddproveedor\", expr=\"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddproveedor\"\n)\n\n# Script generated for node SQL Query TblIChequeoPreciosMercadeo\nSqlQuery99 = \"\"\"\nselect \ndistinct  \ncompetidor,\ncategoria,\nproductocompetencia,\nproductoolimpica,\nvolumencompetencia,\nvolumenolimpica,\npreciocompetencia,\nprecioolimpica,\nfecha\nfrom myDataSource\n\"\"\"\nSQLQueryTblIChequeoPreciosMercadeo_node1694193507259 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery99,\n    mapping={\"myDataSource\": ChangeSchema_node1694152523614},\n    transformation_ctx=\"SQLQueryTblIChequeoPreciosMercadeo_node1694193507259\",\n)\n\n# Script generated for node SQL Query TblIChequeoPreciosBI\nSqlQuery106 = \"\"\"\nselect \ndistinct\nregional,\ngrupocompras,\nean,\nplu,\ndescripcion,\nrolcategoria,\nconcepto,\nclase,\ncompetidor,\nprecioolimpica,\npreciocompetencia,\nprecionuevo,\nmargenolimpica,\nmargenprecionuevo,\nestado,\nfecha\nfrom myDataSource\n\"\"\"\nSQLQueryTblIChequeoPreciosBI_node1694193656771 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery106,\n    mapping={\"myDataSource\": ChangeSchema_node1694092589162},\n    transformation_ctx=\"SQLQueryTblIChequeoPreciosBI_node1694193656771\",\n)\n\n# Script generated for node Select From Collection\nSelectFromCollection_node1692293126993 = SelectFromCollection.apply(\n    dfc=RenameColumnDF_node1692284613254,\n    key=list(RenameColumnDF_node1692284613254.keys())[0],\n    transformation_ctx=\"SelectFromCollection_node1692293126993\",\n)\n\n# Script generated for node UUID\nUUID_node1693802288446 = DropDuplicates_node1695315569395.gs_uuid()\n\n# Script generated for node Change Schema\nChangeSchema_node1694064887009 = ApplyMapping.apply(\n    frame=DerivedColumniddpromocion_node1694404589562,\n    mappings=[\n        (\"promo_id\", \"bigint\", \"codigopromocion\", \"string\"),\n        (\"oferta\", \"string\", \"descripcionpromocion\", \"string\"),\n        (\"nombre_desagrupamiento\", \"string\", \"nombregrupo\", \"string\"),\n        (\"promocion_es_actual\", \"string\", \"promocionvigente\", \"string\"),\n        (\"fecha_inicio_promocion\", \"string\", \"fechainiciopromocion\", \"string\"),\n        (\"fecha_fin_promocion\", \"string\", \"fechafinpromocion\", \"string\"),\n        (\"iddpromocion\", \"int\", \"iddpromocion\", \"int\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694064887009\",\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1693799639153 = DerivedColumn_node1693797177641.gs_derived(\n    colName=\"iddfecha\", expr=\"LEFT(transac,8) as iddfecha\"\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1693690422375 = ApplyMapping.apply(\n    frame=DerivedColumn_node1693690165794,\n    mappings=[\n        (\"iddproveedor\", \"int\", \"iddproveedor\", \"int\"),\n        (\"razon\", \"string\", \"razonsocial\", \"varchar\"),\n        (\"proveedor\", \"string\", \"nombreproveedor\", \"varchar\"),\n        (\"nit\", \"string\", \"nit\", \"varchar\"),\n        (\"provee_trade\", \"string\", \"proveedortrade\", \"varchar\"),\n        (\"nit_sap\", \"string\", \"nitsap\", \"varchar\"),\n        (\"razon_sap\", \"string\", \"razonsocialsap\", \"varchar\"),\n        (\"tipo_provee\", \"string\", \"tipoproveedor\", \"varchar\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1693690422375\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1693513951281 = ApplyMapping.apply(\n    frame=SelectFromCollection_node1692293126993,\n    mappings=[\n        (\"codigocentro\", \"string\", \"codigocentro\", \"int\"),\n        (\"descripcioncentro\", \"string\", \"descripcioncentro\", \"varchar\"),\n        (\"tipocentro\", \"string\", \"tipocentro\", \"varchar\"),\n        (\"direccion\", \"string\", \"direccion\", \"varchar\"),\n        (\"estrato\", \"bigint\", \"estrato\", \"int\"),\n        (\"antiguedad\", \"string\", \"antiguedad\", \"varchar\"),\n        (\"superficie\", \"double\", \"superficie\", \"double\"),\n        (\"codigozona\", \"string\", \"codigozona\", \"varchar\"),\n        (\"distrito\", \"string\", \"distrito\", \"varchar\"),\n        (\"region\", \"string\", \"region\", \"varchar\"),\n        (\"formato\", \"string\", \"formato\", \"varchar\"),\n        (\"codigodane\", \"string\", \"codigodane\", \"varchar\"),\n        (\"departamento\", \"string\", \"departamento\", \"varchar\"),\n        (\"ciudad\", \"string\", \"ciudad\", \"varchar\"),\n        (\"ciudadabrevidada\", \"string\", \"ciudadabrevidada\", \"varchar\"),\n        (\"rangoventas\", \"string\", \"rangoventas\", \"varchar\"),\n        (\"rangometros\", \"string\", \"rangometros\", \"varchar\"),\n        (\"tipociudad\", \"string\", \"tipociudad\", \"varchar\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1693513951281\",\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1693802567168 = UUID_node1693802288446.gs_derived(\n    colName=\"iddplu\", expr=\"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddplu\"\n)\n\n# Script generated for node SQL Query TblDPromociones\nSqlQuery101 = \"\"\"\nselect \ndistinct \niddpromocion,\ncodigopromocion,\ndescripcionpromocion,\n-- descripcionreglapromocion,\n-- tiporeglapromocion,\nnombregrupo,\npromocionvigente,\nfechainiciopromocion,\nfechafinpromocion\nfrom myDataSource\n\"\"\"\nSQLQueryTblDPromociones_node1694193110160 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery101,\n    mapping={\"myDataSource\": ChangeSchema_node1694064887009},\n    transformation_ctx=\"SQLQueryTblDPromociones_node1694193110160\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1693800846238 = ApplyMapping.apply(\n    frame=DerivedColumn_node1693799639153,\n    mappings=[\n        (\"idddescuentosmediospago\", \"int\", \"idddescuentosmediospago\", \"int\"),\n        (\"iddfecha\", \"string\", \"iddfecha\", \"int\"),\n        (\"promocion_mp\", \"string\", \"descripciondescuento\", \"varchar\"),\n        (\"descuento_mp\", \"string\", \"descuento\", \"string\"),\n        (\"transac\", \"bigint\", \"idtransaccion\", \"varchar\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1693800846238\",\n)\n\n# Script generated for node SQL Query TblDProveedores\nSqlQuery100 = \"\"\"\nselect\ndistinct\niddproveedor,\nnit,\nrazonsocial,\nnombreproveedor,\nnitsap,\nrazonsocialsap,\nproveedortrade,\ntipoproveedor\nfrom myDataSource\n\"\"\"\nSQLQueryTblDProveedores_node1693878845056 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery100,\n    mapping={\"myDataSource\": ChangeSchema_node1693690422375},\n    transformation_ctx=\"SQLQueryTblDProveedores_node1693878845056\",\n)\n\n# Script generated for node UUID\nUUID_node1693804295630 = ChangeSchema_node1693513951281.gs_uuid()\n\n# Script generated for node Change Schema\nChangeSchema_node1693802773243 = ApplyMapping.apply(\n    frame=DerivedColumn_node1693802567168,\n    mappings=[\n        (\"plusap\", \"bigint\", \"plusap\", \"long\"),\n        (\"pais\", \"string\", \"pais\", \"varchar\"),\n        (\"origen\", \"string\", \"origen\", \"varchar\"),\n        (\"ean\", \"string\", \"ean\", \"varchar\"),\n        (\"articulo\", \"string\", \"descripcionproducto\", \"varchar\"),\n        (\"marca\", \"string\", \"marca\", \"varchar\"),\n        (\"longitud\", \"double\", \"longitud\", \"double\"),\n        (\"ancho\", \"double\", \"ancho\", \"double\"),\n        (\"altura\", \"double\", \"altura\", \"double\"),\n        (\"departamento\", \"string\", \"departamento\", \"varchar\"),\n        (\"categoria\", \"string\", \"categoria\", \"varchar\"),\n        (\"segmento\", \"string\", \"segmento\", \"varchar\"),\n        (\"seccion\", \"string\", \"seccion\", \"varchar\"),\n        (\"unimedida\", \"string\", \"unimedida\", \"varchar\"),\n        (\"tipomarca\", \"string\", \"tipomarca\", \"varchar\"),\n        (\"clasemarca\", \"string\", \"clasemarca\", \"varchar\"),\n        (\"pesobruto\", \"double\", \"pesobruto\", \"double\"),\n        (\"unidadpesobruto\", \"string\", \"unidadpesobruto\", \"varchar\"),\n        (\"unidadmedida\", \"string\", \"unidadmedida\", \"varchar\"),\n        (\"unidadcontenido_neto\", \"string\", \"unidadcontenidoneto\", \"varchar\"),\n        (\"subcategoria\", \"string\", \"subcategoria\", \"varchar\"),\n        (\"subsegemento1\", \"string\", \"subsegmento1\", \"varchar\"),\n        (\"subsegemento2\", \"string\", \"subsegmento2\", \"varchar\"),\n        (\"tiposec\", \"string\", \"tiposeccion\", \"varchar\"),\n        (\"gruposec\", \"string\", \"gruposeccion\", \"varchar\"),\n        (\"iddplu\", \"int\", \"iddplu\", \"int\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1693802773243\",\n)\n\n# Script generated for node SQL Query TblHDescuentosMediosPago\nSqlQuery104 = \"\"\"\nselect\ndistinct\nidddescuentosmediospago,\niddfecha,\nidtransaccion,\nsubstring(descuento, 1,position(',' in descuento)-1) as descuento,\ndescripciondescuento\nfrom myDataSource;\n\"\"\"\nSQLQueryTblHDescuentosMediosPago_node1693877789509 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery104,\n    mapping={\"myDataSource\": ChangeSchema_node1693800846238},\n    transformation_ctx=\"SQLQueryTblHDescuentosMediosPago_node1693877789509\",\n)\n\n# Script generated for node Derived Column\nDerivedColumn_node1693804546308 = UUID_node1693804295630.gs_derived(\n    colName=\"iddnegocio\", expr=\"ROW_NUMBER() OVER(ORDER BY uuid ASC) AS iddnegocio\"\n)\n\n# Script generated for node SQL Query TblDPlusap\nSqlQuery103 = \"\"\"\nselect \ndistinct\niddplu,\nplusap,\ndescripcionproducto,\nean,\npais,\norigen,\nunimedida,\ntipomarca,\nmarca,\nclasemarca,\npesobruto,\nunidadpesobruto,\nlongitud,\nancho,\naltura,\nunidadmedida,\nunidadcontenidoneto,\ndepartamento,\ngruposeccion,\ncategoria,\nsubcategoria,\nsegmento,\nsubsegmento1,\nsubsegmento2,\nseccion,\ntiposeccion\nfrom myDataSource;\n\"\"\"\nSQLQueryTblDPlusap_node1693876035526 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery103,\n    mapping={\"myDataSource\": ChangeSchema_node1693802773243},\n    transformation_ctx=\"SQLQueryTblDPlusap_node1693876035526\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1694794702401 = ApplyMapping.apply(\n    frame=SQLQueryTblHDescuentosMediosPago_node1693877789509,\n    mappings=[\n        (\"idddescuentosmediospago\", \"int\", \"idddescuentosmediospago\", \"int\"),\n        (\"iddfecha\", \"int\", \"iddfecha\", \"int\"),\n        (\"descripciondescuento\", \"varchar\", \"descripciondescuento\", \"varchar\"),\n        (\"descuento\", \"string\", \"descuento\", \"int\"),\n        (\"idtransaccion\", \"varchar\", \"idtransaccion\", \"varchar\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1694794702401\",\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1693804609287 = ApplyMapping.apply(\n    frame=DerivedColumn_node1693804546308,\n    mappings=[\n        (\"iddnegocio\", \"int\", \"iddnegocio\", \"int\"),\n        (\"codigocentro\", \"int\", \"codigocentro\", \"int\"),\n        (\"descripcioncentro\", \"string\", \"descripcioncentro\", \"varchar\"),\n        (\"tipocentro\", \"string\", \"tipocentro\", \"varchar\"),\n        (\"direccion\", \"string\", \"direccion\", \"varchar\"),\n        (\"estrato\", \"int\", \"estrato\", \"int\"),\n        (\"antiguedad\", \"string\", \"antiguedad\", \"varchar\"),\n        (\"superficie\", \"double\", \"superficie\", \"double\"),\n        (\"codigozona\", \"string\", \"codigozona\", \"varchar\"),\n        (\"distrito\", \"string\", \"distrito\", \"varchar\"),\n        (\"region\", \"string\", \"region\", \"varchar\"),\n        (\"formato\", \"string\", \"formato\", \"varchar\"),\n        (\"codigodane\", \"string\", \"codigodane\", \"varchar\"),\n        (\"departamento\", \"string\", \"departamento\", \"varchar\"),\n        (\"ciudad\", \"string\", \"ciudad\", \"varchar\"),\n        (\"ciudadabrevidada\", \"string\", \"ciudadabrevidada\", \"varchar\"),\n        (\"rangoventas\", \"string\", \"rangoventas\", \"varchar\"),\n        (\"rangometros\", \"string\", \"rangometros\", \"varchar\"),\n        (\"tipociudad\", \"string\", \"tipociudad\", \"varchar\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1693804609287\",\n)\n\n# Script generated for node SQL Query TblDNegocios\nSqlQuery105 = \"\"\"\nselect distinct \n\niddnegocio\n,\ncodigocentro\n,\ndescripcioncentro\n,\ntipocentro\n,\ndireccion\n,\nestrato\n,\nantiguedad\n,\nsuperficie\n,\ncodigozona\n,\ndistrito\n,\nregion\n,\nformato\n,\ncodigodane\n,\ndepartamento\n,\nciudad\n,\nciudadabrevidada\n,\nrangoventas\n,\nrangometros\n,\ntipociudad\nfrom myDataSource\n\"\"\"\nSQLQueryTblDNegocios_node1694193765402 = sparkSqlQuery(\n    glueContext,\n    query=SqlQuery105,\n    mapping={\"myDataSource\": ChangeSchema_node1693804609287},\n    transformation_ctx=\"SQLQueryTblDNegocios_node1694193765402\",\n)\n\n# Script generated for node gold_TblIColombiaACV\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblIColombiaACV_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblIColombiaACV_node1694092391130_df = (\n    SQLQueryTblIColombiaACV_node1694192782714.toDF()\n)\ngold_TblIColombiaACV_node1694092391130_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblIOlimpicaGlobal\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblIOlimpicaGlobal_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblIOlimpicaGlobal_node1694152344768_df = (\n    SQLQueryTblIOlimpicaGlobal_node1694152130676.toDF()\n)\ngold_TblIOlimpicaGlobal_node1694152344768_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblIArbolCompetencia\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblIArbolCompetencia_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblIArbolCompetencia_node1694091812250_df = (\n    SQLQueryTblIArbolCompetencia_node1694193278707.toDF()\n)\ngold_TblIArbolCompetencia_node1694091812250_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblIChequeoPreciosMercadeo\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblIChequeoPreciosMercadeo_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblIChequeoPreciosMercadeo_node1694152743921_df = (\n    SQLQueryTblIChequeoPreciosMercadeo_node1694193507259.toDF()\n)\ngold_TblIChequeoPreciosMercadeo_node1694152743921_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblIChequeoPreciosBI\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblIChequeoPreciosBI_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblIChequeoPreciosBI_node1694093229641_df = (\n    SQLQueryTblIChequeoPreciosBI_node1694193656771.toDF()\n)\ngold_TblIChequeoPreciosBI_node1694093229641_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblDPromociones\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblDPromociones_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblDPromociones_node1693611169499_df = (\n    SQLQueryTblDPromociones_node1694193110160.toDF()\n)\ngold_TblDPromociones_node1693611169499_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblDProveedores\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblDProveedores_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblDProveedores_node1693690771424_df = (\n    SQLQueryTblDProveedores_node1693878845056.toDF()\n)\ngold_TblDProveedores_node1693690771424_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblDPlusap\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblDPlusap_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblDPlusap_node1693608254827_df = SQLQueryTblDPlusap_node1693876035526.toDF()\ngold_TblDPlusap_node1693608254827_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblHDescuentosMediosPago\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblHDescuentosMediosPago_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblHDescuentosMediosPago_node1693801179910_df = (\n    ChangeSchema_node1694794702401.toDF()\n)\ngold_TblHDescuentosMediosPago_node1693801179910_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\n# Script generated for node gold_TblDNegocios\nadditional_options = {\n    \"path\": \"s3://aws-us-gold/data/TblDNegocios_parquet_delta_lake/\",\n    \"write.parquet.compression-codec\": \"snappy\",\n}\ngold_TblDNegocios_node1693607289237_df = SQLQueryTblDNegocios_node1694193765402.toDF()\ngold_TblDNegocios_node1693607289237_df.write.format(\"delta\").options(\n    **additional_options\n).mode(\"append\").save()\n\njob.commit()\n"
+}

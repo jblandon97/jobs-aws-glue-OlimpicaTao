@@ -1,0 +1,125 @@
+{
+	"jobConfig": {
+		"name": "EX_PipelineFuentePluSapProveedor",
+		"description": "",
+		"role": "arn:aws:iam::535608989088:role/service-role/AWSGlueServiceRole",
+		"command": "glueetl",
+		"version": "4.0",
+		"runtime": null,
+		"workerType": "G.8X",
+		"numberOfWorkers": 10,
+		"maxCapacity": 80,
+		"maxRetries": 0,
+		"timeout": 2880,
+		"maxConcurrentRuns": 1,
+		"security": "none",
+		"scriptName": "EX_PipelineFuentePluSapProveedor.py",
+		"scriptLocation": "s3://aws-us-raw/scripts/",
+		"language": "python-3",
+		"jobParameters": [],
+		"tags": [],
+		"jobMode": "VISUAL_MODE",
+		"createdOn": "2023-09-13T20:47:57.070Z",
+		"developerMode": false,
+		"connectionsList": [],
+		"temporaryDirectory": "s3://aws-us-raw/temp-dir/",
+		"etlAutoScaling": true,
+		"logging": true,
+		"glueHiveMetastore": true,
+		"etlAutoTuning": true,
+		"metrics": true,
+		"spark": true,
+		"bookmark": "job-bookmark-enable",
+		"sparkPath": "s3://aws-glue-assets-535608989088-us-east-2/sparkHistoryLogs/",
+		"flexExecution": false,
+		"minFlexWorkers": null
+	},
+	"dag": {
+		"node-1691598018310": {
+			"nodeId": "node-1691598018310",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [],
+			"name": "Origen provee_plusap_csv",
+			"generatedNodeName": "Origenprovee_plusap_csv_node1691598018310",
+			"classification": "DataSource",
+			"type": "S3",
+			"isCatalog": true,
+			"database": "csvqlikdb",
+			"table": "provee_plusap_csv",
+			"partitionPredicate": "",
+			"additionalOptions": {
+				"boundedSize": null,
+				"boundedFiles": null,
+				"boundedOption": null
+			},
+			"calculatedType": "CatalogS3DataSource",
+			"codeGenVersion": 2
+		},
+		"node-1691598038927": {
+			"nodeId": "node-1691598038927",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691598018310"
+			],
+			"name": "Change Schema",
+			"generatedNodeName": "ChangeSchema_node1691598038927",
+			"classification": "Transform",
+			"type": "ApplyMapping",
+			"mapping": [
+				{
+					"toKey": "llavecp",
+					"fromPath": [
+						"llavecp"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				},
+				{
+					"toKey": "nitsap",
+					"fromPath": [
+						"nitsap"
+					],
+					"toType": "long",
+					"fromType": "long",
+					"dropped": false,
+					"children": null
+				}
+			],
+			"parentsValid": true,
+			"calculatedType": "",
+			"codeGenVersion": 2
+		},
+		"node-1691598043999": {
+			"nodeId": "node-1691598043999",
+			"dataPreview": false,
+			"previewAmount": 0,
+			"inputs": [
+				"node-1691598038927"
+			],
+			"name": "Destino provee_plusap_parquet",
+			"generatedNodeName": "Destinoprovee_plusap_parquet_node1691598043999",
+			"classification": "DataSink",
+			"type": "S3",
+			"streamingBatchInterval": 100,
+			"format": "glueparquet",
+			"compression": "snappy",
+			"path": "s3://aws-us-raw/data/provee_plusap_parquet/",
+			"partitionKeys": [],
+			"schemaChangePolicy": {
+				"enableUpdateCatalog": true,
+				"updateBehavior": "UPDATE_IN_DATABASE",
+				"database": "olimpica_tao_db",
+				"table": "raw_provee_plusap_parquet"
+			},
+			"updateCatalogOptions": "schemaAndPartitions",
+			"calculatedType": "",
+			"codeGenVersion": 2
+		}
+	},
+	"hasBeenSaved": false,
+	"script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\n\n# Script generated for node Origen provee_plusap_csv\nOrigenprovee_plusap_csv_node1691598018310 = (\n    glueContext.create_dynamic_frame.from_catalog(\n        database=\"csvqlikdb\",\n        table_name=\"provee_plusap_csv\",\n        transformation_ctx=\"Origenprovee_plusap_csv_node1691598018310\",\n    )\n)\n\n# Script generated for node Change Schema\nChangeSchema_node1691598038927 = ApplyMapping.apply(\n    frame=Origenprovee_plusap_csv_node1691598018310,\n    mappings=[\n        (\"llavecp\", \"long\", \"llavecp\", \"long\"),\n        (\"nitsap\", \"long\", \"nitsap\", \"long\"),\n    ],\n    transformation_ctx=\"ChangeSchema_node1691598038927\",\n)\n\n# Script generated for node Destino provee_plusap_parquet\nDestinoprovee_plusap_parquet_node1691598043999 = glueContext.getSink(\n    path=\"s3://aws-us-raw/data/provee_plusap_parquet/\",\n    connection_type=\"s3\",\n    updateBehavior=\"UPDATE_IN_DATABASE\",\n    partitionKeys=[],\n    compression=\"snappy\",\n    enableUpdateCatalog=True,\n    transformation_ctx=\"Destinoprovee_plusap_parquet_node1691598043999\",\n)\nDestinoprovee_plusap_parquet_node1691598043999.setCatalogInfo(\n    catalogDatabase=\"olimpica_tao_db\", catalogTableName=\"raw_provee_plusap_parquet\"\n)\nDestinoprovee_plusap_parquet_node1691598043999.setFormat(\"glueparquet\")\nDestinoprovee_plusap_parquet_node1691598043999.writeFrame(\n    ChangeSchema_node1691598038927\n)\njob.commit()\n"
+}
